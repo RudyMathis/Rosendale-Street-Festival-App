@@ -1,0 +1,397 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.container-shadow {
+  padding: 1em;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+}
+
+.required {
+  color: red;
+  font-size: .75rem;
+  vertical-align: text-top;
+  margin-left: 3px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Nav */
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.nav-links h1{
+  margin: 1rem 0;
+}
+
+@media only screen and (max-width: 600px) {
+  .nav-links {
+    align-items: center;
+  }
+
+  .nav-links h1{
+    font-size: 1.5rem;
+    margin: .5rem 0;
+  }
+}
+
+/* Log in */
+
+.nav-login-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border: 1px solid #646cff;
+  border-radius: 5px;
+  margin-left: 1rem;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin: 1rem;
+}
+
+.nav-login-content {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #646cff;
+  padding: 0.6em 1.2em;
+  border-radius: 5px;
+}
+
+.login-label {
+  display: flex;
+  gap: 1rem;
+  justify-content: end;
+}
+
+.submit-button {
+  border: 1px solid #646cff;
+  padding: 0.6em 1.2em;
+  border-radius: 5px;
+  min-width: 150px;
+  cursor: pointer;
+}
+
+.logout-button {
+  border: 1px solid #646cff;
+  padding: 0.6em 1.2em;
+  border-radius: 5px;
+  background-color: transparent;
+  margin-top: 1rem;
+  cursor: pointer;
+  width: 100%;
+  color: #646cff;
+}
+
+@media only screen and (max-width: 600px) {
+
+  .nav-login-content {
+    font-size: .8rem;
+  }
+
+}
+
+/* Record Detail */
+
+.record-detail-container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.record-detail-container h3{
+  margin-top: 0;
+}
+
+.record-detail-container p{
+  margin: .3rem;
+  text-align: left;
+}
+
+/* Record List */
+.record-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+th button{
+  background-color: transparent;
+  border: none;
+  color: white;
+}
+
+thead,
+tfoot {
+  background-color: #2c5e77;
+  color: #fff;
+}
+
+tbody {
+  background-color: #e4f0f5;
+}
+
+table {
+  border-collapse: collapse;
+  border: 2px solid rgb(140 140 140);
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  width: 100%;
+}
+
+caption {
+  caption-side: bottom;
+  padding: 10px;
+}
+
+th,
+td {
+  border: 1px solid rgb(160 160 160);
+  padding: 8px 10px;
+}
+
+td {
+  text-align: center;
+}
+
+.action-container {
+  display: flex;
+  align-items: center;
+}
+
+.action-container *{
+  margin: 0 .3rem;
+}
+
+.login-button {
+  border: 1px solid black;
+  padding: 0.6em 1.2em;
+}
+
+.action-edit {
+  border: 1px solid black;
+  padding: 0.6em 1.2em;
+}
+
+.action-delete {
+  color: red;
+  border: 1px solid black;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0.6em 1.2em;
+}
+
+.approved {
+  background-color: lightgreen;
+}
+
+.pending {
+  background-color: lightyellow;
+}
+
+@media only screen and (max-width: 600px) {
+
+  .hidden-mobile {
+    display: none;
+  }
+  table {
+    width: 100%;
+  }
+
+  .record-list-container {
+    align-items: center;
+  }
+
+  .action-container {
+    flex-direction: column;
+  }
+
+  .action-container *{
+    margin: 5px 0;
+    width: -webkit-fill-available;
+  }
+}
+
+
+/* Create Record */
+
+.create-record-container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.record-form, .login-form {
+  width: 100%;
+  text-align: left;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.create-record-form-section {
+  padding: 1em;
+  border: 1px solid black;
+  margin: 1em 0;
+}
+
+.create-record-form-section-title {
+  margin-top: 0;
+}
+
+.form-input-container {
+  margin-bottom: .5em;
+}
+
+.form-input-container input[type="text"],
+.form-input-container input[type="email"],
+.form-input-container input[type="tel"] {
+  padding: 0.5rem;
+  margin-top: .5rem;
+}
+
+.form-radio-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: .5em;
+
+}
+
+.form-input-container label + input {
+  vertical-align: super;
+}
+
+textarea {
+  padding: 0.5rem;
+  margin-top: .5rem;
+}
+
+.form-input-container input[type="number"] {
+  padding: 0.5rem;
+  line-height: 1.5rem;
+  max-width: 50px;
+  margin-top: .5rem;
+}
+
+.form-input-container input[type="checkbox"],
+.form-input-container input[type="radio"] {
+  margin: .5rem 1rem 0 0;
+  appearance: none; /* Resets browser styles */
+  -webkit-appearance: none; /* For WebKit browsers */
+  width: 25px;
+  height: 25px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.form-input-container input[type="checkbox"]:checked,
+.form-input-container input[type="radio"]:checked {
+  background-color: #007bff;
+  border: 1px solid #007bff; 
+}
+
+
+@media only screen and (max-width: 600px) {
+  .form-input-container {
+    font-size: 1.1rem;
+    margin: 8px 0;
+  }
+
+  .form-input-container input[type="text"],
+  .form-input-container input[type="email"],
+  .form-input-container input[type="tel"],
+  textarea {
+    margin-top: 0;
+  }
+}
+
+
+/* Confirmation modal */
+
+.confirmation-modal-container {
+  display: contents;
+}
+
+.confirmation-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirmation-modal {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.confirmation-message {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.confirmation-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.confirm-button,
+.cancel-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.confirm-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.confirm-button:hover {
+  background-color: #218838;
+}
+
+.cancel-button:hover {
+  background-color: #c82333;
+}
