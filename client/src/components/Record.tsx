@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import FormInput from "./formInput";
+import FormInput from "./FormInput";
 import { useRoleContext } from "./context/RoleContext";
 
 
