@@ -6,7 +6,12 @@ import isAcceptedRouter from "./routes/isAcceptedRouter.js";
 const PORT = process.env.PORT || 5050;
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://streetfestivalapp.vercel.app/"],
+  })
+);
+
 app.use(express.json());
 app.use("/record", records);
 app.use("/record", isAcceptedRouter);
