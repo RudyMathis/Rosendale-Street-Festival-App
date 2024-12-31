@@ -21,6 +21,7 @@ type RecordProps = {
 };
 
 const Record = ({ record, deleteRecord }: RecordProps) => {
+    
     const { canViewActions, canAccept } = useRoleContext(); // Get permissions from RoleContext
     const [modalOpen, setModalOpen] = useState(false);
     const [, setRecords] = useState<RecordType[]>([]);
@@ -38,7 +39,8 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
     async function updateAccepted(id: string) {
         try {
             const newIsAccepted = !updateisAccepted;
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}/isAccepted`, {
+            // eslint-disable-next-line no-constant-binary-expression
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "https://streetfestivalapp.vercel.app" || "http://localhost:5050"}/record/${id}/isAccepted`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
