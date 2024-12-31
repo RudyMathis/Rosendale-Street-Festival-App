@@ -1,7 +1,26 @@
+// import express from "express";
+// import cors from "cors";
+// import records from "./routes/record.js";
+// import isAcceptedRouter from "./routes/isAcceptedRouter.js"; 
+
+// const PORT = process.env.PORT || 5050;
+// const app = express();
+
+// app.use(cors());
+// app.use(express.json());
+// app.use("/record", records);
+// app.use("/record", isAcceptedRouter);
+
+// // start the Express server
+// app.listen(PORT, () => {
+//   console.log(`Server listening on port ${PORT}`);
+// });
+
 import express from "express";
 import cors from "cors";
 import records from "./routes/record.js";
-import isAcceptedRouter from "./routes/isAcceptedRouter.js"; 
+import isAcceptedRouter from "./routes/isAcceptedRouter.js";
+import indexRouter from "./routes/index.js";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
@@ -9,9 +28,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/record", records);
-app.use("/record", isAcceptedRouter);
+app.use("/isAccepted", isAcceptedRouter);
+app.use("/", indexRouter);
 
-// start the Express server
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
