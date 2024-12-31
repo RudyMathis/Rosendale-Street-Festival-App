@@ -133,14 +133,13 @@ export default function RecordList() {
     useEffect(() => {
         async function getRecords() {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/record/`);
-
-            console.log(import.meta.env.VITE_API_BASE_URL, "VITE_API_BASE_URL", import.meta.env, "BASE_URL", response);
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/`);
 
             if (!response.ok) {
-            console.error(`An error occurred: ${response.statusText}`);
-            return;
+                console.error(`An error occurred: ${response.statusText}`);
+                return;
             }
+
             const records: RecordType[] = await response.json();
             setRecords(records);
         } catch (error) {
@@ -153,12 +152,12 @@ export default function RecordList() {
 
     async function deleteRecord(id: string) {
         try {
-        await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}`, {
-            method: "DELETE",
-        });
-        setRecords((prevRecords) => prevRecords.filter((el) => el._id !== id));
+            await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}`, {
+                method: "DELETE",
+            });
+            setRecords((prevRecords) => prevRecords.filter((el) => el._id !== id));
         } catch (error) {
-        console.error("Failed to delete record:", error);
+            console.error("Failed to delete record:", error);
         }
     }
 
@@ -168,12 +167,12 @@ export default function RecordList() {
         const rankingMap: Record<string, number> = { Low: 1, Medium: 2, High: 3 };
 
         return [...records].sort((a, b) => {
-        const aValue = sortConfig.key === "level" ? rankingMap[a.level] : a[sortConfig.key];
-        const bValue = sortConfig.key === "level" ? rankingMap[b.level] : b[sortConfig.key];
+            const aValue = sortConfig.key === "level" ? rankingMap[a.level] : a[sortConfig.key];
+            const bValue = sortConfig.key === "level" ? rankingMap[b.level] : b[sortConfig.key];
 
-        if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
-        if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
-        return 0;
+            if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+            if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+            return 0;
         });
     })();
 
