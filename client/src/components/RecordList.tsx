@@ -135,7 +135,7 @@ export default function RecordList() {
         try {
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/`);
 
-            console.log(import.meta.env.VITE_API_BASE_URL, "VITE_API_BASE_URL", import.meta.env.BASE_URL, "BASE_URL");
+            console.log(import.meta.env.VITE_API_BASE_URL, "VITE_API_BASE_URL", import.meta.env.BASE_URL, "BASE_URL", "mongodb", response);
 
             if (!response.ok) {
             console.error(`An error occurred: ${response.statusText}`);
