@@ -35,17 +35,21 @@ import cors from "cors";
 import records from "./routes/record.js";
 import isAcceptedRouter from "./routes/isAcceptedRouter.js"; 
 
-const PORT = process.env.PORT || 5050;
 const app = express();
+const PORT = process.env.PORT || 5050;
 
 app.use(cors());
 app.use(express.json());
 
-// Prefix all routes with /api
+// Prefix all API routes with /api
 app.use("/api/record", records);
 app.use("/api/record", isAcceptedRouter);
 
-// start the Express server
+// Handle other requests (frontend) by serving static files
+// If you have any static files to serve, ensure this middleware comes after your API routes
+app.use(express.static("client/dist"));
+
+// Start the server
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
