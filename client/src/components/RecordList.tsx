@@ -133,9 +133,9 @@ export default function RecordList() {
     useEffect(() => {
         async function getRecords() {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/`);
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/record/`);
 
-            console.log(import.meta.env.VITE_API_BASE_URL, "VITE_API_BASE_URL", import.meta.env.BASE_URL, "BASE_URL", "mongodb", response);
+            console.log(import.meta.env.VITE_API_BASE_URL, "VITE_API_BASE_URL", import.meta.env, "BASE_URL", response);
 
             if (!response.ok) {
             console.error(`An error occurred: ${response.statusText}`);
