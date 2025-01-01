@@ -40,7 +40,7 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
         try {
             const newIsAccepted = !updateisAccepted;
             // eslint-disable-next-line no-constant-binary-expression
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "https://streetfestivalapp.vercel.app" || "http://localhost:5050"}/record/${id}/isAccepted`, {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}/isAccepted`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
