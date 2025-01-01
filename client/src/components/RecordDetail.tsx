@@ -42,6 +42,7 @@ export default function RecordDetail() {
         async function fetchRecord() {
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}`);
+                console.log(response);
                 if (!response.ok) {
                     throw new Error('Record not found');
                 }

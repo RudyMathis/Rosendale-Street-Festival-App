@@ -26,7 +26,7 @@ const Login: React.FC = () => {
             return;
         }
 
-        setCurrentUser({ name: user.name, role: user.role, password: "" }); // No need to store the password in context
+        setCurrentUser({ name: user.name, role: user.role, password: "" });
         navigate("/"); 
     };
 

@@ -69,7 +69,7 @@ export default function Record() {
 
       setIsNew(false);
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}`);
-      
+      console.log(response);
       if (!response.ok) {
         console.error(`An error has occurred: ${response.statusText}`);
         return;

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useRoleContext } from "./context/RoleContext";
 
-import ConfirmationModal from "./ComfirmationModal"; // Adjust path as necessary
+import ConfirmationModal from "./ComfirmationModal";
 
 type RecordType = {
     _id: string;
@@ -22,7 +22,7 @@ type RecordProps = {
 
 const Record = ({ record, deleteRecord }: RecordProps) => {
     
-    const { canViewActions, canAccept } = useRoleContext(); // Get permissions from RoleContext
+    const { canViewActions, canAccept } = useRoleContext();
     const [modalOpen, setModalOpen] = useState(false);
     const [, setRecords] = useState<RecordType[]>([]);
     const [updateisAccepted, setUpdateIsAccepted] = useState(record.isAccepted);
@@ -39,7 +39,6 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
     async function updateAccepted(id: string) {
         try {
             const newIsAccepted = !updateisAccepted;
-            // eslint-disable-next-line no-constant-binary-expression
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}/isAccepted`, {
                 method: "PATCH",
                 headers: {
@@ -136,7 +135,7 @@ export default function RecordList() {
         async function getRecords() {
         try {
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/`);
-
+            console.log(response);
             if (!response.ok) {
                 console.error(`An error occurred: ${response.statusText}`);
                 return;
