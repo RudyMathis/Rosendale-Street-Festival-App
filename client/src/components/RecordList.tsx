@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useRoleContext } from "./context/RoleContext";
-
 import ConfirmationModal from "./ComfirmationModal";
+import Label from "../labels/formLabels.json";
 
 type RecordType = {
     _id: string;
@@ -104,9 +104,9 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
                     <td>
                         <div className="action-container">
                             <Link to={`/edit/${record._id}`}>
-                                <div className="action-edit">Edit</div>
+                                <div className="action-edit">{Label.actions.edit}</div>
                             </Link>
-                            <button className="action-delete" type="button" onClick={openModal}>Delete</button>
+                            <button className="action-delete" type="button" onClick={openModal}>{Label.actions.delete}</button>
                         </div>
                     </td>
                 )}
@@ -191,40 +191,40 @@ export default function RecordList() {
                         <tr>
                             <th>
                                 <button type="button" onClick={() => requestSort("name")}>
-                                    Name {sortConfig?.key === "name" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
+                                    {Label.record.name} {sortConfig?.key === "name" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
                                 </button>
                             </th>
                             <th className="hidden-mobile">
                                 <button type="button" onClick={() => requestSort("email")}>
-                                    Email {sortConfig?.key === "email" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
+                                    {Label.record.email} {sortConfig?.key === "email" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
                                 </button>
                             </th>
                             <th className="hidden-mobile">
                                 <button type="button" onClick={() => requestSort("level")}>
-                                    Level {sortConfig?.key === "level" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
+                                    {Label.record.level} {sortConfig?.key === "level" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
                                 </button>
                             </th>
                             <th className="hidden-mobile">
                                 <button type="button" onClick={() => requestSort("members")}>
-                                    Members {sortConfig?.key === "members" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
+                                    {Label.record.members} {sortConfig?.key === "members" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
                                 </button>
                             </th>
                             <th className="hidden-mobile">
                                 <button type="button" onClick={() => requestSort("link")}>
-                                    Link {sortConfig?.key === "link" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
+                                    {Label.record.link} {sortConfig?.key === "link" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
                                 </button>
                             </th>
                             <th className="hidden-mobile">
                                 <button type="button" onClick={() => requestSort("hudsonValley")}>
-                                    Hudson Valley {sortConfig?.key === "hudsonValley" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
+                                    {Label.record.hudsonValley} {sortConfig?.key === "hudsonValley" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
                                 </button>
                             </th>
                             <th>
                                 <button type="button" onClick={() => requestSort("isAccepted")}>
-                                    Accepted {sortConfig?.key === "isAccepted" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
+                                    {Label.record.isAccepted} {sortConfig?.key === "isAccepted" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
                                 </button>
                             </th>
-                            {canViewActions && <th>Action</th>} 
+                            {canViewActions && <th>{Label.actions.action}</th>} 
                         </tr>
                     </thead>
                     <tbody>

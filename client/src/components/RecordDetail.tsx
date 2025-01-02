@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Label from "../labels/formLabels.json";
 
 type RecordType = {
     _id: string;
@@ -57,7 +58,7 @@ export default function RecordDetail() {
     }, [id]);
 
     if (!record) {
-        return <p>Loading...</p>;
+        return <p>{Label.actions.loading}</p>;
     }
 
     // console.log(record)
@@ -71,50 +72,50 @@ export default function RecordDetail() {
     return (
         <div className="record-detail-container container-shadow">
             <h3>{record.name}</h3>
-            {renderField('Email', (
+            {renderField(Label.record.email, (
                 <a href={`mailto:${record.email}`} target="_blank" rel="noopener noreferrer">
                     {record.email || 'N/A'}
                 </a>
             ))}
-            {renderField('Level', record.level)}
-            {renderField('Committee Notes', record.committeNotes)}
-            {renderField('Members', record.members)}
-            {renderField('Located in Hudson Valley', record.hudsonValley?.toString())}
-            {renderField('Summary', record.summary)}
-            {renderField('Genre', record.genre)}
-            {renderField('Link', record.link ? (
+            {renderField(Label.record.level, record.level)}
+            {renderField(Label.record.committeNotes, record.committeNotes)}
+            {renderField(Label.record.members, record.members)}
+            {renderField(Label.record.hudsonValley, record.hudsonValley?.toString())}
+            {renderField(Label.record.summary, record.summary)}
+            {renderField(Label.record.genre, record.genre)}
+            {renderField(Label.record.link, record.link ? (
                 <a href={record.link} target="_blank" rel="noopener noreferrer">
                     {record.link}
                 </a>
             ) : 'N/A')}
-            {renderField('Dates Available', record.dates)}
-            {renderField('Another Gig', record.anotherGig?.toString())}
-            {renderField('Another Gig Details', record.gigIfYes)}
-            {renderField('Shirt Size XS', record.shirtSizeXS)}
-            {renderField('Shirt Size S', record.shirtSizeS)}
-            {renderField('Shirt Size M', record.shirtSizeM)}
-            {renderField('Shirt Size L', record.shirtSizeL)}
-            {renderField('Shirt Size XL', record.shirtSizeXL)}
-            {renderField('Shirt Size XXL', record.shirtSizeXXL)}
-            {renderField('Primary Contact', record.primaryContact)}
-            {renderField('Primary Email', (
+            {renderField(Label.record.dates, record.dates)}
+            {renderField(Label.record.anotherGig, record.anotherGig?.toString())}
+            {renderField(Label.record.gigIfYes, record.gigIfYes)}
+            {renderField(Label.record.shirtSizeXS, record.shirtSizeXS)}
+            {renderField(Label.record.shirtSizeS, record.shirtSizeS)}
+            {renderField(Label.record.shirtSizeM, record.shirtSizeM)}
+            {renderField(Label.record.shirtSizeL, record.shirtSizeL)}
+            {renderField(Label.record.shirtSizeXL, record.shirtSizeXL)}
+            {renderField(Label.record.shirtSizeXXL, record.shirtSizeXXL)}
+            {renderField(Label.record.primaryContact, record.primaryContact)}
+            {renderField(Label.record.primaryEmail, (
                 <a href={`mailto:${record.primaryEmail}`} target="_blank" rel="noopener noreferrer">
                     {record.primaryEmail || 'N/A'}
                 </a>
             ))}
-            {renderField('Primary Phone', record.primaryPhone)}
-            {renderField('Primary Address', record.primaryAddress)}
-            {renderField('Secondary Contact', record.secondaryContact)}
-            {renderField('Secondary Email', record.secondaryEmail ? (
+            {renderField(Label.record.primaryPhone, record.primaryPhone)}
+            {renderField(Label.record.primaryAddress, record.primaryAddress)}
+            {renderField(Label.record.secondaryContact, record.secondaryContact)}
+            {renderField(Label.record.secondaryEmail, record.secondaryEmail ? (
                 <a href={`mailto:${record.secondaryEmail}`} target="_blank" rel="noopener noreferrer">
                     {record.secondaryEmail}
                 </a>
             ) : 'N/A')}
-            {renderField('Secondary Phone', record.secondaryPhone)}
-            {renderField('New To StreetFest', record.isNewToStreeFest?.toString())}
-            {renderField('Willing To Fundraise', record.isWillingToFundraise?.toString())}
-            {renderField('Anything Else', record.anythingElse)}
-            {renderField('Accepted', record.isAccepted?.toString())}
+            {renderField(Label.record.secondaryPhone, record.secondaryPhone)}
+            {renderField(Label.record.isNewToStreeFest, record.isNewToStreeFest?.toString())}
+            {renderField(Label.record.isWillingToFundraise, record.isWillingToFundraise?.toString())}
+            {renderField(Label.record.anythingElse, record.anythingElse)}
+            {renderField(Label.record.isAccepted, record.isAccepted?.toString())}
         </div>
     );
 }

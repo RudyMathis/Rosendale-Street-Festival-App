@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "./context/UserContext";
+import Label from "../labels/formLabels.json";
 
 // Hardcoded users with roles and passwords
 const hardcodedUsers = [
@@ -32,7 +33,7 @@ const Login: React.FC = () => {
 
     return (
         <div className="container-shadow">
-            <h2>Login</h2>
+            <h2>{Label.login.login}</h2>
             <form className="login-form"
                 onSubmit={(e) => {
                     e.preventDefault();
@@ -41,7 +42,7 @@ const Login: React.FC = () => {
             >
                 <div className="login-container">
                     <label className="login-label">
-                        Name: 
+                        {Label.login.name}: 
                         <input
                             type="text"
                             value={name}
@@ -50,7 +51,7 @@ const Login: React.FC = () => {
                         />
                     </label>
                     <label className="login-label">
-                        Password:
+                        {Label.login.password}:
                         <input
                             type="password"
                             value={password}
@@ -60,7 +61,14 @@ const Login: React.FC = () => {
                     </label>
                     {error && <p style={{ color: "red" }}>{error}</p>}
                 </div>
-                <button className="submit-button" type="submit">Submit</button>
+                <button className="submit-button" type="submit">{Label.actions.submit}</button>
+                <div style={{ marginTop: "20px"}}>
+                    <span>for testing purposes</span>
+                    <hr />
+                    <p>Valerie: testpassword</p>
+                    <p>Moderator1: modpassword</p>
+                    <p>Admin1: adminpassword</p>
+                </div>
             </form>
         </div>
     );
