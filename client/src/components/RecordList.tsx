@@ -69,22 +69,32 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
     return (
         <>
             <tr className={!updateisAccepted ? "approved" : "pending"}>
-                <td>
+                <td className="record-td-container">
+                    <div className="hidden-desktop">{Label.record.name}</div>
                     <Link to={`/record/${record._id}`}>{record.name}</Link>
                 </td>
-                <td className="hidden-mobile">
+                <td className="record-td-container">
+                    <div className="hidden-desktop">{Label.record.email}</div>
                     <a href={`mailto:${record.email}`} target="_blank" rel="noopener noreferrer">
                         {record.email}
                     </a>
                 </td>
-                <td className="hidden-mobile">{record.level}</td>
-                <td className="hidden-mobile">{record.members}</td>
-                <td className="hidden-mobile">
+                <td className="record-td-container">
+                    <div className="hidden-desktop">{Label.record.level}</div>
+                    {record.level}
+                </td>
+                <td className="record-td-container">
+                    <div className="hidden-desktop">{Label.record.members}</div>
+                    {record.members}
+                </td>
+                <td className="record-td-container">
+                    <div className="hidden-desktop">{Label.record.link}</div>
                     <a href={record.link} target="_blank" rel="noopener noreferrer">
                         {record.link}
                     </a>
                 </td>
-                <td className="hidden-mobile">
+                <td className="record-td-container">
+                    <div className="hidden-desktop">{Label.record.hudsonValley}</div>
                     <input
                         type="checkbox"
                         disabled
@@ -92,7 +102,8 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
                         onChange={() => {}}
                     />
                 </td>
-                <td>
+                <td className="record-td-container">
+                    <div className="hidden-desktop">{Label.record.isAccepted}</div>
                     <input
                         type="checkbox"
                         disabled={!canAccept}
@@ -104,7 +115,7 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
                     <td>
                         <div className="action-container">
                             <Link to={`/edit/${record._id}`}>
-                                <div className="action-edit">{Label.actions.edit}</div>
+                                <button className="action-edit">{Label.actions.edit}</button>
                             </Link>
                             <button className="action-delete" type="button" onClick={openModal}>{Label.actions.delete}</button>
                         </div>
@@ -188,33 +199,33 @@ export default function RecordList() {
                 <h3>Band Records</h3>
                 <table>
                     <thead>
-                        <tr>
+                        <tr className="record-tr-container">
                             <th>
                                 <button type="button" onClick={() => requestSort("name")}>
                                     {Label.record.name} {sortConfig?.key === "name" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
                                 </button>
                             </th>
-                            <th className="hidden-mobile">
+                            <th>
                                 <button type="button" onClick={() => requestSort("email")}>
                                     {Label.record.email} {sortConfig?.key === "email" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
                                 </button>
                             </th>
-                            <th className="hidden-mobile">
+                            <th>
                                 <button type="button" onClick={() => requestSort("level")}>
                                     {Label.record.level} {sortConfig?.key === "level" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
                                 </button>
                             </th>
-                            <th className="hidden-mobile">
+                            <th>
                                 <button type="button" onClick={() => requestSort("members")}>
                                     {Label.record.members} {sortConfig?.key === "members" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
                                 </button>
                             </th>
-                            <th className="hidden-mobile">
+                            <th>
                                 <button type="button" onClick={() => requestSort("link")}>
                                     {Label.record.link} {sortConfig?.key === "link" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
                                 </button>
                             </th>
-                            <th className="hidden-mobile">
+                            <th>
                                 <button type="button" onClick={() => requestSort("hudsonValley")}>
                                     {Label.record.hudsonValley} {sortConfig?.key === "hudsonValley" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
                                 </button>

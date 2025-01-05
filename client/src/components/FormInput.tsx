@@ -53,7 +53,7 @@ const FormInput = ({
     return (
         <div className="form-input-container">
             <div>
-                <label htmlFor={id}>
+                <label {...(type !== "radio" && { htmlFor: id })}>                    
                     {label}
                 </label>
                 {required && <span className="required">required *</span>}
@@ -71,7 +71,7 @@ const FormInput = ({
                 />
             ) : type === "radio" && options.length > 0 ? (
                 options.map((option, index) => (
-                    <div key={index}  className={`form-${type}-container`}>
+                    <div key={index} className={`form-${type}-container`}>
                         <input
                             type="radio"
                             name={name}
