@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import FormInput from "./FormInput";
+import FormInput from "./helper/FormInput";
 import { useRoleContext } from "./context/RoleContext";
+import { useUserContext } from "./context/UserContext";
 
 
 const formSections = [
@@ -50,13 +51,30 @@ const formSections = [
 export default function Record() {
 
   const { canViewActions } = useRoleContext();
-
+  const { currentUser } = useUserContext();
   const [form, setForm] = useState({
-    name: "", email: "", level: "", committeNotes: "", members: 1,
-    hudsonValley: false, shirtSizeXS: 0, shirtSizeS: 0, shirtSizeM: 0,
-    shirtSizeL: 0, shirtSizeXL: 0, shirtSizeXXL: 0, primaryContact: "",
-    primaryEmail: "", primaryPhone: "", primaryAddress: "",
-    secondaryContact: "", secondaryEmail: "", secondaryPhone: "", approval: false
+    name: "", 
+    email: "", 
+    level: "", 
+    committeNotes: "", 
+    members: 1,
+    hudsonValley: false, 
+    shirtSizeXS: 0, 
+    shirtSizeS: 0, 
+    shirtSizeM: 0,
+    shirtSizeL: 0,
+    shirtSizeXL: 0, 
+    shirtSizeXXL: 0, 
+    primaryContact: "",
+    primaryEmail: "", 
+    primaryPhone: "", 
+    primaryAddress: "",
+    secondaryContact: "", 
+    secondaryEmail: "", 
+    secondaryPhone: "", 
+    approval: false,
+    nameOfUser: currentUser?.name,
+    editedTime: new Date().toLocaleDateString(),
   });
   const [isNew, setIsNew] = useState(true);
   const params = useParams();
@@ -69,7 +87,6 @@ export default function Record() {
 
       setIsNew(false);
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}`);
-      console.log(response);
       if (!response.ok) {
         console.error(`An error has occurred: ${response.statusText}`);
         return;
@@ -118,8 +135,7 @@ export default function Record() {
         {formSections.map(({ title, fields }) => (
           title === "Approval" ? (
             canViewActions && (
-              <article key={title} className="create-record-form-section">
-                <h2 className="create-record-form-section-title">{title}</h2>
+              <article key={title} className="create-record-form-section-approval">
                 {fields.map(({ name, ...props }) => (
                   <FormInput
                     key={name}

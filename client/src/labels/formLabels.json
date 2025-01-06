@@ -28,7 +28,9 @@
         "isNewToStreeFest": "Is New to Street Fest",
         "isWillingToFundraise": "Is Willing to Fundraise",
         "anythingElse": "Anything Else",
-        "isAccepted": "Is Accepted"
+        "isAccepted": "Is Accepted",
+        "addedBy": "Added by",
+        "editedTime": "Added when"
     },
     "actions": {
         "action": "Action",

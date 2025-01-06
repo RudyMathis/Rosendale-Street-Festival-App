@@ -7,6 +7,7 @@ type RoleContextType = {
   canViewContent: boolean;
   canViewActions: boolean;
   canAccept: boolean;
+  canViewEditedDetail: boolean;
   canEditRecords: boolean;
 };
 
@@ -22,6 +23,7 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       canViewContent: false,
       canViewActions: false,
       canAccept: false,
+      canViewEditedDetail: false,
       canEditRecords: false,
     },
     member: {
@@ -29,6 +31,7 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       canViewContent: true,
       canViewActions: false,
       canAccept: false,
+      canViewEditedDetail: false,
       canEditRecords: false,
     },
     moderator: {
@@ -36,6 +39,7 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       canViewContent: true,
       canViewActions: true,
       canAccept: true,
+      canViewEditedDetail: true,
       canEditRecords: false,
     },
     admin: {
@@ -43,6 +47,7 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       canViewContent: true,
       canViewActions: true,
       canAccept: true,
+      canViewEditedDetail: true,
       canEditRecords: true,
     },
   };

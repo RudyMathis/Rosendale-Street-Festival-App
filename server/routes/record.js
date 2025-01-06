@@ -1,6 +1,7 @@
 import express from "express";
 import db from "../database/connection.js";
 import { ObjectId } from "mongodb";
+import { name } from "tar/lib/types.js";
 
 const router = express.Router();
 
@@ -35,6 +36,8 @@ const getFormBodyData = (body) => ({
   isWillingToFundraise: body.isWillingToFundraise,
   anythingElse: body.anythingElse,
   isAccepted: body.isAccepted,
+  nameOfUser: body.nameOfUser,
+  editedTime: body.editedTime,
 });
 
 // Get all records

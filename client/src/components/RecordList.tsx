@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useRoleContext } from "./context/RoleContext";
 import ConfirmationModal from "./ComfirmationModal";
 import Label from "../labels/formLabels.json";
+import TableButton from "./helper/TableButton";
 
 type RecordType = {
     _id: string;
@@ -13,6 +14,8 @@ type RecordType = {
     link: string;
     hudsonValley: boolean;
     isAccepted: boolean;
+    nameOfUser: string;
+    editedTime: string;
 };
 
 type RecordProps = {
@@ -22,7 +25,7 @@ type RecordProps = {
 
 const Record = ({ record, deleteRecord }: RecordProps) => {
     
-    const { canViewActions, canAccept } = useRoleContext();
+    const { canViewActions, canAccept, canViewEditedDetail } = useRoleContext();
     const [modalOpen, setModalOpen] = useState(false);
     const [, setRecords] = useState<RecordType[]>([]);
     const [updateisAccepted, setUpdateIsAccepted] = useState(record.isAccepted);
@@ -111,6 +114,18 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
                         onChange={() => updateAccepted(record._id)} // Update state on change
                     />
                 </td> 
+                {canViewEditedDetail && (
+                    <>
+                        <td className="record-td-container">
+                            <div className="hidden-desktop">{Label.record.addedBy}</div>
+                            {record.nameOfUser}
+                        </td>
+                        <td className="record-td-container">
+                            <div className="hidden-desktop">{Label.record.editedTime}</div>
+                            {record.editedTime}
+                        </td>
+                    </>
+                )}
                 {canViewActions && ( // Only show the "Action" column if the user has permission
                     <td>
                         <div className="action-container">
@@ -136,7 +151,7 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
 
 export default function RecordList() {
     const [records, setRecords] = useState<RecordType[]>([]);
-    const { canViewContent, canViewActions } = useRoleContext(); // Check permission for the "Action" column
+    const { canViewContent, canViewActions, canViewEditedDetail } = useRoleContext(); // Check permission for the "Action" column
     const [sortConfig, setSortConfig] = useState<{ key: keyof RecordType; direction: "asc" | "desc" }>({
         key: "name",
         direction: "desc",
@@ -146,7 +161,6 @@ export default function RecordList() {
         async function getRecords() {
         try {
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/`);
-            console.log(response);
             if (!response.ok) {
                 console.error(`An error occurred: ${response.statusText}`);
                 return;
@@ -175,23 +189,45 @@ export default function RecordList() {
 
     const sortedRecords = (() => {
         if (!sortConfig || !sortConfig.key) return records;
-
+    
         const rankingMap: Record<string, number> = { Low: 1, Medium: 2, High: 3 };
-
+    
         return [...records].sort((a, b) => {
             const aValue = sortConfig.key === "level" ? rankingMap[a.level] : a[sortConfig.key];
             const bValue = sortConfig.key === "level" ? rankingMap[b.level] : b[sortConfig.key];
-
-            if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
-            if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
-            return 0;
+    
+            // Handle undefined values by treating them as the smallest value in ascending order and largest in descending
+            if (aValue === undefined || aValue === null) {
+                return sortConfig.direction === "asc" ? -1 : 1;
+            }
+            if (bValue === undefined || bValue === null) {
+                return sortConfig.direction === "asc" ? 1 : -1;
+            }
+    
+            // Case-insensitive sorting for strings
+            if (typeof aValue === "string" && typeof bValue === "string") {
+                const aLower = aValue.toLowerCase();
+                const bLower = bValue.toLowerCase();
+                return sortConfig.direction === "asc"
+                    ? aLower.localeCompare(bLower)
+                    : bLower.localeCompare(aLower);
+            }
+    
+            // Numeric comparisons
+            if (typeof aValue === "number" && typeof bValue === "number") {
+                return sortConfig.direction === "asc" ? aValue - bValue : bValue - aValue;
+            }
+    
+            return 0; // Fallback for other types
         });
     })();
-
+    
+    
     const requestSort = (key: keyof RecordType) => {
         const direction = sortConfig?.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
         setSortConfig({ key, direction });
     };
+    
 
     return (
         <>
@@ -201,40 +237,81 @@ export default function RecordList() {
                     <thead>
                         <tr className="record-tr-container">
                             <th>
-                                <button type="button" onClick={() => requestSort("name")}>
-                                    {Label.record.name} {sortConfig?.key === "name" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
-                                </button>
+                                <TableButton
+                                    label={Label.record.name}
+                                    onClick={() => requestSort("name")}
+                                    sortConfig={sortConfig}
+                                    columnKey="name"
+                                />                            
                             </th>
                             <th>
-                                <button type="button" onClick={() => requestSort("email")}>
-                                    {Label.record.email} {sortConfig?.key === "email" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
-                                </button>
+                                <TableButton
+                                    label={Label.record.email}
+                                    onClick={() => requestSort("email")}
+                                    sortConfig={sortConfig}
+                                    columnKey="email"
+                                />
                             </th>
                             <th>
-                                <button type="button" onClick={() => requestSort("level")}>
-                                    {Label.record.level} {sortConfig?.key === "level" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
-                                </button>
+                                <TableButton
+                                    label={Label.record.level}
+                                    onClick={() => requestSort("level")}
+                                    sortConfig={sortConfig}
+                                    columnKey="level"
+                                />
                             </th>
                             <th>
-                                <button type="button" onClick={() => requestSort("members")}>
-                                    {Label.record.members} {sortConfig?.key === "members" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
-                                </button>
+                                <TableButton
+                                    label={Label.record.members}
+                                    onClick={() => requestSort("members")}
+                                    sortConfig={sortConfig}
+                                    columnKey="members"
+                                />
                             </th>
                             <th>
-                                <button type="button" onClick={() => requestSort("link")}>
-                                    {Label.record.link} {sortConfig?.key === "link" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
-                                </button>
+                                <TableButton
+                                    label={Label.record.link}
+                                    onClick={() => requestSort("link")}
+                                    sortConfig={sortConfig}
+                                    columnKey="link"
+                                />
                             </th>
                             <th>
-                                <button type="button" onClick={() => requestSort("hudsonValley")}>
-                                    {Label.record.hudsonValley} {sortConfig?.key === "hudsonValley" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
-                                </button>
+                                <TableButton
+                                    label={Label.record.hudsonValley}
+                                    onClick={() => requestSort("hudsonValley")}
+                                    sortConfig={sortConfig}
+                                    columnKey="hudsonValley"
+                                />
                             </th>
                             <th>
-                                <button type="button" onClick={() => requestSort("isAccepted")}>
-                                    {Label.record.isAccepted} {sortConfig?.key === "isAccepted" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
-                                </button>
+                                <TableButton
+                                    label={Label.record.isAccepted}
+                                    onClick={() => requestSort("isAccepted")}
+                                    sortConfig={sortConfig}
+                                    columnKey="isAccepted"
+                                />
                             </th>
+                            {canViewEditedDetail && 
+                                <>
+                                    <th>
+                                        <TableButton
+                                            label={Label.record.addedBy}
+                                            onClick={() => requestSort("nameOfUser")}
+                                            sortConfig={sortConfig}
+                                            columnKey="nameOfUser"
+                                        />
+                                    </th>
+                                    <th>
+                                        <TableButton
+                                            label={Label.record.editedTime}
+                                            onClick={() => requestSort("editedTime")}
+                                            sortConfig={sortConfig}
+                                            columnKey="editedTime"
+                                        />
+                                    </th>
+                                </>
+                            } 
                             {canViewActions && <th>{Label.actions.action}</th>} 
                         </tr>
                     </thead>
