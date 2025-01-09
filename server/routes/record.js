@@ -1,7 +1,6 @@
 import express from "express";
 import db from "../database/connection.js";
 import { ObjectId } from "mongodb";
-import { name } from "tar/lib/types.js";
 
 const router = express.Router();
 
