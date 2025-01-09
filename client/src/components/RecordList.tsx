@@ -38,7 +38,6 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
         closeModal();
     };
 
-    // Function to update isAccepted
     async function updateAccepted(id: string) {
         try {
             const newIsAccepted = !updateisAccepted;
@@ -47,31 +46,33 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                    body: JSON.stringify({ isAccepted: newIsAccepted }),
+                body: JSON.stringify({ isAccepted: newIsAccepted }),
             });
-        
+    
             if (!response.ok) {
                 throw new Error("Failed to update isAccepted");
             }
-        
+    
             const updatedRecord = await response.json();
-
+    
+            // Update the main records state
             setRecords((prevRecords) =>
                 prevRecords.map((record) =>
                     record._id === id ? { ...record, isAccepted: updatedRecord.isAccepted } : record
                 )
             );
-
-            setUpdateIsAccepted(newIsAccepted);
-
+            
+            // Update local state for immediate feedback
+            setUpdateIsAccepted(updatedRecord.isAccepted);
+    
         } catch (error) {
             console.error("Failed to update isAccepted:", error);
         }
     }
-
+    
     return (
         <>
-            <tr className={!updateisAccepted ? "approved" : "pending"}>
+            <tr className={updateisAccepted ? "approved" : "pending"}>
                 <td className="record-td-container">
                     <div className="hidden-desktop">{Label.record.name}</div>
                     <Link to={`/record/${record._id}`}>{record.name}</Link>
@@ -110,8 +111,8 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
                     <input
                         type="checkbox"
                         disabled={!canAccept}
-                        checked={!updateisAccepted} // Use isAccepted state here
-                        onChange={() => updateAccepted(record._id)} // Update state on change
+                        checked={updateisAccepted} // Correct state binding
+                        onChange={() => updateAccepted(record._id)}
                     />
                 </td> 
                 {canViewEditedDetail && (
@@ -193,10 +194,17 @@ export default function RecordList() {
         const rankingMap: Record<string, number> = { Low: 1, Medium: 2, High: 3 };
     
         return [...records].sort((a, b) => {
+
             const aValue = sortConfig.key === "level" ? rankingMap[a.level] : a[sortConfig.key];
             const bValue = sortConfig.key === "level" ? rankingMap[b.level] : b[sortConfig.key];
     
-            // Handle undefined values by treating them as the smallest value in ascending order and largest in descending
+            if (typeof aValue === "boolean" && typeof bValue === "boolean") {
+                // Sort boolean values explicitly
+                return sortConfig.direction === "asc"
+                    ? Number(aValue) - Number(bValue)
+                    : Number(bValue) - Number(aValue);
+            }
+    
             if (aValue === undefined || aValue === null) {
                 return sortConfig.direction === "asc" ? -1 : 1;
             }
@@ -204,21 +212,26 @@ export default function RecordList() {
                 return sortConfig.direction === "asc" ? 1 : -1;
             }
     
-            // Case-insensitive sorting for strings
             if (typeof aValue === "string" && typeof bValue === "string") {
                 const aLower = aValue.toLowerCase();
                 const bLower = bValue.toLowerCase();
+            
                 return sortConfig.direction === "asc"
                     ? aLower.localeCompare(bLower)
                     : bLower.localeCompare(aLower);
             }
     
-            // Numeric comparisons
             if (typeof aValue === "number" && typeof bValue === "number") {
                 return sortConfig.direction === "asc" ? aValue - bValue : bValue - aValue;
             }
-    
-            return 0; // Fallback for other types
+
+            if(sortConfig.key === "members") {
+                const aNumeric = Number(aValue);
+                const bNumeric = Number(bValue);
+                return sortConfig.direction === "asc" ? aNumeric - bNumeric : bNumeric - aNumeric;
+            }
+            
+            return 0; // Default for other types
         });
     })();
     
