@@ -20,15 +20,6 @@ const App: React.FC = () => {
 
 export default App;
 
-
 // Error Handling 
-// get on github
-// put on vercel
-// mobile XX
-// get all form data set up XX
 // transfer data from google sheets
 // display total data page, ie total type of shirts, total memebers etc --
-// log in page
-// seperate accounts
-// are you sure for delete action XX
-// reformat XX

@@ -7,6 +7,7 @@ import {
 import App from "./App";
 import Record from "./components/Record";
 import RecordDetail from "./components/RecordDetail";
+import Records from "./components/Records";
 import RecordList from "./components/RecordList";
 import Login from "./components/Login";
 import "./index.css";
@@ -40,6 +41,16 @@ const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter([
       {
         path: "/record/:id",
         element: <RecordDetail />,
+      },
+    ],
+  },
+  {
+    path: "/record/all",
+    element: <App />,
+    children: [
+      {
+        path: "/record/all",
+        element: <Records />,
       },
     ],
   },

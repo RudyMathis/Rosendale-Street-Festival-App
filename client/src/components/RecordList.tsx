@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRoleContext } from "./context/RoleContext";
 import ConfirmationModal from "./ComfirmationModal";
 import Label from "../labels/formLabels.json";
@@ -152,6 +152,7 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
 
 export default function RecordList() {
     const [records, setRecords] = useState<RecordType[]>([]);
+    const navigate = useNavigate();
     const { canViewContent, canViewActions, canViewEditedDetail } = useRoleContext(); // Check permission for the "Action" column
     const [sortConfig, setSortConfig] = useState<{ key: keyof RecordType; direction: "asc" | "desc" }>({
         key: "name",
@@ -240,12 +241,19 @@ export default function RecordList() {
         const direction = sortConfig?.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
         setSortConfig({ key, direction });
     };
-    
 
+    
+    function handleAllRecords() {
+        navigate("/record/all");
+    }
+    
     return (
         <>
             {canViewContent && <section className="record-list-container container-shadow">
-                <h3>Band Records</h3>
+                <div className="record-list-header">
+                    <h3>Band Records</h3>
+                    <button onClick={handleAllRecords}>All Records</button>
+                </div>
                 <table>
                     <thead>
                         <tr className="record-tr-container">

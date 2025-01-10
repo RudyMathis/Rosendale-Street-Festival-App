@@ -219,10 +219,19 @@ h3 {
 }
 
 /* Record List */
+
 .record-list-container {
   display: flex;
   flex-direction: column;
   align-items: start;
+}
+
+.record-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
+  width: 100%;
 }
 
 th button, th{
@@ -531,30 +540,52 @@ textarea {
   display: flex;
   justify-content: space-around;
 }
-/* 
-.confirm-button,
-.cancel-button {
-  padding: 10px 20px;
-  border: none;
+
+/* All Records */
+
+.records-container .records-header {
+  margin: 1em 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.all-record-container {
+  margin-bottom: 1em;
+}
+
+.all-record-container h4 {
+  margin-top: 0;
+  font-size: 1rem;
+  color: var(--chart-2)
+}
+
+.record-header-button-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  cursor: pointer;
-  margin: 0 5px;
-} */
+}
 
-/* .confirm-button {
-  background-color: var(--chart-2);
-  color: var(--card-foreground);
-} */
+.record-header-button-container button {
+  border: none;
+  background-color: transparent;
+  border-radius: 0;
+}
 
-/* .cancel-button {
-  background-color: var(--destructive);
-  color: var(--destructive-foreground);
-} */
+.record-header-button-container button:hover {
+  background-color: var(--muted-foreground);
+  color: var(--muted);
+}
 
-/* .confirm-button:hover {
-  background-color: var(--chart-3);
-} */
+.record-header-button-container .records-show-button {
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+}
 
-/* .cancel-button:hover {
-  background-color: var(--chart-1);
-} */
+.record-header-button-container .records-data-button {
+  border-top: 1px solid var(--border);
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+} 

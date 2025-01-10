@@ -30,7 +30,17 @@
         "anythingElse": "Anything Else",
         "isAccepted": "Is Accepted",
         "addedBy": "Added by",
-        "editedTime": "Added when"
+        "editedTime": "Added when",
+        "contacts": "Contacts",
+        "shirts": "Shirts"
+    },
+    "show": {
+        "allRecords": "All Records",
+        "showAll": "Show All",
+        "showEmails": "Show Emails",
+        "showAccpeted": "Show Accepted",
+        "showContacts": "Show Contacts",
+        "showShirtSizes": "Show Shirt Sizes"
     },
     "actions": {
         "action": "Action",

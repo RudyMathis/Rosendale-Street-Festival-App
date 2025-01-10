@@ -1,43 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRoleContext } from "./context/RoleContext";
+import { RecordType } from "./types/RecordType";
 import  LabelDetail  from './helper/LabelDetail';
 import Label from "../labels/formLabels.json";
-
-type RecordType = {
-    _id: string;
-    name: string;
-    email: string;
-    level: string;
-    committeNotes: string;
-    members: number;
-    hudsonValley: boolean;
-    summary: string;
-    genre: string;
-    link: string | null;
-    dates: string;
-    anotherGig: boolean;
-    gigIfYes: string;
-    shirtSizeXS: number;
-    shirtSizeS: number;
-    shirtSizeM: number;
-    shirtSizeL: number;
-    shirtSizeXL: number;
-    shirtSizeXXL: number;
-    primaryContact: string;
-    primaryEmail: string;
-    primaryPhone: string;
-    primaryAddress: string;
-    secondaryContact: string;
-    secondaryEmail: string | null;
-    secondaryPhone: string;
-    isNewToStreeFest: boolean;
-    isWillingToFundraise: boolean;
-    anythingElse: string;
-    isAccepted: boolean;
-    nameOfUser: string;
-    editedTime: string;
-};
 
 export default function RecordDetail() {
     const { id } = useParams<{ id: string }>();
