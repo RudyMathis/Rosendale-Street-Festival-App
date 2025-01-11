@@ -2,12 +2,23 @@ import { useEffect, useState } from "react";
 import { RecordType } from "./types/RecordType";
 import LabelDetail from "./helper/LabelDetail";
 import Label from "../labels/formLabels.json";
+import ConfirmationModal from "./ComfirmationModal";
 
 export default function Records() {
     const [records, setRecords] = useState<RecordType[]>([]);
-    const [selectedFields, setSelectedFields] = useState<string[]>([]); // State to manage displayed fields
+    const [selectedGroup, setSelectedGroup] = useState<string>("all");
+    const [selectedFields, setSelectedFields] = useState<string[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [groupToDownload, setGroupToDownload] = useState<string | null>(null); // Track the group for download
 
-    // Define field groups for easy management
+    const groupLabels = {
+        all: Label.show.showAll,
+        isAccepted: Label.show.showAccpeted,
+        emails: Label.show.showEmails,
+        contacts: Label.show.showContacts,
+        shirts: Label.show.showShirtSizes,
+    };
+
     const fieldGroups: { [key: string]: string[] } = {
         all: [
             "name", "email", "level", "committeNotes", "members", "hudsonValley", "summary", "genre", 
@@ -40,13 +51,37 @@ export default function Records() {
         fetchRecords();
     }, []);
 
+    useEffect(() => {
+        setSelectedFields(fieldGroups["all"]);
+    }, []);
+
     if (records.length === 0) {
         return <p>{Label.actions.loading}</p>;
     }
 
     function handleFieldGroup(group: string) {
-        setSelectedFields(fieldGroups[group]); // Update fields to display
+        setSelectedFields(fieldGroups[group]);
+        setSelectedGroup(group);
     }
+
+    // Handle the button click to trigger the download confirmation
+    function handleDownloadButtonClick(group: string) {
+        setGroupToDownload(group);
+        setIsModalOpen(true);
+    }
+
+    // Proceed with the file download
+    const handleConfirmDownload = () => {
+        if (groupToDownload) {
+            handleDownloadTextFile(groupToDownload);
+        }
+        setIsModalOpen(false);
+    };
+
+    // Cancel the download
+    const handleCancelDownload = () => {
+        setIsModalOpen(false);
+    };
 
     const handleDownloadTextFile = (group: string) => {
         const subject = `Records - ${group}`;
@@ -65,40 +100,33 @@ export default function Records() {
             }).join("\n");
         }).join("\n\n");
 
-        // Create a Blob with the email body and trigger a download
         const blob = new Blob([emailBody], { type: "text/plain" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = `${subject}.txt`; // Name of the downloaded file
+        link.download = `${subject}.txt`;
         link.click();
     };
-    
-
 
     return (
         <section className="records-container">
             <h3>{Label.show.allRecords}</h3>
             <div className="records-header">
-                <div className="record-header-button-container">
-                    <button className="records-show-button" onClick={() => handleFieldGroup("all")}>{Label.show.showAll}</button>
-                    <button className="records-data-button" onClick={() => handleDownloadTextFile("all")}>{Label.show.allRecords} Data</button>
-                </div>
-                <div className="record-header-button-container">
-                    <button className="records-show-button" onClick={() => handleFieldGroup("isAccepted")}>{Label.show.showAccpeted}</button>
-                    <button className="records-data-button" onClick={() => handleDownloadTextFile("isAccepted")}>{Label.record.isAccepted} Data</button>
-                </div>
-                <div className="record-header-button-container">
-                    <button className="records-show-button" onClick={() => handleFieldGroup("emails")}>{Label.show.showEmails}</button>
-                    <button className="records-data-button" onClick={() => handleDownloadTextFile("emails")}>{Label.record.email} Data</button>
-                </div>
-                <div className="record-header-button-container">
-                    <button className="records-show-button" onClick={() => handleFieldGroup("contacts")}>{Label.show.showContacts}</button>
-                    <button className="records-data-button" onClick={() => handleDownloadTextFile("contacts")}>{Label.record.contacts} Data</button>
-                </div>
-                <div className="record-header-button-container">
-                    <button className="records-show-button" onClick={() => handleFieldGroup("shirts")}>{Label.show.showShirtSizes}</button>
-                    <button className="records-data-button" onClick={() => handleDownloadTextFile("shirts")}>{Label.record.shirts} Data</button>
-                </div>
+                {Object.keys(fieldGroups).map((group) => (
+                    <div key={group} className="record-header-button-container">
+                        <button
+                            className={`records-show-button ${selectedGroup === group ? 'selected' : ''}`}
+                            onClick={() => handleFieldGroup(group)}
+                        >
+                            {groupLabels[group as keyof typeof groupLabels]}
+                        </button>
+                        <button
+                            className="records-data-button"
+                            onClick={() => handleDownloadButtonClick(group)}
+                        >
+                            {Label.show[`${group}Records` as keyof typeof Label.show] ?? `${group} Data`}
+                        </button>
+                    </div>
+                ))}
             </div>
             {records.map((record) => (
                 <div key={record._id} className="record-detail-container container-shadow all-record-container">
@@ -123,6 +151,13 @@ export default function Records() {
                     })}
                 </div>
             ))}
+            {/* Confirmation Modal */}
+            <ConfirmationModal
+                isOpen={isModalOpen}
+                message="Are you sure you want to download this file?"
+                onConfirm={handleConfirmDownload}
+                onCancel={handleCancelDownload}
+            />
         </section>
     );
 }

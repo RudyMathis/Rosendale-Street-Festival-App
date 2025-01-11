@@ -3,7 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import FormInput from "./helper/FormInput";
 import { useRoleContext } from "./context/RoleContext";
 import { useUserContext } from "./context/UserContext";
-
+import Login from "./Login";
+import LoginReminder from "./helper/LoginReminder";
 
 const formSections = [
   {
@@ -50,7 +51,7 @@ const formSections = [
 
 export default function Record() {
 
-  const { canViewActions } = useRoleContext();
+  const { canViewContent,canViewActions } = useRoleContext();
   const { currentUser } = useUserContext();
   const [form, setForm] = useState({
     name: "", 
@@ -129,45 +130,54 @@ export default function Record() {
   };
 
   return (
-    <section className="create-record-container container-shadow">
-      <h3>{isNew ? "Create" : "Update"} Performer/Band</h3>
-      <form className="record-form" onSubmit={onSubmit}>
-        {formSections.map(({ title, fields }) => (
-          title === "Approval" ? (
-            canViewActions && (
-              <article key={title} className="create-record-form-section-approval">
-                {fields.map(({ name, ...props }) => (
-                  <FormInput
-                    key={name}
-                    name={name}
-                    value={form[name as keyof typeof form] ?? ""}
-                    onChange={(e) =>
-                      updateForm({ [name]: e.target instanceof HTMLInputElement && e.target.type === "checkbox" ? e.target.checked : e.target.value })
-                    }
-                    {...props}
-                  />
-                ))}
-              </article>
-            )
-          ) : (
-            <article key={title} className="create-record-form-section">
-              <h2 className="create-record-form-section-title">{title}</h2>
-              {fields.map(({ name, ...props }) => (
-                <FormInput
-                  key={name}
-                  name={name}
-                  value={form[name as keyof typeof form] ?? ""}
-                  onChange={(e) =>
-                    updateForm({ [name]: e.target instanceof HTMLInputElement && e.target.type === "checkbox" ? e.target.checked : e.target.value })
-                  }
-                  {...props}
-                />
-              ))}
-            </article>
-          )
-        ))}
-        <input type="submit" value="Save Performer/Band Record" />
-      </form>
-    </section>
+    <>
+      {canViewContent ? 
+        <section className="create-record-container container-shadow">
+          <h3>{isNew ? "Create" : "Update"} Performer/Band</h3>
+          <form className="record-form" onSubmit={onSubmit}>
+            {formSections.map(({ title, fields }) => (
+              title === "Approval" ? (
+                canViewActions && (
+                  <article key={title} className="create-record-form-section-approval">
+                    {fields.map(({ name, ...props }) => (
+                      <FormInput
+                        key={name}
+                        name={name}
+                        value={form[name as keyof typeof form] ?? ""}
+                        onChange={(e) =>
+                          updateForm({ [name]: e.target instanceof HTMLInputElement && e.target.type === "checkbox" ? e.target.checked : e.target.value })
+                        }
+                        {...props}
+                      />
+                    ))}
+                  </article>
+                )
+              ) : (
+                <article key={title} className="create-record-form-section">
+                  <h2 className="create-record-form-section-title">{title}</h2>
+                  {fields.map(({ name, ...props }) => (
+                    <FormInput
+                      key={name}
+                      name={name}
+                      value={form[name as keyof typeof form] ?? ""}
+                      onChange={(e) =>
+                        updateForm({ [name]: e.target instanceof HTMLInputElement && e.target.type === "checkbox" ? e.target.checked : e.target.value })
+                      }
+                      {...props}
+                    />
+                  ))}
+                </article>
+              )
+            ))}
+            <input type="submit" value="Save Performer/Band Record" />
+          </form>
+        </section>
+      : 
+        <>
+          <LoginReminder />
+          <Login />
+        </>}
+    </>
   );
+
 }
