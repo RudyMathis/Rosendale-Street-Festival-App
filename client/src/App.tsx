@@ -20,6 +20,4 @@ const App: React.FC = () => {
 
 export default App;
 
-// Error Handling 
-// transfer data from google sheets
-// display total data page, ie total type of shirts, total memebers etc --
+// Only none guests can see Outlet

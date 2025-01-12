@@ -5,39 +5,19 @@ import { ObjectId } from "mongodb";
 const router = express.Router();
 
 // Utility to map request body to the form fields
-const getFormBodyData = (body) => ({
-  name: body.name,
-  email: body.email,
-  level: body.level,
-  committeNotes: body.committeNotes,
-  members: body.members,
-  hudsonValley: body.hudsonValley,
-  summary: body.summary,
-  genre: body.genre,
-  link: body.link,
-  dates: body.dates,
-  anotherGig: body.anotherGig,
-  gigIfYes: body.gigIfYes,
-  shirtSizeXS: body.shirtSizeXS,
-  shirtSizeS: body.shirtSizeS,
-  shirtSizeM: body.shirtSizeM,
-  shirtSizeL: body.shirtSizeL,
-  shirtSizeXL: body.shirtSizeXL,
-  shirtSizeXXL: body.shirtSizeXXL,
-  primaryContact: body.primaryContact,
-  primaryEmail: body.primaryEmail,
-  primaryPhone: body.primaryPhone,
-  primaryAddress: body.primaryAddress,
-  secondaryContact: body.secondaryContact,
-  secondaryEmail: body.secondaryEmail,
-  secondaryPhone: body.secondaryPhone,
-  isNewToStreeFest: body.isNewToStreeFest,
-  isWillingToFundraise: body.isWillingToFundraise,
-  anythingElse: body.anythingElse,
-  isAccepted: body.isAccepted,
-  nameOfUser: body.nameOfUser,
-  editedTime: body.editedTime,
-});
+const getFormBodyData = async (body) => {
+  // Fetch the labels from the labels endpoint
+  const labelsResponse = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/labels`)
+  const labels = await labelsResponse.json();
+  const fieldMappings = labels.record.fields;
+  const formData = {};
+
+  Object.keys(fieldMappings).forEach((key) => {
+      formData[key] = body[key];
+  });
+
+  return formData;
+};
 
 // Get all records
 router.get("/", async (req, res) => {
@@ -69,7 +49,7 @@ router.get("/:id", async (req, res) => {
 // Create a new record
 router.post("/", async (req, res) => {
   try {
-    const newDocument = getFormBodyData(req.body);
+    const newDocument = await getFormBodyData(req.body);
     const collection = await db.collection("records");
     const result = await collection.insertOne(newDocument);
     res.status(201).send(result);

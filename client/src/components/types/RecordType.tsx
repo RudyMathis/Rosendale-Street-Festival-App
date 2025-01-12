@@ -1,4 +1,5 @@
 export type RecordType = {
+    [key: string]: unknown;
     _id: string;
     name: string;
     email: string;

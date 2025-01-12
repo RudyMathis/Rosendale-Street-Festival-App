@@ -76,8 +76,6 @@ const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter([
   },
 ]);
 
-// Add routes to details based on acepted, hudson valley, levels, memebers 1-3, 4-7, 8+
-
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <RouterProvider router={router} />

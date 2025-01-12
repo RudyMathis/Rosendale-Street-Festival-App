@@ -1,36 +1,27 @@
+
 import { useEffect, useState } from "react";
 import { RecordType } from "./types/RecordType";
 import LabelDetail from "./helper/LabelDetail";
 import Label from "../labels/formLabels.json";
 import ConfirmationModal from "./ComfirmationModal";
+import FieldGroups from "./helper/FieldGroups";
+import FilterButton from "./helper/FilterButton";
 
 export default function Records() {
     const [records, setRecords] = useState<RecordType[]>([]);
+    const [filteredRecords, setFilteredRecords] = useState<RecordType[]>([]);
     const [selectedGroup, setSelectedGroup] = useState<string>("all");
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [groupToDownload, setGroupToDownload] = useState<string | null>(null); // Track the group for download
+    const [groupToDownload, setGroupToDownload] = useState<string | null>(null);
 
     const groupLabels = {
         all: Label.show.showAll,
         isAccepted: Label.show.showAccpeted,
         emails: Label.show.showEmails,
         contacts: Label.show.showContacts,
+        levels: Label.show.showLevels,
         shirts: Label.show.showShirtSizes,
-    };
-
-    const fieldGroups: { [key: string]: string[] } = {
-        all: [
-            "name", "email", "level", "committeNotes", "members", "hudsonValley", "summary", "genre", 
-            "link", "dates", "anotherGig", "gigIfYes", "shirtSizeXS", "shirtSizeS", "shirtSizeM", 
-            "shirtSizeL", "shirtSizeXL", "shirtSizeXXL", "primaryContact", "primaryEmail", "primaryPhone", 
-            "primaryAddress", "secondaryContact", "secondaryEmail", "secondaryPhone", "isNewToStreeFest", 
-            "isWillingToFundraise", "anythingElse", "isAccepted", "nameOfUser", "editedTime"
-        ],
-        isAccepted: ["isAccepted"],
-        emails: ["email", "primaryEmail", "secondaryEmail"],
-        contacts: ["primaryContact", "primaryPhone", "secondaryContact", "secondaryPhone"],
-        shirts: ["shirtSizeXS", "shirtSizeS", "shirtSizeM", "shirtSizeL", "shirtSizeXL", "shirtSizeXXL"],
     };
 
     useEffect(() => {
@@ -44,6 +35,7 @@ export default function Records() {
                 }
                 const data: RecordType[] = await response.json();
                 setRecords(data);
+                setFilteredRecords(data); // Initialize with all records
             } catch (error) {
                 console.error("Error fetching records:", error);
             }
@@ -52,7 +44,7 @@ export default function Records() {
     }, []);
 
     useEffect(() => {
-        setSelectedFields(fieldGroups["all"]);
+        setSelectedFields(FieldGroups["all"]);
     }, []);
 
     if (records.length === 0) {
@@ -60,8 +52,26 @@ export default function Records() {
     }
 
     function handleFieldGroup(group: string) {
-        setSelectedFields(fieldGroups[group]);
+        setSelectedFields(FieldGroups[group]);
         setSelectedGroup(group);
+        if (group !== "levels") {
+            setFilteredRecords(records); // Reset to all records for other groups
+        }
+
+        if (group != "isAccepted") {
+            const filtered = records.filter((record) => record.isAccepted);
+            setFilteredRecords(filtered);
+        }
+    }
+
+    function handleLevelFilter(level: string) {
+        const filtered = records.filter((record) => record.level.toLowerCase() === level.toLowerCase());
+        setFilteredRecords(filtered);
+    }
+
+    function handleIsAcceptedFilter(isAccepted: boolean) {
+        const filtered = records.filter((record) => record.isAccepted === isAccepted);
+        setFilteredRecords(filtered);
     }
 
     // Handle the button click to trigger the download confirmation
@@ -70,7 +80,6 @@ export default function Records() {
         setIsModalOpen(true);
     }
 
-    // Proceed with the file download
     const handleConfirmDownload = () => {
         if (groupToDownload) {
             handleDownloadTextFile(groupToDownload);
@@ -78,14 +87,13 @@ export default function Records() {
         setIsModalOpen(false);
     };
 
-    // Cancel the download
     const handleCancelDownload = () => {
         setIsModalOpen(false);
     };
 
     const handleDownloadTextFile = (group: string) => {
         const subject = `Records - ${group}`;
-        const emailBody = fieldGroups[group].map(field => {
+        const emailBody = FieldGroups[group].map(field => {
             return records.map(record => {
                 const value = record[field as keyof RecordType];
                 return `${record.name} - ${Label.record[field as keyof typeof Label.record]}: ${
@@ -111,7 +119,7 @@ export default function Records() {
         <section className="records-container">
             <h3>{Label.show.allRecords}</h3>
             <div className="records-header">
-                {Object.keys(fieldGroups).map((group) => (
+                {Object.keys(FieldGroups).map((group) => (
                     <div key={group} className="record-header-button-container">
                         <button
                             className={`records-show-button ${selectedGroup === group ? 'selected' : ''}`}
@@ -128,7 +136,40 @@ export default function Records() {
                     </div>
                 ))}
             </div>
-            {records.map((record) => (
+            {selectedGroup === "levels" && (
+                <div className="filter-buttons-container">
+                    <FilterButton
+                        name="Low"
+                        field="low"
+                        onClick={() => handleLevelFilter("low")}
+                    />
+                    <FilterButton
+                        name="Medium"
+                        field="medium"
+                        onClick={() => handleLevelFilter("medium")}
+                    />
+                    <FilterButton
+                        name="High"
+                        field="high"
+                        onClick={() => handleLevelFilter("high")}
+                    />
+                </div>
+            )}
+            {selectedGroup === "isAccepted" ? (
+                <div className="filter-buttons-container">
+                    <FilterButton
+                        name="Accepted"
+                        field="isAccepted"
+                        onClick={() => handleIsAcceptedFilter(true)}
+                    />
+                    <FilterButton
+                        name="Not Accepted"
+                        field="isAccepted"
+                        onClick={() => handleIsAcceptedFilter(false)}
+                    />
+                </div>
+            ) : null}
+            {filteredRecords.map((record) => (
                 <div key={record._id} className="record-detail-container container-shadow all-record-container">
                     <h4>{record.name}</h4>
                     {selectedFields.map((field) => {
@@ -151,7 +192,6 @@ export default function Records() {
                     })}
                 </div>
             ))}
-            {/* Confirmation Modal */}
             <ConfirmationModal
                 isOpen={isModalOpen}
                 message="Are you sure you want to download this file?"
