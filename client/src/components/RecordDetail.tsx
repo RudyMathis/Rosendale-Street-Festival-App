@@ -9,7 +9,7 @@ export default function RecordDetail() {
     const { id } = useParams<{ id: string }>();
     const [record, setRecord] = useState<RecordType | null>(null);
     const { canViewEditedDetail } = useRoleContext();
-    const labels = useLabels(); // Fetch labels
+    const labels = useLabels();
 
     useEffect(() => {
         async function fetchRecord() {
@@ -32,7 +32,7 @@ export default function RecordDetail() {
     }, [id]);
 
     if (!labels) {
-        return <p>Failed to Loaad Labels...</p>;
+        return <p>Failed to Load Labels...</p>;
     }
 
     if (!record) {
@@ -81,7 +81,7 @@ export default function RecordDetail() {
                     </>
                 )}
             </div>
-            <button onClick={handleSendEmail}>{labels.actions.sendEmail || "Send Data as Email"}</button>
+            <button onClick={handleSendEmail}>{labels.actions.sendEmail}</button>
         </>
     );
 }

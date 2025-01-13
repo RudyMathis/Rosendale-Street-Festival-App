@@ -9,9 +9,11 @@ type TableButtonProps = {
 };
 
 const TableButton = ({ label, onClick, sortConfig, columnKey }: TableButtonProps) => (
-    <button onClick={onClick} className="table-header-button">
-        {label} {sortConfig?.key === columnKey ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
-    </button>
+    <th>
+        <button onClick={onClick} className="table-header-button">
+            {label} {sortConfig?.key === columnKey ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}
+        </button>
+    </th>
 );
 
 export default TableButton;

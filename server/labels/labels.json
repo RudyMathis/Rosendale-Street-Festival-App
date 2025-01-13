@@ -31,6 +31,7 @@
             "anythingElse": "Anything Else",
             "isAccepted": "Is Accepted",
             "nameOfUser": "Added by",
+            "approval": "Approval",
             "editedTime": "Added when"
         }
     },
@@ -42,6 +43,14 @@
         "showAccpeted": "Show Accepted",
         "showContacts": "Show Contacts",
         "showShirtSizes": "Show Shirt Sizes"
+    },
+    "download": {
+        "downloadAll": "Download All",
+        "downloadEmails": "Download Emails",
+        "downloadLevels": "Download Levels",
+        "downloadAccpeted": "Download Accepted",
+        "downloadContacts": "Download Contacts",
+        "downloadShirtSizes": "Download Shirt Sizes"
     },
     "actions": {
         "action": "Action",

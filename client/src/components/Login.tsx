@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "./context/UserContext";
-import Label from "../labels/formLabels.json";
+import useLabels from "./hooks/UseLabels";
 
 // Hardcoded users with roles and passwords
 const hardcodedUsers = [
@@ -16,6 +16,7 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const labels = useLabels();
 
     const handleLogin = () => {
         const user = hardcodedUsers.find(
@@ -31,9 +32,13 @@ const Login: React.FC = () => {
         navigate("/"); 
     };
 
+    if (!labels) {
+        // make error component to contact admin
+        return <p>Failed to Load Labels...</p>;
+    }
     return (
         <div className="container-shadow">
-            <h2>{Label.login.login}</h2>
+            <h2>{labels.login.login}</h2>
             <form className="login-form"
                 onSubmit={(e) => {
                     e.preventDefault();
@@ -42,7 +47,7 @@ const Login: React.FC = () => {
             >
                 <div className="login-container">
                     <label className="login-label">
-                        {Label.login.name}: 
+                        {labels.login.name}: 
                         <input
                             type="text"
                             value={name}
@@ -51,7 +56,7 @@ const Login: React.FC = () => {
                         />
                     </label>
                     <label className="login-label">
-                        {Label.login.password}:
+                        {labels.login.password}:
                         <input
                             type="password"
                             value={password}
@@ -61,7 +66,7 @@ const Login: React.FC = () => {
                     </label>
                     {error && <p style={{ color: "red" }}>{error}</p>}
                 </div>
-                <button className="submit-button" type="submit">{Label.actions.submit}</button>
+                <button className="submit-button" type="submit">{labels.actions.submit}</button>
                 <div style={{ marginTop: "20px"}}>
                     <span>for testing purposes</span>
                     <hr />

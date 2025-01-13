@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { RecordType } from "./types/RecordType";
 import LabelDetail from "./helper/LabelDetail";
-import Label from "../labels/formLabels.json";
+import useLabels from "./hooks/UseLabels";
 import ConfirmationModal from "./ComfirmationModal";
 import FieldGroups from "./helper/FieldGroups";
 import FilterButton from "./helper/FilterButton";
@@ -14,15 +14,7 @@ export default function Records() {
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [groupToDownload, setGroupToDownload] = useState<string | null>(null);
-
-    const groupLabels = {
-        all: Label.show.showAll,
-        isAccepted: Label.show.showAccpeted,
-        emails: Label.show.showEmails,
-        contacts: Label.show.showContacts,
-        levels: Label.show.showLevels,
-        shirts: Label.show.showShirtSizes,
-    };
+    const labels = useLabels();
 
     useEffect(() => {
         async function fetchRecords() {
@@ -47,9 +39,31 @@ export default function Records() {
         setSelectedFields(FieldGroups["all"]);
     }, []);
 
-    if (records.length === 0) {
-        return <p>{Label.actions.loading}</p>;
+    if (!labels) {
+        return <p>Failed to Load Labels...</p>;
     }
+
+    if (records.length === 0) {
+        return <p>{labels.actions.loading}</p>;
+    }
+
+    const groupLabels = {
+        all: labels.show.showAll,
+        isAccepted: labels.show.showAccpeted,
+        emails: labels.show.showEmails,
+        contacts: labels.show.showContacts,
+        levels: labels.show.showLevels,
+        shirts: labels.show.showShirtSizes,
+    };
+
+    const downloadLabels = {
+        all: labels.download.downloadAll,
+        isAccepted: labels.download.downloadAccpeted,
+        emails: labels.download.downloadEmails,
+        contacts: labels.download.downloadContacts,
+        levels: labels.download.downloadLevels,
+        shirts: labels.download.downloadShirtSizes,
+    };
 
     function handleFieldGroup(group: string) {
         setSelectedFields(FieldGroups[group]);
@@ -96,7 +110,7 @@ export default function Records() {
         const emailBody = FieldGroups[group].map(field => {
             return records.map(record => {
                 const value = record[field as keyof RecordType];
-                return `${record.name} - ${Label.record[field as keyof typeof Label.record]}: ${
+                return `${record.name} - ${labels.record[field as keyof typeof labels.record]}: ${
                     typeof value === "boolean"
                         ? value ? "Yes" : "No"
                         : field.includes("Email")
@@ -117,7 +131,7 @@ export default function Records() {
 
     return (
         <section className="records-container">
-            <h3>{Label.show.allRecords}</h3>
+            <h3>{labels.show.allRecords}</h3>
             <div className="records-header">
                 {Object.keys(FieldGroups).map((group) => (
                     <div key={group} className="record-header-button-container">
@@ -131,7 +145,7 @@ export default function Records() {
                             className="records-data-button"
                             onClick={() => handleDownloadButtonClick(group)}
                         >
-                            {Label.show[`${group}Records` as keyof typeof Label.show] ?? `${group} Data`}
+                            {downloadLabels[group as keyof typeof downloadLabels]}
                         </button>
                     </div>
                 ))}
@@ -177,15 +191,17 @@ export default function Records() {
                         return (
                             <LabelDetail
                                 key={field}
-                                label={Label.record[field as keyof typeof Label.record]}
+                                label={labels.record.fields[field as keyof typeof labels.record.fields]}
                                 value={
-                                    typeof value === "boolean"
-                                        ? value ? "Yes" : "No"
-                                        : field.includes("Email")
-                                        ? <a href={`mailto:${value || ""}`}>{value || "N/A"}</a>
-                                        : field.includes("link")
-                                        ? <a ref={record.link}></a>
-                                        : value
+                                    value === null || value === undefined ? "N/A" : (
+                                        typeof value === "boolean"
+                                            ? value ? "Yes" : "No"
+                                            : field.includes("Email")
+                                            ? <a href={`mailto:${value || ""}`}>{value as React.ReactNode}</a>
+                                            : field.includes("link")
+                                            ? <a ref={record.link}>{record.link}</a>
+                                            : value as React.ReactNode
+                                    )
                                 }
                             />
                         );

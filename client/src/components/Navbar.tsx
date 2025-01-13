@@ -2,17 +2,23 @@ import { NavLink } from "react-router-dom";
 import { useUserContext } from "./context/UserContext";
 import { useRoleContext } from "./context/RoleContext";
 import { useNavigate } from "react-router-dom";
-import Label from "../labels/formLabels.json";
+import useLabels from "./hooks/UseLabels";
 
 const Navbar: React.FC = () => {
     const { currentUser, setCurrentUser, isGuest } = useUserContext();
     const { differentDisplay } = useRoleContext();
     const navigate = useNavigate();
+    const labels = useLabels();
 
 
     function handleLogOut() {
         setCurrentUser({ name: "Guest", role: "guest", password: "" });
         navigate("/");
+    }
+
+    if (!labels) {
+        // make error component to contact admin
+        return <p>Failed to Load Labels...</p>;
     }
 
     return (
@@ -29,11 +35,11 @@ const Navbar: React.FC = () => {
                         <div>{currentUser.name}</div>
                         <div>({currentUser.role})</div>
                     </div>
-                    <button className="logout-button" onClick={handleLogOut}>{Label.login.logout}</button>
+                    <button className="logout-button" onClick={handleLogOut}>{labels.login.logout}</button>
                 </div>
             ) : (
                 <div className="nav-login-container">
-                    <NavLink to="/login">{Label.login.login}</NavLink>
+                    <NavLink to="/login">{labels.login.login}</NavLink>
                 </div>
             )}
         </section>
