@@ -1,14 +1,18 @@
 
 import { useEffect, useState } from "react";
-import { RecordType } from "./types/RecordType";
-import LabelDetail from "./helper/LabelDetail";
-import useLabels from "./hooks/UseLabels";
+import { RecordType } from "../types/RecordType";
+import LabelDetail from "../UI/LabelDetail";
+import useLabels from "../hooks/UseLabels";
+import useRecords from "../hooks/UseRecords";
 import ConfirmationModal from "./ComfirmationModal";
-import FieldGroups from "./helper/FieldGroups";
-import FilterButton from "./helper/FilterButton";
+import FieldGroups from "../UI/FieldGroups";
+import FilterButton from "../UI/FilterButton";
+import Header from "./RecordsHeader";
+import ErrorMessage from "../UI/ErrorMessage";
+import "../styles/Records.css"
 
 export default function Records() {
-    const [records, setRecords] = useState<RecordType[]>([]);
+    const { records,  } = useRecords();
     const [filteredRecords, setFilteredRecords] = useState<RecordType[]>([]);
     const [selectedGroup, setSelectedGroup] = useState<string>("all");
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
@@ -17,30 +21,21 @@ export default function Records() {
     const labels = useLabels();
 
     useEffect(() => {
-        async function fetchRecords() {
-            try {
-                const response = await fetch(
-                    `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/`
-                );
-                if (!response.ok) {
-                    throw new Error("Failed to fetch records");
-                }
-                const data: RecordType[] = await response.json();
-                setRecords(data);
-                setFilteredRecords(data); // Initialize with all records
-            } catch (error) {
-                console.error("Error fetching records:", error);
-            }
+        if (records) {
+            setFilteredRecords(records); // Initialize with all records
         }
-        fetchRecords();
-    }, []);
+    }, [records]);
 
     useEffect(() => {
         setSelectedFields(FieldGroups["all"]);
     }, []);
 
+    if (!records) {
+        return <ErrorMessage />;
+    }
+
     if (!labels) {
-        return <p>Failed to Load Labels...</p>;
+        return <ErrorMessage />;
     }
 
     if (records.length === 0) {
@@ -68,22 +63,35 @@ export default function Records() {
     function handleFieldGroup(group: string) {
         setSelectedFields(FieldGroups[group]);
         setSelectedGroup(group);
-        if (group !== "levels") {
-            setFilteredRecords(records); // Reset to all records for other groups
-        }
 
-        if (group != "isAccepted") {
+        if (!records) {
+            return <ErrorMessage />;
+        }
+    
+        if (group === "isAccepted") {
             const filtered = records.filter((record) => record.isAccepted);
             setFilteredRecords(filtered);
+        } else if (group === "levels") {
+            // Levels filtering will be handled separately
+            setFilteredRecords(records);
+        } else {
+            setFilteredRecords(records); // Reset to all records for other groups
         }
     }
+    
 
     function handleLevelFilter(level: string) {
+        if (!records) {
+            return <ErrorMessage />;
+        }
         const filtered = records.filter((record) => record.level.toLowerCase() === level.toLowerCase());
         setFilteredRecords(filtered);
     }
 
     function handleIsAcceptedFilter(isAccepted: boolean) {
+        if (!records) {
+            return <ErrorMessage />;
+        }
         const filtered = records.filter((record) => record.isAccepted === isAccepted);
         setFilteredRecords(filtered);
     }
@@ -132,24 +140,14 @@ export default function Records() {
     return (
         <section className="records-container">
             <h3>{labels.show.allRecords}</h3>
-            <div className="records-header">
-                {Object.keys(FieldGroups).map((group) => (
-                    <div key={group} className="record-header-button-container">
-                        <button
-                            className={`records-show-button ${selectedGroup === group ? 'selected' : ''}`}
-                            onClick={() => handleFieldGroup(group)}
-                        >
-                            {groupLabels[group as keyof typeof groupLabels]}
-                        </button>
-                        <button
-                            className="records-data-button"
-                            onClick={() => handleDownloadButtonClick(group)}
-                        >
-                            {downloadLabels[group as keyof typeof downloadLabels]}
-                        </button>
-                    </div>
-                ))}
-            </div>
+            <Header
+                labels={labels}
+                selectedGroup={selectedGroup}
+                onFieldGroupChange={handleFieldGroup}
+                onDownloadButtonClick={handleDownloadButtonClick}
+                groupLabels={groupLabels}
+                downloadLabels={downloadLabels}
+            />
             {selectedGroup === "levels" && (
                 <div className="filter-buttons-container">
                     <FilterButton
@@ -169,7 +167,7 @@ export default function Records() {
                     />
                 </div>
             )}
-            {selectedGroup === "isAccepted" ? (
+            {selectedGroup === "isAccepted" && (
                 <div className="filter-buttons-container">
                     <FilterButton
                         name="Accepted"
@@ -182,30 +180,17 @@ export default function Records() {
                         onClick={() => handleIsAcceptedFilter(false)}
                     />
                 </div>
-            ) : null}
+            )}
             {filteredRecords.map((record) => (
                 <div key={record._id} className="record-detail-container container-shadow all-record-container">
                     <h4>{record.name}</h4>
-                    {selectedFields.map((field) => {
-                        const value = record[field as keyof RecordType];
-                        return (
-                            <LabelDetail
-                                key={field}
-                                label={labels.record.fields[field as keyof typeof labels.record.fields]}
-                                value={
-                                    value === null || value === undefined ? "N/A" : (
-                                        typeof value === "boolean"
-                                            ? value ? "Yes" : "No"
-                                            : field.includes("Email")
-                                            ? <a href={`mailto:${value || ""}`}>{value as React.ReactNode}</a>
-                                            : field.includes("link")
-                                            ? <a ref={record.link}>{record.link}</a>
-                                            : value as React.ReactNode
-                                    )
-                                }
+                    {selectedFields.map((field) => (
+                        <LabelDetail
+                            key={field}
+                            label={labels.record.fields[field]}
+                            value={String(record[field as keyof RecordType]) || "N/A"}
                             />
-                        );
-                    })}
+                    ))}
                 </div>
             ))}
             <ConfirmationModal

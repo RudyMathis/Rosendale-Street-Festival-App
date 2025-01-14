@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserContext } from "./context/UserContext";
-import useLabels from "./hooks/UseLabels";
+import { useUserContext } from "../context/UserContext";
+import useLabels from "../hooks/UseLabels";
+import ErrorMessage from "../UI/ErrorMessage";
+import "../styles/Login.css";
 
 // Hardcoded users with roles and passwords
 const hardcodedUsers = [
@@ -33,8 +35,7 @@ const Login: React.FC = () => {
     };
 
     if (!labels) {
-        // make error component to contact admin
-        return <p>Failed to Load Labels...</p>;
+        return <ErrorMessage />;
     }
     return (
         <div className="container-shadow">

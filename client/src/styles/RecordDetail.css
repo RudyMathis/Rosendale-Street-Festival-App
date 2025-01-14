@@ -1,0 +1,16 @@
+
+.record-detail-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-bottom: 1em;
+}
+
+.record-detail-container h3{
+    margin-top: 0;
+}
+
+.record-detail-container p{
+    margin: .3rem;
+    text-align: left;
+}

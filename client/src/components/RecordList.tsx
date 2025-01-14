@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useRoleContext } from "./context/RoleContext";
+import { useRoleContext } from "../context/RoleContext";
 import ConfirmationModal from "./ComfirmationModal";
-import useLabels from "./hooks/UseLabels";
-import TableButton from "./helper/TableButton";
-
+import useLabels from "../hooks/UseLabels";
+import useRecords from "../hooks/UseRecords";
+import TableButton from "../UI/TableButton";
+import ErrorMessage from '../UI/ErrorMessage';
+import "../styles/RecordList.css";
 type RecordType = {
     _id: string;
     name: string;
     email: string;
-    level: "Low" | "Medium" | "High";
+    level: string;
     members: number;
-    link: string;
+    link: string | null;
     hudsonValley: boolean;
     isAccepted: boolean;
     nameOfUser: string;
@@ -73,12 +75,12 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
     }
 
     if (!labels) {
-        return <>Failed to Load Labels...</>;
+        return <ErrorMessage />;
     }
     
     return (
         <>
-            <tr className={updateisAccepted ? "approved" : "pending"}>
+            <tr>
                 <td className="record-td-container">
                     <div className="hidden-desktop">{labels.record.fields.name}</div>
                     <Link to={`/record/${record._id}`}>{record.name}</Link>
@@ -89,7 +91,7 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
                         {record.email}
                     </a>
                 </td>
-                <td className="record-td-container">
+                <td className={`record-td-container level-${record.level.toLowerCase()}`}>
                     <div className="hidden-desktop">{labels.record.fields.level}</div>
                     {record.level}
                 </td>
@@ -99,7 +101,7 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
                 </td>
                 <td className="record-td-container">
                     <div className="hidden-desktop">{labels.record.fields.link}</div>
-                    <a href={record.link} target="_blank" rel="noopener noreferrer">
+                    <a ref={record.link} target="_blank" rel="noopener noreferrer">
                         {record.link}
                     </a>
                 </td>
@@ -112,7 +114,7 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
                         onChange={() => {}}
                     />
                 </td>
-                <td className="record-td-container">
+                <td className={`record-td-container ${updateisAccepted ? "approved" : "pending"}`}>
                     <div className="hidden-desktop">{labels.record.fields.isAccepted}</div>
                     <input
                         type="checkbox"
@@ -157,7 +159,7 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
 };
 
 export default function RecordList() {
-    const [records, setRecords] = useState<RecordType[]>([]);
+    const { records, setRecords } = useRecords();
     const navigate = useNavigate();
     const { canViewContent, canViewActions, canViewEditedDetail } = useRoleContext(); // Check permission for the "Action" column
     const [sortConfig, setSortConfig] = useState<{ key: keyof RecordType; direction: "asc" | "desc" }>({
@@ -166,31 +168,23 @@ export default function RecordList() {
     });
     const labels = useLabels();
 
-    useEffect(() => {
-        async function getRecords() {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/`);
-            if (!response.ok) {
-                console.error(`An error occurred: ${response.statusText}`);
-                return;
-            }
-
-            const records: RecordType[] = await response.json();
-            setRecords(records);
-        } catch (error) {
-            console.error("Failed to fetch records:", error);
-        }
-        }
-
-        getRecords();
-    }, []);
+    if (!records) {
+        return <ErrorMessage />;
+    }
 
     async function deleteRecord(id: string) {
         try {
-            await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}`, {
-                method: "DELETE",
-            });
-            setRecords((prevRecords) => prevRecords.filter((el) => el._id !== id));
+            const response = await fetch(
+                `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}`,
+                { method: "DELETE" }
+            );
+
+            if (!response.ok) {
+                throw new Error("Failed to delete the record");
+            }
+
+            // Update the context state
+            setRecords((prevRecords) => prevRecords?.filter((record) => record._id !== id) || null);
         } catch (error) {
             console.error("Failed to delete record:", error);
         }
@@ -202,9 +196,16 @@ export default function RecordList() {
         const rankingMap: Record<string, number> = { Low: 1, Medium: 2, High: 3 };
     
         return [...records].sort((a, b) => {
-
-            const aValue = sortConfig.key === "level" ? rankingMap[a.level] : a[sortConfig.key];
-            const bValue = sortConfig.key === "level" ? rankingMap[b.level] : b[sortConfig.key];
+            let aValue = a[sortConfig.key];
+            let bValue = b[sortConfig.key];
+    
+            if (sortConfig.key === "level") {
+                aValue = rankingMap[a.level];
+                bValue = rankingMap[b.level];
+            } else if (sortConfig.key === "members") {
+                aValue = Number(aValue);
+                bValue = Number(bValue);
+            }
     
             if (typeof aValue === "boolean" && typeof bValue === "boolean") {
                 // Sort boolean values explicitly
@@ -223,7 +224,7 @@ export default function RecordList() {
             if (typeof aValue === "string" && typeof bValue === "string") {
                 const aLower = aValue.toLowerCase();
                 const bLower = bValue.toLowerCase();
-            
+    
                 return sortConfig.direction === "asc"
                     ? aLower.localeCompare(bLower)
                     : bLower.localeCompare(aLower);
@@ -232,16 +233,11 @@ export default function RecordList() {
             if (typeof aValue === "number" && typeof bValue === "number") {
                 return sortConfig.direction === "asc" ? aValue - bValue : bValue - aValue;
             }
-
-            if(sortConfig.key === "members") {
-                const aNumeric = Number(aValue);
-                const bNumeric = Number(bValue);
-                return sortConfig.direction === "asc" ? aNumeric - bNumeric : bNumeric - aNumeric;
-            }
-            
+    
             return 0; // Default for other types
         });
     })();
+    
     
     
     const requestSort = (key: keyof RecordType) => {
@@ -255,7 +251,7 @@ export default function RecordList() {
     }
 
     if (!labels) {
-        return <>Failed to Load Labels...</>;
+        return <ErrorMessage />;
     }
     
     return (

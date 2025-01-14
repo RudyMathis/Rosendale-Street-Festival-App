@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { useUserContext } from "./UserContext";
+import { useUserContext } from "../context/UserContext";
 
 // Define all possible permissions
 type RoleContextType = {

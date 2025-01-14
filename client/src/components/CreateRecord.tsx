@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import FormInput from "./helper/FormInput";
-import { useRoleContext } from "./context/RoleContext";
-import { useUserContext } from "./context/UserContext";
+import FormInput from "../UI/FormInput";
+import { useRoleContext } from "../context/RoleContext";
+import { useUserContext } from "../context/UserContext";
 import Login from "./Login";
-import LoginReminder from "./helper/LoginReminder";
-import useLabels from "./hooks/UseLabels";
+import LoginReminder from "../UI/LoginReminder";
+import useLabels from "../hooks/UseLabels";
+import ErrorMessage from "../UI/ErrorMessage";
+import "../styles/CreateRecord.css";
 
 export default function Record() {
 
@@ -75,8 +77,7 @@ export default function Record() {
 
   const labels = useLabels();
   if (!labels) {
-    // make error component to contact admin
-    return <p>Failed to Load Labels...</p>;
+    return <ErrorMessage />;
   }
 
   const formSections = [

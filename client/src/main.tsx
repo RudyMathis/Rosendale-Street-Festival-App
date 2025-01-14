@@ -5,7 +5,7 @@ import {
   RouterProvider
 } from "react-router-dom";
 import App from "./App";
-import Record from "./components/Record";
+import CreateRecord from "./components/CreateRecord";
 import RecordDetail from "./components/RecordDetail";
 import Records from "./components/Records";
 import RecordList from "./components/RecordList";
@@ -30,7 +30,7 @@ const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter([
     children: [
       {
         path: "/edit/:id",
-        element: <Record />,
+        element: <CreateRecord />,
       },
     ],
   },
@@ -60,7 +60,7 @@ const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter([
     children: [
       {
         path: "/create",
-        element: <Record />,
+        element: <CreateRecord />,
       },
     ],
   },

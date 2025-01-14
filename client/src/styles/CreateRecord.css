@@ -1,0 +1,94 @@
+.create-record-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.record-form, .login-form {
+    width: 100%;
+    text-align: left;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.create-record-form-section {
+    padding: 1em;
+    border: 1px solid var(--border);
+    margin: 1em 0;
+    border-radius: var(--radius);
+}
+
+.create-record-form-section-title {
+    margin-top: 0;
+}
+
+.form-input-container {
+    margin-bottom: .5em;
+}
+
+.form-input-container input[type="text"],
+.form-input-container input[type="email"],
+.form-input-container input[type="tel"] {
+    padding: 0.5rem;
+    margin-top: .5rem;
+}
+
+.form-radio-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: .5em;
+
+}
+
+.form-input-container label + input {
+    vertical-align: super;
+}
+
+textarea {
+    padding: 0.5rem;
+    margin-top: .5rem;
+}
+
+.form-input-container input[type="number"] {
+    padding: 0.5rem;
+    line-height: 1.5rem;
+    max-width: 50px;
+    margin-top: .5rem;
+}
+
+.form-input-container input[type="checkbox"],
+.form-input-container input[type="radio"] {
+    margin: .5rem 1rem 0 0;
+    appearance: none; /* Resets browser styles */
+    -webkit-appearance: none; /* For WebKit browsers */
+    width: 25px;
+    height: 25px;
+    border: 1px solid var(--border);
+    /* border-radius: 4px; */
+    background-color: var(--card);
+    cursor: pointer;
+}
+
+.form-input-container input[type="checkbox"]:checked,
+.form-input-container input[type="radio"]:checked {
+    background-color: var(--primary);
+    border: 1px solid var(--primary); 
+}
+
+@media only screen and (max-width: 600px) {
+    .form-input-container {
+    font-size: 1.1rem;
+    margin: 8px 0;
+    }
+
+    .form-input-container input[type="text"],
+    .form-input-container input[type="email"],
+    .form-input-container input[type="tel"],
+    textarea {
+    margin-top: 0;
+    }
+}

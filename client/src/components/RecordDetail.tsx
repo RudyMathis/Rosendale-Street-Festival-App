@@ -1,42 +1,36 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useRoleContext } from "./context/RoleContext";
-import { RecordType } from "./types/RecordType";
-import LabelDetail from "./helper/LabelDetail";
-import useLabels from "./hooks/UseLabels";
+import { useRoleContext } from "../context/RoleContext";
+import { RecordType } from "../types/RecordType";
+import LabelDetail from "../UI/LabelDetail";
+import useLabels from "../hooks/UseLabels";
+import useRecords from "../hooks/UseRecords";
+import ErrorMessage from "../UI/ErrorMessage";
+import "../styles/RecordDetail.css";
 
 export default function RecordDetail() {
     const { id } = useParams<{ id: string }>();
-    const [record, setRecord] = useState<RecordType | null>(null);
     const { canViewEditedDetail } = useRoleContext();
     const labels = useLabels();
+    const { fetchRecordById } = useRecords();
+    const [record, setRecord] = useState<RecordType | null>(null);
 
     useEffect(() => {
-        async function fetchRecord() {
-            try {
-                const response = await fetch(
-                    `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}`
-                );
-
-                if (!response.ok) {
-                    throw new Error("Record not found");
-                }
-                const data: RecordType = await response.json();
-                setRecord(data);
-            } catch (error) {
-                console.error("Failed to fetch record:", error);
-            }
-        }
-
-        fetchRecord();
-    }, [id]);
+        const fetchData = async () => {
+            if (!id) return;
+            const data = await fetchRecordById(id);
+            setRecord(data);
+        };
+    
+        fetchData();
+    }, [id, fetchRecordById]);
 
     if (!labels) {
-        return <p>Failed to Load Labels...</p>;
+        return <ErrorMessage />;
     }
 
     if (!record) {
-        return <p>{labels.actions.loading || "Loading..."}</p>;
+        return <ErrorMessage />;
     }
 
     const createEmailBody = () => {

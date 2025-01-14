@@ -1,10 +1,12 @@
 import  { createContext, useState, useEffect, ReactNode } from "react";
 import { LabelsType } from "../types/LabelsType";
+import Loading from "../UI/LoadingMessage";
 
 export const LabelContext = createContext<LabelsType | null>(null);
 
 export const LabelProvider = ({ children }: { children: ReactNode }) => {
     const [labels, setLabels] = useState<LabelsType | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchLabels = async () => {
@@ -17,11 +19,17 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
                 setLabels(data);
             } catch (error) {
                 console.error("Error fetching labels:", error);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchLabels();
     }, []);
+
+    if (loading) {
+        return <Loading message="Loading data from the server..." />;
+    }
 
     return <LabelContext.Provider value={labels}>{children}</LabelContext.Provider>;
 };

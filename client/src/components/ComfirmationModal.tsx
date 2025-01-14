@@ -1,4 +1,4 @@
-import React from "react";
+import "../styles/ConfirmationModal.css";
 
 type ConfirmationModalProps = {
     isOpen: boolean;

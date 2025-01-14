@@ -1,26 +1,36 @@
-import React from "react";
+import React, { Suspense, PropsWithChildren  } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import { UserContextProvider } from "./components/context/UserContext";
-import { RoleContextProvider } from "./components/context/RoleContext";
-import { LabelProvider } from "./components/context/LabelContext";
+import { UserContextProvider } from "./context/UserContext";
+import { RoleContextProvider } from "./context/RoleContext";
+import { LabelProvider } from "./context/LabelContext";
+import { RecordProvider } from "./context/RecordContext";
+import Loading from "./UI/LoadingMessage";
 import "./App.css";
 
-const App: React.FC = () => {
+const Providers: React.FC<PropsWithChildren<object>> = ({ children }) => {
   return (
     <UserContextProvider>
       <RoleContextProvider>
         <LabelProvider>
-          <main>
-            <Navbar />
-            <Outlet />
-          </main>
+          <RecordProvider>{children}</RecordProvider>
         </LabelProvider>
       </RoleContextProvider>
     </UserContextProvider>
   );
 };
 
-export default App;
+const App: React.FC = () => {
+  return (
+    <Providers>
+      <Suspense fallback={<Loading message="Loading records..." />}>
+        <main>
+          <Navbar />
+          <Outlet />
+        </main>
+      </Suspense>
+    </Providers>
+  );
+};
 
-// Only none guests can see Outlet
+export default App;

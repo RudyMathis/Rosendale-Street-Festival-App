@@ -1,8 +1,11 @@
 import { NavLink } from "react-router-dom";
-import { useUserContext } from "./context/UserContext";
-import { useRoleContext } from "./context/RoleContext";
+import { useUserContext } from "../context/UserContext";
+import { useRoleContext } from "../context/RoleContext";
 import { useNavigate } from "react-router-dom";
-import useLabels from "./hooks/UseLabels";
+import "../styles/Navbar.css";
+import "../styles/Login.css";
+import useLabels from "../hooks/UseLabels";
+import ErrorMessage from "../UI/ErrorMessage";
 
 const Navbar: React.FC = () => {
     const { currentUser, setCurrentUser, isGuest } = useUserContext();
@@ -17,12 +20,11 @@ const Navbar: React.FC = () => {
     }
 
     if (!labels) {
-        // make error component to contact admin
-        return <p>Failed to Load Labels...</p>;
+        return <ErrorMessage />;
     }
 
     return (
-        <section className="nav-container container-shadow">
+        <section className="nav-container container-shadow" >
             <nav className="nav-links">
                 <NavLink to="/">
                     <h1>Rosendale Street Festival</h1>
