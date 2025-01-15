@@ -132,8 +132,24 @@ legend {
   font-size: 1.1rem;
 }
 
+li {
+  list-style: none;
+}
 
-@media only screen and (max-width: 600px) {
+select {
+  padding: .5rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+
+@media only screen and (max-width: 1400px) {
+  main {
+    padding: 1rem;
+  }
+}
+
+@media only screen and (max-width: 720px) {
   main {
     padding: 1rem;
   }

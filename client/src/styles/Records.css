@@ -50,7 +50,7 @@
     color: var(--secondary); 
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 720px) {
     .records-container .records-header {
         flex-wrap: wrap;
         gap: 5px;

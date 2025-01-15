@@ -7,27 +7,30 @@ type ConfirmationModalProps = {
     onCancel: () => void;
 };
 
-const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ isOpen, message, onConfirm, onCancel }) => {
+const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
+    isOpen,
+    message,
+    onConfirm,
+    onCancel,
+}) => {
     if (!isOpen) return null;
 
     return (
-        <tr>
-            <td className="confirmation-modal-container">
-                <div className="confirmation-modal-overlay">
-                    <div className="confirmation-modal">
-                        <p className="confirmation-message">{message}</p>
-                        <div className="confirmation-buttons">
-                            <button className="confirm-button" onClick={onConfirm}>
-                                Confirm
-                            </button>
-                            <button className="cancel-button" onClick={onCancel}>
-                                Cancel
-                            </button>
-                        </div>
+        <div className="confirmation-modal-container">
+            <div className="confirmation-modal-overlay">
+                <div className="confirmation-modal">
+                    <p className="confirmation-message">{message}</p>
+                    <div className="confirmation-buttons">
+                        <button className="confirm-button" onClick={onConfirm}>
+                            Confirm
+                        </button>
+                        <button className="cancel-button" onClick={onCancel}>
+                            Cancel
+                        </button>
                     </div>
                 </div>
-            </td>
-        </tr>
+            </div>
+        </div>
     );
 };
 

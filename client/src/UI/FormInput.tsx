@@ -101,6 +101,7 @@ const FormInput = ({
                     value={value as string | number}
                     placeholder={placeholder}
                     onChange={handleChange}
+                    autoComplete="off"
                     required={required}
                 />
             )}

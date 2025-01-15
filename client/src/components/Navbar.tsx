@@ -2,10 +2,10 @@ import { NavLink } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import { useRoleContext } from "../context/RoleContext";
 import { useNavigate } from "react-router-dom";
-import "../styles/Navbar.css";
-import "../styles/Login.css";
 import useLabels from "../hooks/UseLabels";
 import ErrorMessage from "../UI/ErrorMessage";
+import "../styles/Navbar.css";
+import "../styles/Login.css";
 
 const Navbar: React.FC = () => {
     const { currentUser, setCurrentUser, isGuest } = useUserContext();
@@ -30,6 +30,11 @@ const Navbar: React.FC = () => {
                     <h1>Rosendale Street Festival</h1>
                 </NavLink>
                 <NavLink to="/create">{differentDisplay}</NavLink>
+                {currentUser && currentUser.role === "admin" 
+                    ? 
+                    <NavLink to="/members">Members Page</NavLink> 
+                    : "" 
+                }
             </nav>
             {currentUser && !isGuest ? (
                 <div className="login-container">

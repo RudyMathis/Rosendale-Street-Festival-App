@@ -109,6 +109,7 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
                     <div className="hidden-desktop">{labels.record.fields.hudsonValley}</div>
                     <input
                         type="checkbox"
+                        name="Hudson Valley"
                         disabled
                         checked={record.hudsonValley}
                         onChange={() => {}}
@@ -118,8 +119,9 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
                     <div className="hidden-desktop">{labels.record.fields.isAccepted}</div>
                     <input
                         type="checkbox"
+                        name="Accpepted"
                         disabled={!canAccept}
-                        checked={updateisAccepted} // Correct state binding
+                        checked={updateisAccepted}
                         onChange={() => updateAccepted(record._id)}
                     />
                 </td> 

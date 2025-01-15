@@ -10,6 +10,7 @@ import RecordDetail from "./components/RecordDetail";
 import Records from "./components/Records";
 import RecordList from "./components/RecordList";
 import Login from "./components/Login";
+import MembersPage from "./components/members/MembersPage";
 import "./index.css";
 
 // Define the routes array with type annotations for better TypeScript support.
@@ -71,6 +72,16 @@ const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+    ],
+  },
+  {
+    path: "/members",
+    element: <App />,
+    children: [
+      {
+        path: "/members",
+        element: <MembersPage />,
       },
     ],
   },

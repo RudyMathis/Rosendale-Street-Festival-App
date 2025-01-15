@@ -1,6 +1,6 @@
 import express from "express";
 import { ObjectId } from "mongodb";
-import db from "../database/connection.js";
+import { connectToMongoDB, getDatabase } from "../database/connection.js";
 
 const router = express.Router();
 
@@ -10,25 +10,38 @@ router.patch("/:id/isAccepted", async (req, res) => {
         const { id } = req.params;
         const { isAccepted } = req.body;
 
+        // Validate the `isAccepted` field
         if (typeof isAccepted !== "boolean") {
-            return res.status(400).send("Invalid value for isAccepted");
+            return res.status(400).send({ error: "Invalid value for isAccepted. It must be a boolean." });
         }
 
-        const query = { _id: new ObjectId(id) };
-        const updates = { $set: { isAccepted } };
+        // Ensure the MongoDB connection is established
+        await connectToMongoDB();
 
-        const collection = await db.collection("records");
+        // Access the "bands" database and "records" collection
+        const db = getDatabase("bands");
+        const collection = db.collection("records");
+
+        // Query to identify the record
+        const query = { _id: new ObjectId(id) };
+
+        // Update operation
+        const updates = { $set: { isAccepted } };
         const result = await collection.updateOne(query, updates);
 
+        // Handle the case where the record is not found
         if (result.matchedCount === 0) {
-            return res.status(404).send("Record not found");
+            return res.status(404).send({ error: "Record not found" });
         }
 
-        const updatedRecord = await collection.findOne(query); // Fetch updated record
+        // Fetch the updated record
+        const updatedRecord = await collection.findOne(query);
+
+        // Respond with the updated record
         res.status(200).send(updatedRecord);
     } catch (err) {
-        console.error(err);
-        res.status(500).send("Error updating isAccepted");
+        console.error("Error updating isAccepted:", err);
+        res.status(500).send({ error: "Error updating isAccepted" });
     }
 });
 

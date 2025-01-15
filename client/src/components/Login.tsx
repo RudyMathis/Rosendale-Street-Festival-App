@@ -51,8 +51,10 @@ const Login: React.FC = () => {
                         {labels.login.name}: 
                         <input
                             type="text"
+                            name="name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            autoComplete="on"
                             placeholder="Enter your name"
                         />
                     </label>
@@ -60,6 +62,7 @@ const Login: React.FC = () => {
                         {labels.login.password}:
                         <input
                             type="password"
+                            name="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Enter your password"

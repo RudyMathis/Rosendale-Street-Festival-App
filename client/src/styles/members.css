@@ -1,0 +1,128 @@
+/* section {
+    padding: 1em;
+} */
+ul {
+    padding: 0;
+}
+
+h2 {
+    text-align: left;
+    margin: 1rem;
+}
+
+.member-list-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 1rem;
+}
+
+.member-details {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.member-button-container {
+    display: flex;
+    gap: 1rem;
+}
+
+.member-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.member-label {
+    display: flex;
+    align-items: center;
+    height: 2.75rem;
+}
+
+@media only screen and (max-width: 720px) {
+    section h2 {
+        text-align: center;
+    }
+    .member-details {
+        align-items: center;
+    }
+    .member-label {
+        padding: 0 .5rem;
+    }
+}
+
+input, select, .member-label > span {
+    margin-left: .5rem;
+}
+
+/* add */
+
+.add-member form{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1rem;
+    margin: 1rem;
+}
+
+.add-member form {
+    width: min-content;
+    background-color: var(--secondary);
+}
+
+.add-member-button {
+    width: -webkit-fill-available;
+}
+
+@media only screen and (max-width: 720px) {
+    .add-member {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .add-member form {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    .add-member-button {
+        margin: 1em;
+    }
+
+}
+
+/* edit */
+
+.edit-icon {
+    font-size: 4rem;
+}
+
+.edit-member-form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.edit-member-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: start;
+    width: 100%;
+}
+
+@media only screen and (max-width: 720px) {
+    .edit-icon {
+        rotate: 90deg;
+    }
+    .member-list-container {
+        flex-direction: column;
+        margin: 1rem 0;
+    }
+    .edit-member-form {
+        align-items: center;
+    }
+    .edit-member-buttons {
+        justify-content: center;
+    }
+}
