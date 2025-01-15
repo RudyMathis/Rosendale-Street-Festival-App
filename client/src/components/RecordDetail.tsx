@@ -5,6 +5,7 @@ import { RecordType } from "../types/RecordType";
 import LabelDetail from "../UI/LabelDetail";
 import useLabels from "../hooks/UseLabels";
 import useRecords from "../hooks/UseRecords";
+import LoadingMessage from "../UI/LoadingMessage";
 import ErrorMessage from "../UI/ErrorMessage";
 import "../styles/RecordDetail.css";
 
@@ -14,22 +15,33 @@ export default function RecordDetail() {
     const labels = useLabels();
     const { fetchRecordById } = useRecords();
     const [record, setRecord] = useState<RecordType | null>(null);
+    const [loading, setLoading] = useState(true); // Add loading state
+    const [error, setError] = useState(false); // Add error state
 
     useEffect(() => {
         const fetchData = async () => {
             if (!id) return;
-            const data = await fetchRecordById(id);
-            setRecord(data);
+            try {
+                setLoading(true); // Start loading
+                setError(false); // Reset error state
+                const data = await fetchRecordById(id);
+                setRecord(data);
+            } catch (err) {
+                console.error("Error fetching record:", err);
+                setError(true);
+            } finally {
+                setLoading(false); // Stop loading
+            }
         };
-    
+
         fetchData();
     }, [id, fetchRecordById]);
 
-    if (!labels) {
-        return <ErrorMessage />;
+    if (loading) {
+        return <LoadingMessage message="Loading record details..." />;
     }
 
-    if (!record) {
+    if (error || !labels || !record) {
         return <ErrorMessage />;
     }
 

@@ -16,10 +16,10 @@ const styles = {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        height: "100vh", // Fill the viewport
+        height: "100vh",
         width: "100%",
         textAlign: "center" as const,
-        backgroundColor: "#f5f5f5", // Light background for contrast
+        backgroundColor: "#f5f5f5",
     },
     message: {
         fontSize: "1.2rem",

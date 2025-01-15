@@ -2,14 +2,14 @@ type ErrorMessageProps = {
     message?: string; 
 };
 
-const ErrorMessage: React.FC<ErrorMessageProps> = ({ message = "Something went wrong" }) => { // Default value for message
+const ErrorMessage: React.FC<ErrorMessageProps> = ({ message = "Something went wrong" }) => {
     return (
         <div style={styles.container}>
             <h2 style={styles.heading}>Something went wrong</h2>
             <p style={styles.message}>{message}</p>
             <p style={styles.contact}>
                 If the issue persists, please contact the admin at 
-                <a href="mailto:admin@example.com" style={styles.email}>admin@example.com</a>
+                <a href="mailto:admin@example.com" style={styles.email}> admin@example.com</a>
             </p>
         </div>
     );
