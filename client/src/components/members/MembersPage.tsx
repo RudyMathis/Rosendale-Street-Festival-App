@@ -134,7 +134,7 @@ const MembersPage = () => {
               </div>
               <div className="member-button-container">
                 <button onClick={() => setEditingMemberId(member._id)}>Edit</button>
-                  <DeleteMember memberId={member._id} deleteMemeber={handleDeleteMember} />
+                  <DeleteMember memberId={member._id} deleteMemeber={handleDeleteMember} role={member.role} />
               </div>
             </div>
             {editingMemberId === member._id && (

@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import useLabels from "../../hooks/UseLabels";
+import ErrorMessage from "../../UI/ErrorMessage";
 type AddMemberProps = {
     onAdd: (newMember: { name: string; role: string; password: string }) => void;
 };
@@ -10,6 +11,11 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
         role: "member",  // Default role
         password: "",
     });
+    const labels = useLabels();
+
+    if (!labels) {
+        return <ErrorMessage />
+    }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -21,9 +27,8 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Add new member (you can integrate it with the backend here)
         onAdd(newMember);
-        setNewMember({ name: "", role: "member", password: "" }); // Clear form after submission
+        setNewMember({ name: "", role: labels.role.level2, password: "" }); // Clear form after submission
     };
 
     return (
@@ -49,9 +54,9 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
                         onChange={handleInputChange}
                         required
                     >
-                        <option value="member"> Member</option>
-                        <option value="moderator"> Moderator</option>
-                        <option value="admin"> Admin</option>
+                        <option value={labels.role.level2}>{labels.displayRole.level2}</option>
+                        <option value={labels.role.level3}>{labels.displayRole.level3}</option>
+                        <option value={labels.role.level4}>{labels.displayRole.level4}</option>
                     </select>
                 </label>
                 <label className="member-label">
@@ -64,7 +69,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
                         required
                     />
                 </label>
-                <button className="add-member-button" type="submit">Add Member</button>
+                <button className="add-member-button" type="submit">Add {labels.displayRole.level2}</button>
             </form>
         </div>
     );

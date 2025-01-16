@@ -1,6 +1,7 @@
 import express from "express";
-import client from "../database/connection.js"; // Import the MongoDB client
+import client from "../database/connection.js";
 import { ObjectId } from "mongodb";
+import labels from "../labels/labels.json" with { type: 'json' };
 
 const router = express.Router();
 
@@ -45,7 +46,7 @@ router.post("/", async (req, res) => {
             return res.status(400).send({ error: "Name, role, and password are required" });
         }
 
-        const validRoles = ["member", "moderator", "admin"];
+        const validRoles = [labels.role.level2, labels.role.level3, labels.role.level4];
         if (!validRoles.includes(newMember.role)) {
             return res.status(400).send({ error: "Invalid role" });
         }

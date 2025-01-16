@@ -1,43 +1,53 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import Loading from "../UI/LoadingMessage";
+import { LabelContext } from "./LabelContext";
 
-// Define the possible roles
-type UserRole = "guest" | "member" | "moderator" | "admin";
-
-// Define the shape of the user object
 type User = {
     name: string;
-    role: UserRole;
+    role: string;
     password: string;
-}
+};
 
-// Define the context value type
-type UserContextType ={
+type UserContextType = {
     currentUser: User | null;
     setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
-    isGuest: boolean;
-    isModerator: boolean;
-    isAdmin: boolean;
-}
+};
 
-// Create the context with default values
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const UserContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [isUserLoaded, setIsUserLoaded] = useState(false);
 
-    // Role-based checks
-    const isGuest = currentUser?.role === "guest";
-    const isModerator = currentUser?.role === "moderator";
-    const isAdmin = currentUser?.role === "admin";
+    const labels = useContext(LabelContext); // Access the labels context
+
+    useEffect(() => {
+
+        if (labels) {
+            const storedUser = localStorage.getItem("currentUser");
+            const loggedIn = localStorage.getItem("loggedIn");
+
+            if (storedUser && loggedIn === "true") {
+                const parsedUser = JSON.parse(storedUser);
+                setCurrentUser({ name: parsedUser.name, role: parsedUser.role, password: "" });
+            } else {
+                setCurrentUser(null); // Clear current user
+            }
+            setIsUserLoaded(true);
+        }
+    }, [labels]);
+
+    if (!isUserLoaded || !labels) {
+        return <Loading message="Loading user and labels..." />;
+    }
 
     return (
-        <UserContext.Provider value={{ currentUser, setCurrentUser, isGuest, isModerator, isAdmin }}>
+        <UserContext.Provider value={{ currentUser, setCurrentUser }}>
             {children}
         </UserContext.Provider>
     );
 };
 
-// Custom hook to use the UserContext
 export const useUserContext = () => {
     const context = useContext(UserContext);
     if (!context) {
@@ -45,3 +55,5 @@ export const useUserContext = () => {
     }
     return context;
 };
+
+// error when loading from this page might not be big deal

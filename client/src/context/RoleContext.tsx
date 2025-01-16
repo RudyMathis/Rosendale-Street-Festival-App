@@ -1,5 +1,7 @@
-import { createContext, useContext } from "react";
-import { useUserContext } from "../context/UserContext";
+import { createContext, useContext, ReactNode } from "react";
+import { useUserContext } from "./UserContext";
+import useLabels from "../hooks/UseLabels";
+import ErrorMessage from "../UI/ErrorMessage";
 
 // Define all possible permissions
 type RoleContextType = {
@@ -13,12 +15,16 @@ type RoleContextType = {
 
 const RoleContext = createContext<RoleContextType | undefined>(undefined);
 
-export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { currentUser } = useUserContext();
-
-  // Define role-based hierarchy
+  const labels = useLabels();
+  
+  if (!labels) {
+    return <ErrorMessage />;
+  }
+  
   const roleHierarchy = {
-    guest: {
+    [labels.role.level1]: {
       differentDisplay: "",
       canViewContent: false,
       canViewActions: false,
@@ -26,7 +32,7 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       canViewEditedDetail: false,
       canEditRecords: false,
     },
-    member: {
+    [labels.role.level2]: {
       differentDisplay: "Suggest Performer/Band",
       canViewContent: true,
       canViewActions: false,
@@ -34,7 +40,7 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       canViewEditedDetail: false,
       canEditRecords: false,
     },
-    moderator: {
+    [labels.role.level3]: {
       differentDisplay: "Add Performer/Band",
       canViewContent: true,
       canViewActions: true,
@@ -42,7 +48,7 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       canViewEditedDetail: true,
       canEditRecords: false,
     },
-    admin: {
+    [labels.role.level4]: {
       differentDisplay: "Add Performer/Band",
       canViewContent: true,
       canViewActions: true,
@@ -53,7 +59,7 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   // Resolve permissions based on currentUser's role, default to "guest" if no user
-  const permissions = roleHierarchy[currentUser?.role ?? "guest"];
+  const permissions = roleHierarchy[currentUser?.role ?? labels.role.level1];
 
   return (
     <RoleContext.Provider value={permissions}>

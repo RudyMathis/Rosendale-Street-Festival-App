@@ -112,6 +112,16 @@ button:hover, .nav-login-container:hover {
   border: 1px solid var(--accent);
 }
 
+.action-delete:disabled {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  border: 1px solid var(--muted);
+}
+.action-delete:disabled:hover {
+  color: var(--muted-foreground);
+  cursor:not-allowed
+}
+
 .action-delete:hover {
   background-color: var(--destructive-foreground);
   color: var(--destructive);

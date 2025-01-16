@@ -1,29 +1,32 @@
-import React, { Suspense, PropsWithChildren  } from "react";
+import React, { Suspense } from "react";
 import { Outlet } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import { UserContextProvider } from "./context/UserContext";
 import { RoleContextProvider } from "./context/RoleContext";
 import { LabelProvider } from "./context/LabelContext";
 import { RecordProvider } from "./context/RecordContext";
 import Loading from "./UI/LoadingMessage";
+import Navbar from "./components/Navbar";
 import "./App.css";
 
-const Providers: React.FC<PropsWithChildren<object>> = ({ children }) => {
+// Providers component
+const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <UserContextProvider>
-      <RoleContextProvider>
-        <LabelProvider>
-          <RecordProvider>{children}</RecordProvider>
-        </LabelProvider>
-      </RoleContextProvider>
-    </UserContextProvider>
+    <LabelProvider>
+      <UserContextProvider>
+        <RoleContextProvider>
+          <RecordProvider>
+            {children}
+          </RecordProvider>
+        </RoleContextProvider>
+      </UserContextProvider>
+    </LabelProvider>
   );
 };
 
 const App: React.FC = () => {
   return (
     <Providers>
-      <Suspense fallback={<Loading message="Loading records..." />}>
+      <Suspense fallback={<Loading message="Loading Page..." />}>
         <main>
           <Navbar />
           <Outlet />

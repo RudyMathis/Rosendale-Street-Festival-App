@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import useLabels from "../../hooks/UseLabels";
+import ErrorMessage from "../../UI/ErrorMessage";
 import "../../styles/members.css";
 
 type EditMemberProps = {
@@ -9,6 +11,7 @@ type EditMemberProps = {
 
 const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => {
     const [updatedMember, setUpdatedMember] = useState(member);
+    const labels = useLabels();
 
     useEffect(() => {
         setUpdatedMember(member); // Reset to the original member data if the component re-renders
@@ -27,6 +30,10 @@ const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => 
         onSave(updatedMember);
     };
 
+    if (!labels) {
+        return <ErrorMessage />
+    }
+
     return (
             <form className="edit-member-form" onSubmit={handleSubmit}>
                 <label className="member-label">
@@ -37,9 +44,9 @@ const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => 
                         onChange={handleInputChange}
                         required
                     >
-                        <option value="member"> Member</option>
-                        <option value="moderator"> Moderator</option>
-                        <option value="admin"> Admin</option>
+                        <option value={labels.role.level2}>{labels.displayRole.level2}</option>
+                        <option value={labels.role.level3}>{labels.displayRole.level3}</option>
+                        <option value={labels.role.level4}>{labels.displayRole.level4}</option>
                     </select>
                 </label>
                 <label className="member-label">

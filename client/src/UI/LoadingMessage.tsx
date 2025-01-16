@@ -16,8 +16,6 @@ const styles = {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        height: "100vh",
-        width: "100%",
         textAlign: "center" as const,
         backgroundColor: "#f5f5f5",
     },

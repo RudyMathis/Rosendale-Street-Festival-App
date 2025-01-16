@@ -29,6 +29,7 @@ const styles = {
     heading: {
         fontSize: '1.5em',
         marginBottom: '10px',
+        textAlign: 'center' as const,
     },
     message: {
         fontSize: '1em',

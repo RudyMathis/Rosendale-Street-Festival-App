@@ -69,5 +69,17 @@
     "otherLabels": {
         "contacts": "Contacts",
         "shirts": "Shirts"
+    },  
+    "role": {
+        "level1": "guest",
+        "level2": "member",
+        "level3": "moderator",
+        "level4": "admin"
+    },
+    "displayRole": {
+        "level1": "Guest",
+        "level2": "Member",
+        "level3": "Moderator",
+        "level4": "Admin"
     }
 }
