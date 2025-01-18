@@ -87,7 +87,7 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
                 </td>
                 <td className="record-td-container">
                     <div className="hidden-desktop">{labels.record.fields.email}</div>
-                    <a href={`mailto:${record.email}`} target="_blank" rel="noopener noreferrer">
+                    <a className="link" href={`mailto:${record.email}`} target="_blank" rel="noopener noreferrer">
                         {record.email}
                     </a>
                 </td>
@@ -101,7 +101,7 @@ const Record = ({ record, deleteRecord }: RecordProps) => {
                 </td>
                 <td className="record-td-container">
                     <div className="hidden-desktop">{labels.record.fields.link}</div>
-                    <a ref={record.link} target="_blank" rel="noopener noreferrer">
+                    <a className="link" ref={record.link} target="_blank" rel="noopener noreferrer">
                         {record.link}
                     </a>
                 </td>

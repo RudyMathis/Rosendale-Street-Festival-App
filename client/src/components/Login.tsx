@@ -70,7 +70,7 @@ const Login: React.FC = () => {
     }
 
     return (
-        <div className="container-shadow">
+        <section className="login-container container-shadow">
             <h2>{labels.login.login}</h2>
             <form
                 className="login-form"
@@ -79,7 +79,7 @@ const Login: React.FC = () => {
                     handleLogin();
                 }}
             >
-                <div className="login-container">
+                <div className="login-content">
                     <label className="login-label">
                         {labels.login.name}:
                         <input
@@ -107,7 +107,7 @@ const Login: React.FC = () => {
                     {labels.actions.submit}
                 </button>
             </form>
-        </div>
+        </section>
     );
 };
 

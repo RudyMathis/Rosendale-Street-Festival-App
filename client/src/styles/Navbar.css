@@ -5,6 +5,16 @@
     margin-bottom: 1em;
 }
 
+.nav-login-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+}
+
+.nav-login-container a {
+    color: var(--secondary-foreground);
+}
+
 .nav-links {
     display: flex;
     flex-direction: column;
@@ -15,10 +25,61 @@
     font-size: 3.2em;
     line-height: 1.1;
     margin: 1rem 0;
-    color: var(--chart-3);
 }
 
+.nav-login-content {
+    color: var(--muted-foreground);
+}
+
+.nav-login-role-text {
+    position: relative;
+    display: inline-block;
+}
+
+.current-user-name {
+    position: relative;
+    cursor: pointer;
+    padding: .5em;
+}
+
+.popup-role {
+    position: absolute;
+    bottom: 100%; /* Position above the name */
+    left: 50%; /* Center the popup horizontally */
+    transform: translateX(-50%);
+    margin-bottom: 5px; /* Spacing between name and popup */
+    padding: 5px 10px;
+    background-color: #333; /* Dark background for contrast */
+    color: #fff; /* White text for readability */
+    border-radius: 5px;
+    font-size: 0.9rem;
+    white-space: nowrap; /* Prevent text wrapping */
+    visibility: hidden; /* Initially hidden */
+    opacity: 0; /* Fully transparent */
+    transition: opacity 0.3s ease; /* Smooth fade-in */
+    pointer-events: none; /* Ignore pointer events when hidden */
+}
+
+.current-user-name:hover .popup-role {
+    visibility: visible; /* Show popup on hover */
+    opacity: 1; /* Make popup fully visible */
+}
+
+
 @media only screen and (max-width: 720px) {
+
+    .nav-container {
+        flex-direction: column;
+    }
+    
+    .nav-login-container {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .nav-login-role-text {
+        font-size: .8rem;
+    }
     
     .nav-links {
         align-items: center;
@@ -27,5 +88,8 @@
     .nav-links h1{
         font-size: 1.5rem;
         margin: .5rem 0;
+    }
+    .logout-button {
+        width: 100%;
     }
 }

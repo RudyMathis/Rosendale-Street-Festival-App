@@ -139,11 +139,16 @@ td {
 
 @media only screen and (max-width: 1400px) {
     td {
-        padding: 0;
+        padding: .1em;
     }
 }
 
 @media only screen and (max-width: 720px) {
+
+    .record-list-header {
+        flex-direction: column;
+        margin-bottom: 0;
+    }
 
     table thead {
         position: fixed;
@@ -163,6 +168,14 @@ td {
         border: none;
         padding-bottom: 100px;
     }
+
+    tbody tr:nth-child(odd) {
+        background-color: hsl(68, 100%, 91%);
+    }
+    
+    /* tbody tr:nth-child(even) {
+        background-color: hsl(68, 87%, 85%);
+    } */
 
     .record-tr-container {
         display: flex;

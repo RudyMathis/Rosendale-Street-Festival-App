@@ -36,27 +36,29 @@ const Navbar: React.FC = () => {
         <section className="nav-container container-shadow" >
             <nav className="nav-links">
                 <NavLink to="/">
-                    <h1>Rosendale Street Festival</h1>
+                    <h1 className="link">Rosendale Street Festival</h1>
                 </NavLink>
-                <NavLink to="/create">{differentDisplay}</NavLink>
+                <NavLink className="link" to="/create">{differentDisplay}</NavLink>
                 {currentUser && currentUser.role === labels.role.level4
                     ? 
-                    <NavLink to="/members">Members Page</NavLink> 
+                    <NavLink className="link" to="/members">Members Page</NavLink> 
                     : "" 
                 }
             </nav>
             {currentUser && currentUser.role !== labels?.role.level1 ? (
-                <div className="login-container">
-                    <div className="nav-login-content">
-                        <div>{currentUser.name}</div>
-                        <div>({currentUser.role})</div>
+                <div className="nav-login-container">
+                    <div className="nav-login-role-text">
+                        <div className={`current-user-name ${currentUser.role}`}>
+                            {currentUser.name}
+                            <div className="popup-role">{currentUser.role}</div>
+                        </div>
                     </div>
                     <button className="logout-button" onClick={handleLogOut}>{labels.login.logout}</button>
                 </div>
             ) : (
-                <div className="nav-login-container">
+                <button className="nav-login-container">
                     <NavLink to="/login">{labels.login.login}</NavLink>
-                </div>
+                </button>
             )}
         </section>
     );
