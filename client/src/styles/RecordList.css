@@ -131,6 +131,14 @@ td {
     display: none;
 }
 
+.more-button {
+    display: none;
+}
+
+.record-tr-container > .hidden-button {
+    display: revert;
+}
+
 @media only screen and (max-width: 1400px) {
     .table-header-button {
         min-width: unset;
@@ -155,6 +163,7 @@ td {
         z-index: 2;
         bottom: 0;
         left: 0;
+        width: 100%;
     }
     
     table td {
@@ -170,13 +179,9 @@ td {
     }
 
     tbody tr:nth-child(odd) {
-        background-color: hsl(68, 100%, 91%);
+        background-color: hsl(68, 100%, 95%);
     }
     
-    /* tbody tr:nth-child(even) {
-        background-color: hsl(68, 87%, 85%);
-    } */
-
     .record-tr-container {
         display: flex;
         flex-wrap: wrap;
@@ -191,6 +196,28 @@ td {
 
     .record-list-container {
         align-items: center;
+    }
+
+    .record-tr-container > .hidden-button {
+        display: none;
+    }
+
+    .more-button {
+        display: table;
+    }
+
+    .record-tr-container > .more-selection.hidden {
+        display: none;
+    }
+
+    .record-tr-container > .more-selection {
+        background-color: var(--secondary);
+        right:0;
+        width: 8em;
+    }
+
+    .record-tr-container > .action-header {
+        display: none;
     }
 
     .action-container {

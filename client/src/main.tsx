@@ -8,7 +8,7 @@ import App from "./App";
 import CreateRecord from "./components/CreateRecord";
 import RecordDetail from "./components/RecordDetail";
 import Records from "./components/Records";
-import RecordList from "./components/RecordList";
+import RecordListHeader from "./components/record list/RecordListHeader";
 import Login from "./components/Login";
 import MembersPage from "./components/members/MembersPage";
 import "./index.css";
@@ -21,7 +21,7 @@ const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <RecordList />,
+        element: <RecordListHeader />,
       },
     ],
   },
