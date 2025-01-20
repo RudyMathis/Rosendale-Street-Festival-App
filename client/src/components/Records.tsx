@@ -44,19 +44,19 @@ export default function Records() {
 
     const groupLabels = {
         all: labels.show.showAll,
-        isAccepted: labels.show.showAccpeted,
+        levels: labels.show.showLevels,
         emails: labels.show.showEmails,
         contacts: labels.show.showContacts,
-        levels: labels.show.showLevels,
+        isAccepted: labels.show.showAccpeted,
         shirts: labels.show.showShirtSizes,
     };
 
     const downloadLabels = {
         all: labels.download.downloadAll,
-        isAccepted: labels.download.downloadAccpeted,
+        levels: labels.download.downloadLevels,
         emails: labels.download.downloadEmails,
         contacts: labels.download.downloadContacts,
-        levels: labels.download.downloadLevels,
+        isAccepted: labels.download.downloadAccpeted,
         shirts: labels.download.downloadShirtSizes,
     };
 

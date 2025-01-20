@@ -50,6 +50,25 @@
     color: var(--secondary); 
 }
 
+.more-button-container {
+    position: relative;
+    display: flex;
+}
+
+.more-button {
+    display: none;
+}
+
+.hidden-group {
+    display: none;
+}
+
+.hidden-button {
+    display: flex;
+}
+
+
+
 @media only screen and (max-width: 720px) {
     .records-container .records-header {
         flex-wrap: wrap;
@@ -64,5 +83,27 @@
     .record-header-button-container .records-data-button, .record-header-button-container .records-show-button {
         font-size: .75rem;
     } 
+
+    .hidden-button {
+        display: none;
+    }
+
+    .more-button {
+        display: table;
+    }
+
+    .more-selection.hidden {
+        display: none;
+    }
+
+    .more-button-container > .more-selection {
+        background-color: var(--secondary);
+        left: 0;
+        width: 8em;
+    }
+    
+    .record-header-button-container button {
+        background-color: var(--secondary);
+    }
 
 }
