@@ -9,47 +9,23 @@ type HeaderProps = {
     downloadLabels: { [key: string]: string };
 };
 
-function moreButtonHidden(group: string) {
-    const moreGroup = ["isAccepted", "shirts"];
-    return moreGroup.includes(group);
-}
+function handleShowDownload(group: string) {
+    // Hide all download buttons
+    const allDownloadButtons = document.querySelectorAll(".records-data-button");
+    allDownloadButtons.forEach((button) => {
+        button.classList.add("hidden-download-button");
+    });
 
-function handleMore() {
-    const moreSelection = document.querySelectorAll(".more-selection");
+    // Show the download button for the currently selected group
+    const currentButton = document.querySelector(
+        `[data-group="${group}"] .records-data-button`
+    );
 
-    if (moreSelection) {
-        moreSelection.forEach((element) => {
-            element.classList.toggle("hidden-button");
-        });
-
-        document.querySelectorAll(".more-selection").forEach((element, index) => {
-            (element as HTMLElement).style.position = "absolute";
-            (element as HTMLElement).style.top = `${5 * (index + 1)}em`;
-        });
+    if (currentButton) {
+        currentButton.classList.remove("hidden-download-button");
     }
 }
 
-function adjustMoreSelectionPosition() {
-    const moreSelection = document.querySelectorAll(".more-selection");
-
-    moreSelection.forEach((element, index) => {
-        if (window.innerWidth > 720) {
-            (element as HTMLElement).style.position = "relative";
-            (element as HTMLElement).style.top = "";
-        } else {
-            (element as HTMLElement).style.position = "absolute";
-            (element as HTMLElement).style.top = `${5 * (index + 1)}em`;
-        }
-    });
-}
-
-// Initialize ResizeObserver
-const resizeObserver = new ResizeObserver(() => {
-    adjustMoreSelectionPosition();
-});
-
-// Ensure observer starts observing the document body
-resizeObserver.observe(document.body);
 
 function Header({
     selectedGroup,
@@ -63,56 +39,28 @@ function Header({
             {Object.keys(groupLabels).map((group) => (
                 <div
                     key={group}
-                    className={`record-header-button-container ${
-                        moreButtonHidden(group) ? "hidden-button hidden-group" : ""
-                    }`}
+                    data-group={group}
+                    className={"record-header-button-container"}
                 >
                     <button
                         className={`records-show-button ${
                             selectedGroup === group ? "selected" : ""
                         }`}
-                        onClick={() => onFieldGroupChange(group)}
+                        onClick={() => {
+                            onFieldGroupChange(group);
+                            handleShowDownload(group);
+                        }}
                     >
                         {groupLabels[group]}
                     </button>
                     <button
-                        className="records-data-button"
+                        className="records-data-button hidden-download-button"
                         onClick={() => onDownloadButtonClick(group)}
                     >
                         {downloadLabels[group]}
                     </button>
                 </div>
             ))}
-            <div className="more-button-container">
-                <button className="more-button" onClick={handleMore}>
-                    More
-                </button>
-                {Object.keys(groupLabels).map((group) => (
-                    <div
-                        key={group}
-                        className={`record-header-button-container ${
-                            !moreButtonHidden(group)
-                                ? "hidden-group"
-                                : "more-selection hidden-button"
-                        }`}
-                    >
-                        <button
-                            className={`records-show-button ${
-                                selectedGroup === group ? "selected" : ""
-                            }`}
-                            onClick={() => onFieldGroupChange(group)}
-                        >
-                            {groupLabels[group]}
-                        </button>
-                        <button
-                            className="records-data-button"
-                            onClick={() => onDownloadButtonClick(group)}
-                        >
-                            {downloadLabels[group]}
-                        </button>
-                    </div>
-                ))}
-            </div>
         </div>
     );
 }

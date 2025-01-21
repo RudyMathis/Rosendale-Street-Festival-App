@@ -43,12 +43,12 @@ export default function Records() {
     }
 
     const groupLabels = {
-        all: labels.show.showAll,
-        levels: labels.show.showLevels,
-        emails: labels.show.showEmails,
-        contacts: labels.show.showContacts,
-        isAccepted: labels.show.showAccpeted,
-        shirts: labels.show.showShirtSizes,
+        all: labels.otherLabels.all,
+        levels: labels.record.fields.level,
+        emails: labels.record.fields.email,
+        contacts: labels.otherLabels.contacts,
+        isAccepted: labels.record.fields.isAccepted,
+        shirts: labels.otherLabels.shirts,
     };
 
     const downloadLabels = {
@@ -67,16 +67,9 @@ export default function Records() {
         if (!records) {
             return <ErrorMessage />;
         }
-    
-        if (group === "isAccepted") {
-            const filtered = records.filter((record) => record.isAccepted);
-            setFilteredRecords(filtered);
-        } else if (group === "levels") {
-            // Levels filtering will be handled separately
-            setFilteredRecords(records);
-        } else {
-            setFilteredRecords(records); // Reset to all records for other groups
-        }
+        
+        // reset the filtered records
+        setFilteredRecords(records); 
     }
     
 
@@ -84,6 +77,7 @@ export default function Records() {
         if (!records) {
             return <ErrorMessage />;
         }
+
         const filtered = records.filter((record) => record.level.toLowerCase() === level.toLowerCase());
         setFilteredRecords(filtered);
     }
@@ -92,7 +86,20 @@ export default function Records() {
         if (!records) {
             return <ErrorMessage />;
         }
+
         const filtered = records.filter((record) => record.isAccepted === isAccepted);
+        setFilteredRecords(filtered);
+    }
+
+    function handleShirtFilter(size: string) {
+        if (!records) {
+            return <ErrorMessage />;
+        }
+
+        const filtered = records.filter((record) => record[`shirtSize${size}` as keyof RecordType]);
+    
+        // Update the selected fields to only include the selected shirt size
+        setSelectedFields([`shirtSize${size}`]);
         setFilteredRecords(filtered);
     }
 
@@ -139,7 +146,7 @@ export default function Records() {
 
     return (
         <section className="records-container">
-            <h3>{labels.show.allRecords}</h3>
+            <h3>{labels.record.fields.allRecords}</h3>
             <Header
                 labels={labels}
                 selectedGroup={selectedGroup}
@@ -181,15 +188,28 @@ export default function Records() {
                     />
                 </div>
             )}
+            {selectedGroup === "shirts" && (
+                <div className="filter-buttons-container">
+                    {["XS", "S", "M", "L", "XL", "XXL"].map((size) => (
+                        <FilterButton
+                            key={size}
+                            name={size}
+                            field={`shirtSize${size}`}
+                            onClick={() => handleShirtFilter(size)}
+                        />
+                    ))}
+                </div>
+            )}
+
             {filteredRecords.map((record) => (
                 <div key={record._id} className="record-detail-container container-shadow all-record-container">
                     <h4>{record.name}</h4>
                     {selectedFields.map((field) => (
                         <LabelDetail
                             key={field}
-                            label={labels.record.fields[field]}
-                            value={String(record[field as keyof RecordType]) || "N/A"}
-                            />
+                            label={labels.record.fields[field]} 
+                            value={String(record[field as keyof RecordType]) || "N/A"} 
+                        />
                     ))}
                 </div>
             ))}

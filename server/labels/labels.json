@@ -35,15 +35,6 @@
             "editedTime": "Added when"
         }
     },
-    "show": {
-        "allRecords": "All Records",
-        "showAll": "Show All",
-        "showEmails": "Show Emails",
-        "showLevels": "Show Levels",
-        "showAccpeted": "Show Accepted",
-        "showContacts": "Show Contacts",
-        "showShirtSizes": "Show Shirt Sizes"
-    },
     "download": {
         "downloadAll": "Download All",
         "downloadEmails": "Download Emails",
@@ -67,6 +58,7 @@
         "password": "Password"
     },
     "otherLabels": {
+        "all": "All",
         "contacts": "Contacts",
         "shirts": "Shirts"
     },  
