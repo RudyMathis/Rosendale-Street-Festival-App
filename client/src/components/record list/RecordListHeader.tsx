@@ -123,7 +123,7 @@ export default function RecordListHeader() {
             
             document.querySelectorAll('.record-tr-container .more-selection').forEach((element, index) => {
                 (element as HTMLElement).style.position = 'absolute';
-                (element as HTMLElement).style.top = `${-3.4 * (index + 1)}em`; 
+                (element as HTMLElement).style.top = `${3.9 * (index + 1)}em`; 
             });
         }
     }

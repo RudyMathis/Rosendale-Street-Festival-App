@@ -61,6 +61,27 @@ export default function RecordDetail() {
         window.location.href = `mailto:?subject=${subject} - ${record.name}&body=${emailBody}`;
     };
 
+
+    const createDownloadContent = () => {
+        // Generate content similar to email body
+        return Object.entries(record)
+            .filter(([key]) => !["_id", "nameOfUser", "editedTime"].includes(key)) // Exclude specific keys
+            .map(([key, value]) => `${labels.record.fields[key] || key}: ${value || "N/A"}`)
+            .join("\n");
+    };
+
+    const handleDownload = () => {
+        const subject = "Record Details"; // Subject for file name
+        const downloadContent = createDownloadContent(); // Create the content for download
+
+        // Create a Blob object and trigger the download
+        const blob = new Blob([downloadContent], { type: "text/plain" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${subject} - ${record.name}.txt`; // File name with record name
+        link.click();
+    };
+
     return (
         <>
             <h3>{record.name}</h3>
@@ -88,6 +109,7 @@ export default function RecordDetail() {
                 )}
             </div>
             <button onClick={handleSendEmail}>{labels.actions.sendEmail}</button>
+            <button onClick={handleDownload}>Download</button>
         </>
     );
 }

@@ -16,6 +16,8 @@ export default function Records() {
     const [filteredRecords, setFilteredRecords] = useState<RecordType[]>([]);
     const [selectedGroup, setSelectedGroup] = useState<string>("all");
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
+    const [selected, setSelected] = useState('');
+    const [selectedBoolean, setSelectedBoolean] = useState<boolean | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [groupToDownload, setGroupToDownload] = useState<string | null>(null);
     const labels = useLabels();
@@ -80,6 +82,7 @@ export default function Records() {
 
         const filtered = records.filter((record) => record.level.toLowerCase() === level.toLowerCase());
         setFilteredRecords(filtered);
+        setSelected(level);
     }
 
     function handleIsAcceptedFilter(isAccepted: boolean) {
@@ -89,6 +92,7 @@ export default function Records() {
 
         const filtered = records.filter((record) => record.isAccepted === isAccepted);
         setFilteredRecords(filtered);
+        setSelectedBoolean(isAccepted);
     }
 
     function handleShirtFilter(size: string) {
@@ -101,49 +105,69 @@ export default function Records() {
         // Update the selected fields to only include the selected shirt size
         setSelectedFields([`shirtSize${size}`]);
         setFilteredRecords(filtered);
+        setSelected(size);
     }
 
-    // Handle the button click to trigger the download confirmation
     function handleDownloadButtonClick(group: string) {
         setGroupToDownload(group);
         setIsModalOpen(true);
     }
 
-    const handleConfirmDownload = () => {
+    const handleConfirmAction = () => {
         if (groupToDownload) {
             handleDownloadTextFile(groupToDownload);
+            setGroupToDownload(null); // Reset the state after action
         }
+
         setIsModalOpen(false);
     };
+    
 
     const handleCancelDownload = () => {
+        setGroupToDownload(null); // Reset download state
         setIsModalOpen(false);
     };
+    
+    
+    function handleFilterReset() {
+        setSelected('');
+        setSelectedBoolean(null);
+        if (records) {
+            setFilteredRecords(records); // Reset to all records
+        }
+    }
 
     const handleDownloadTextFile = (group: string) => {
-        const subject = `Records - ${group}`;
-        const emailBody = FieldGroups[group].map(field => {
-            return records.map(record => {
-                const value = record[field as keyof RecordType];
-                return `${record.name} - ${labels.record[field as keyof typeof labels.record]}: ${
-                    typeof value === "boolean"
-                        ? value ? "Yes" : "No"
-                        : field.includes("Email")
-                        ? value || "N/A"
-                        : field.includes("link")
-                        ? value || "N/A"
-                        : value || "N/A"
-                }`;
-            }).join("\n");
-        }).join("\n\n");
-
-        const blob = new Blob([emailBody], { type: "text/plain" });
+        const subject = `Records - ${FieldGroups[group]}`;
+        const downloadBody = FieldGroups[group]
+            .map((field) => {
+                return filteredRecords
+                    .map((record) => {
+                        const value = record[field as keyof RecordType];
+                        return `${record.name} - ${FieldGroups[group]}: ${
+                            typeof value === "boolean"
+                                ? value
+                                    ? "Yes"
+                                    : "No"
+                                : field.includes("Email")
+                                ? value || "N/A"
+                                : field.includes("link")
+                                ? value || "N/A"
+                                : value || "N/A"
+                        }`;
+                    })
+                    .join("\n");
+            })
+            .join("\n\n");
+    
+        const blob = new Blob([downloadBody], { type: "text/plain" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
         link.download = `${subject}.txt`;
         link.click();
     };
-
+    
+    
     return (
         <section className="records-container">
             <h3>{labels.record.fields.allRecords}</h3>
@@ -154,20 +178,24 @@ export default function Records() {
                 onDownloadButtonClick={handleDownloadButtonClick}
                 groupLabels={groupLabels}
                 downloadLabels={downloadLabels}
+                onFilterReset={handleFilterReset}
             />
             {selectedGroup === "levels" && (
                 <div className="filter-buttons-container">
                     <FilterButton
+                        selected={selected === "low" ? "selected" : ""}
                         name="Low"
                         field="low"
                         onClick={() => handleLevelFilter("low")}
                     />
                     <FilterButton
+                        selected={selected === "medium" ? "selected" : ""}
                         name="Medium"
                         field="medium"
                         onClick={() => handleLevelFilter("medium")}
                     />
                     <FilterButton
+                        selected={selected === "high" ? "selected" : ""}
                         name="High"
                         field="high"
                         onClick={() => handleLevelFilter("high")}
@@ -177,11 +205,13 @@ export default function Records() {
             {selectedGroup === "isAccepted" && (
                 <div className="filter-buttons-container">
                     <FilterButton
+                        selected={selectedBoolean === true ? "selected" : ""}
                         name="Accepted"
                         field="isAccepted"
                         onClick={() => handleIsAcceptedFilter(true)}
                     />
                     <FilterButton
+                        selected={selectedBoolean === false ? "selected" : ""}
                         name="Not Accepted"
                         field="isAccepted"
                         onClick={() => handleIsAcceptedFilter(false)}
@@ -192,6 +222,7 @@ export default function Records() {
                 <div className="filter-buttons-container">
                     {["XS", "S", "M", "L", "XL", "XXL"].map((size) => (
                         <FilterButton
+                            selected={selected === size ? "selected" : ""}
                             key={size}
                             name={size}
                             field={`shirtSize${size}`}
@@ -215,8 +246,8 @@ export default function Records() {
             ))}
             <ConfirmationModal
                 isOpen={isModalOpen}
-                message="Are you sure you want to download this file?"
-                onConfirm={handleConfirmDownload}
+                message={`Are you sure you want to download the records for ${groupToDownload}?`}
+                onConfirm={handleConfirmAction}
                 onCancel={handleCancelDownload}
             />
         </section>

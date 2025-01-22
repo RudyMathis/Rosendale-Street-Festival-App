@@ -7,7 +7,9 @@ type HeaderProps = {
     onDownloadButtonClick: (group: string) => void;
     groupLabels: { [key: string]: string };
     downloadLabels: { [key: string]: string };
+    onFilterReset: () => void;
 };
+
 
 function handleShowDownload(group: string) {
     // Hide all download buttons
@@ -26,13 +28,13 @@ function handleShowDownload(group: string) {
     }
 }
 
-
 function Header({
     selectedGroup,
     onFieldGroupChange,
     onDownloadButtonClick,
     groupLabels,
     downloadLabels,
+    onFilterReset,
 }: HeaderProps) {
     return (
         <div className="records-header">
@@ -49,6 +51,7 @@ function Header({
                         onClick={() => {
                             onFieldGroupChange(group);
                             handleShowDownload(group);
+                            onFilterReset(); // Call the passed reset function
                         }}
                     >
                         {groupLabels[group]}
@@ -64,5 +67,6 @@ function Header({
         </div>
     );
 }
+
 
 export default Header;
