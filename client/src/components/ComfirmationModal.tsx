@@ -1,3 +1,5 @@
+import ErrorMessage from "../UI/ErrorMessage";
+import useLabels from "../hooks/UseLabels";
 import "../styles/ConfirmationModal.css";
 
 type ConfirmationModalProps = {
@@ -7,12 +9,19 @@ type ConfirmationModalProps = {
     onCancel: () => void;
 };
 
+
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     isOpen,
     message,
     onConfirm,
     onCancel,
 }) => {
+    const labels = useLabels();
+
+    if (!labels) {
+        return <ErrorMessage />;
+    }
+
     if (!isOpen) return null;
 
     return (
@@ -22,10 +31,10 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                     <p className="confirmation-message">{message}</p>
                     <div className="confirmation-buttons">
                         <button className="confirm-button" onClick={onConfirm}>
-                            Confirm
+                            {labels.actions.confirm}
                         </button>
                         <button className="cancel-button" onClick={onCancel}>
-                            Cancel
+                            {labels.actions.cancel}
                         </button>
                     </div>
                 </div>

@@ -16,4 +16,5 @@ export type LabelsType = {
     otherLabels: Record<string, string>;
     role: Record<string, string>;
     displayRole: Record<string, string>;
+    adminPanel: Record<string, string>;
 }

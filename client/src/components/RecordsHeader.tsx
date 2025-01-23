@@ -1,4 +1,7 @@
 import { LabelsType } from "../types/LabelsType";
+import { useRoleContext } from "../context/RoleContext";
+import Login from "./Login";
+import LoginReminder from "../UI/LoginReminder";
 
 type HeaderProps = {
     labels: LabelsType;
@@ -12,6 +15,7 @@ type HeaderProps = {
 
 
 function handleShowDownload(group: string) {
+    
     // Hide all download buttons
     const allDownloadButtons = document.querySelectorAll(".records-data-button");
     allDownloadButtons.forEach((button) => {
@@ -36,35 +40,45 @@ function Header({
     downloadLabels,
     onFilterReset,
 }: HeaderProps) {
+    const { canViewContent } = useRoleContext();
+
     return (
-        <div className="records-header">
-            {Object.keys(groupLabels).map((group) => (
-                <div
-                    key={group}
-                    data-group={group}
-                    className={"record-header-button-container"}
-                >
-                    <button
-                        className={`records-show-button ${
-                            selectedGroup === group ? "selected" : ""
-                        }`}
-                        onClick={() => {
-                            onFieldGroupChange(group);
-                            handleShowDownload(group);
-                            onFilterReset(); // Call the passed reset function
-                        }}
-                    >
-                        {groupLabels[group]}
-                    </button>
-                    <button
-                        className="records-data-button hidden-download-button"
-                        onClick={() => onDownloadButtonClick(group)}
-                    >
-                        {downloadLabels[group]}
-                    </button>
-                </div>
-            ))}
-        </div>
+        <>
+            {canViewContent ?
+                <section className="records-header">
+                    {Object.keys(groupLabels).map((group) => (
+                        <div
+                            key={group}
+                            data-group={group}
+                            className={"record-header-button-container"}
+                        >
+                            <button
+                                className={`records-show-button ${
+                                    selectedGroup === group ? "selected" : ""
+                                }`}
+                                onClick={() => {
+                                    onFieldGroupChange(group);
+                                    handleShowDownload(group);
+                                    onFilterReset();
+                                }}
+                            >
+                                {groupLabels[group]}
+                            </button>
+                            <button
+                                className="records-data-button hidden-download-button"
+                                onClick={() => onDownloadButtonClick(group)}
+                            >
+                                {downloadLabels[group]}
+                            </button>
+                        </div>
+                    ))}
+            </section>
+            : 
+            <>
+                <LoginReminder />
+                <Login />
+            </>}
+        </>
     );
 }
 

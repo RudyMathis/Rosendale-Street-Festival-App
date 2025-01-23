@@ -39,7 +39,7 @@ export default function Record() {
     fetchData();
   }, [params.id, navigate]);
 
-  const { canViewContent,canViewActions } = useRoleContext();
+  const { canViewContent, canViewActions } = useRoleContext();
   const { currentUser } = useUserContext();
 
   /******************************************* 

@@ -1,9 +1,12 @@
 
 import { useEffect, useState } from "react";
 import { RecordType } from "../types/RecordType";
+import { useRoleContext } from "../context/RoleContext";
 import LabelDetail from "../UI/LabelDetail";
 import useLabels from "../hooks/UseLabels";
 import useRecords from "../hooks/UseRecords";
+import Login from "./Login";
+import LoginReminder from "../UI/LoginReminder";
 import ConfirmationModal from "./ComfirmationModal";
 import FieldGroups from "../UI/FieldGroups";
 import FilterButton from "../UI/FilterButton";
@@ -20,11 +23,12 @@ export default function Records() {
     const [selectedBoolean, setSelectedBoolean] = useState<boolean | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [groupToDownload, setGroupToDownload] = useState<string | null>(null);
+    const { canViewContent } = useRoleContext();
     const labels = useLabels();
 
     useEffect(() => {
         if (records) {
-            setFilteredRecords(records); // Initialize with all records
+            setFilteredRecords(records);
         }
     }, [records]);
 
@@ -169,87 +173,96 @@ export default function Records() {
     
     
     return (
-        <section className="records-container">
-            <h3>{labels.record.fields.allRecords}</h3>
-            <Header
-                labels={labels}
-                selectedGroup={selectedGroup}
-                onFieldGroupChange={handleFieldGroup}
-                onDownloadButtonClick={handleDownloadButtonClick}
-                groupLabels={groupLabels}
-                downloadLabels={downloadLabels}
-                onFilterReset={handleFilterReset}
-            />
-            {selectedGroup === "levels" && (
-                <div className="filter-buttons-container">
-                    <FilterButton
-                        selected={selected === "low" ? "selected" : ""}
-                        name="Low"
-                        field="low"
-                        onClick={() => handleLevelFilter("low")}
+        <>
+            {canViewContent ? 
+                <section className="records-container">
+                    <h3>{labels.record.fields.allRecords}</h3>
+                    <Header
+                        labels={labels}
+                        selectedGroup={selectedGroup}
+                        onFieldGroupChange={handleFieldGroup}
+                        onDownloadButtonClick={handleDownloadButtonClick}
+                        groupLabels={groupLabels}
+                        downloadLabels={downloadLabels}
+                        onFilterReset={handleFilterReset}
                     />
-                    <FilterButton
-                        selected={selected === "medium" ? "selected" : ""}
-                        name="Medium"
-                        field="medium"
-                        onClick={() => handleLevelFilter("medium")}
-                    />
-                    <FilterButton
-                        selected={selected === "high" ? "selected" : ""}
-                        name="High"
-                        field="high"
-                        onClick={() => handleLevelFilter("high")}
-                    />
-                </div>
-            )}
-            {selectedGroup === "isAccepted" && (
-                <div className="filter-buttons-container">
-                    <FilterButton
-                        selected={selectedBoolean === true ? "selected" : ""}
-                        name="Accepted"
-                        field="isAccepted"
-                        onClick={() => handleIsAcceptedFilter(true)}
-                    />
-                    <FilterButton
-                        selected={selectedBoolean === false ? "selected" : ""}
-                        name="Not Accepted"
-                        field="isAccepted"
-                        onClick={() => handleIsAcceptedFilter(false)}
-                    />
-                </div>
-            )}
-            {selectedGroup === "shirts" && (
-                <div className="filter-buttons-container">
-                    {["XS", "S", "M", "L", "XL", "XXL"].map((size) => (
-                        <FilterButton
-                            selected={selected === size ? "selected" : ""}
-                            key={size}
-                            name={size}
-                            field={`shirtSize${size}`}
-                            onClick={() => handleShirtFilter(size)}
-                        />
-                    ))}
-                </div>
-            )}
+                    {selectedGroup === "levels" && (
+                        <div className="filter-buttons-container">
+                            <FilterButton
+                                selected={selected === "low" ? "selected" : ""}
+                                name="Low"
+                                field="low"
+                                onClick={() => handleLevelFilter("low")}
+                            />
+                            <FilterButton
+                                selected={selected === "medium" ? "selected" : ""}
+                                name="Medium"
+                                field="medium"
+                                onClick={() => handleLevelFilter("medium")}
+                            />
+                            <FilterButton
+                                selected={selected === "high" ? "selected" : ""}
+                                name="High"
+                                field="high"
+                                onClick={() => handleLevelFilter("high")}
+                            />
+                        </div>
+                    )}
+                    {selectedGroup === "isAccepted" && (
+                        <div className="filter-buttons-container">
+                            <FilterButton
+                                selected={selectedBoolean === true ? "selected" : ""}
+                                name="Accepted"
+                                field="isAccepted"
+                                onClick={() => handleIsAcceptedFilter(true)}
+                            />
+                            <FilterButton
+                                selected={selectedBoolean === false ? "selected" : ""}
+                                name="Not Accepted"
+                                field="isAccepted"
+                                onClick={() => handleIsAcceptedFilter(false)}
+                            />
+                        </div>
+                    )}
+                    {selectedGroup === "shirts" && (
+                        <div className="filter-buttons-container">
+                            {["XS", "S", "M", "L", "XL", "XXL"].map((size) => (
+                                <FilterButton
+                                    selected={selected === size ? "selected" : ""}
+                                    key={size}
+                                    name={size}
+                                    field={`shirtSize${size}`}
+                                    onClick={() => handleShirtFilter(size)}
+                                />
+                            ))}
+                        </div>
+                    )}
 
-            {filteredRecords.map((record) => (
-                <div key={record._id} className="record-detail-container container-shadow all-record-container">
-                    <h4>{record.name}</h4>
-                    {selectedFields.map((field) => (
-                        <LabelDetail
-                            key={field}
-                            label={labels.record.fields[field]} 
-                            value={String(record[field as keyof RecordType]) || "N/A"} 
-                        />
+                    {filteredRecords.map((record) => (
+                        <div key={record._id} className="record-detail-container container-shadow all-record-container">
+                            <h4>{record.name}</h4>
+                            {selectedFields.map((field) => (
+                                <LabelDetail
+                                    key={field}
+                                    label={labels.record.fields[field]} 
+                                    value={String(record[field as keyof RecordType]) || "N/A"} 
+                                />
+                            ))}
+                        </div>
                     ))}
-                </div>
-            ))}
-            <ConfirmationModal
-                isOpen={isModalOpen}
-                message={`Are you sure you want to download the records for ${groupToDownload}?`}
-                onConfirm={handleConfirmAction}
-                onCancel={handleCancelDownload}
-            />
-        </section>
+                    <ConfirmationModal
+                        isOpen={isModalOpen}
+                        message={`Are you sure you want to download the records for ${groupToDownload}?`}
+                        onConfirm={handleConfirmAction}
+                        onCancel={handleCancelDownload}
+                    />
+                </section>
+                : 
+                <>
+                    <LoginReminder />
+                    <Login />
+                </>
+            }
+        </>
     );
 }

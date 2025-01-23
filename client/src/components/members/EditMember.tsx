@@ -37,7 +37,7 @@ const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => 
     return (
             <form className="edit-member-form" onSubmit={handleSubmit}>
                 <label className="member-label">
-                    Role:
+                    {labels.adminPanel.role}
                     <select
                         name="role"
                         value={updatedMember.role}
@@ -50,7 +50,7 @@ const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => 
                     </select>
                 </label>
                 <label className="member-label">
-                    Name:
+                    {labels.adminPanel.name}
                     <input
                         type="text"
                         name="name"
@@ -60,7 +60,7 @@ const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => 
                     />
                 </label>
                 <label className="member-label">
-                Password:
+                    {labels.adminPanel.password}
                     <input
                         type="password"
                         name="password"
@@ -70,8 +70,8 @@ const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => 
                     />
                 </label>
                 <div className="edit-member-buttons">
-                    <button type="submit">Save</button>
-                    <button type="button" onClick={onCancel}>Cancel</button>
+                    <button type="submit">{labels.actions.save}</button>
+                    <button type="button" onClick={onCancel}>{labels.actions.cancel}</button>
                 </div>
             </form>
     );

@@ -33,10 +33,10 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
 
     return (
         <div className="add-member">
-        <h2>Add New Member</h2>
+        <h2>{labels.adminPanel.add} </h2>
             <form className="container-shadow" onSubmit={handleSubmit}>
                 <label className="member-label">
-                    Name: 
+                    {labels.adminPanel.name} 
                     <input
                         type="text"
                         name="name"
@@ -47,7 +47,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
                     />
                 </label>
                 <label className="member-label">
-                    Role: 
+                {labels.adminPanel.role}  
                     <select
                         name="role"
                         value={newMember.role}
@@ -60,7 +60,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
                     </select>
                 </label>
                 <label className="member-label">
-                    Password: 
+                    {labels.adminPanel.password}  
                     <input
                         type="password"
                         name="password"
@@ -69,7 +69,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
                         required
                     />
                 </label>
-                <button className="add-member-button" type="submit">Add {labels.displayRole.level2}</button>
+                <button className="add-member-button" type="submit">{labels.actions.add}{labels.displayRole.level2}</button>
             </form>
         </div>
     );

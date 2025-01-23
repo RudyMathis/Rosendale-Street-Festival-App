@@ -1,6 +1,8 @@
 import { useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useRoleContext } from "../../context/RoleContext";
+import Login from "../Login";
+import LoginReminder from "../../UI/LoginReminder";
 import useLabels from "../../hooks/UseLabels";
 import useRecords from "../../hooks/UseRecords";
 import TableButton from "../../UI/TableButton";
@@ -23,7 +25,7 @@ type RecordType = {
 export default function RecordListHeader() {
     const { records, setRecords } = useRecords();
     const navigate = useNavigate();
-    const { canViewContent, canViewActions, canViewEditedDetail } = useRoleContext(); // Check permission for the "Action" column
+    const { canViewContent, canViewActions, canViewEditedDetail } = useRoleContext();
     const [sortConfig, setSortConfig] = useState<{ key: keyof RecordType; direction: "asc" | "desc" }>({
         key: "name",
         direction: "desc",
@@ -31,6 +33,10 @@ export default function RecordListHeader() {
     const labels = useLabels();
 
     if (!records) {
+        return <ErrorMessage />;
+    }
+    
+    if (!labels) {
         return <ErrorMessage />;
     }
 
@@ -61,14 +67,24 @@ export default function RecordListHeader() {
             let aValue = a[sortConfig.key];
             let bValue = b[sortConfig.key];
     
-            if (sortConfig.key === "level") {
+            if (sortConfig.key === `${labels.record.fields.level}`.toLocaleLowerCase()) {
                 aValue = rankingMap[a.level];
                 bValue = rankingMap[b.level];
-            } else if (sortConfig.key === "members") {
+            } else if (sortConfig.key === `${labels.record.fields.members}`.toLocaleLowerCase()) {
                 aValue = Number(aValue);
                 bValue = Number(bValue);
+            } else if (sortConfig.key === "editedTime") {
+                if (aValue !== null && typeof aValue === 'string') {
+                    aValue = new Date(aValue).getTime();
+                } else {
+                    aValue = 0; // or some other default value
+                }
+                if (bValue !== null && typeof bValue === 'string') {
+                    bValue = new Date(bValue).getTime();
+                } else {
+                    bValue = 0; // or some other default value
+                }
             }
-    
             if (typeof aValue === "boolean" && typeof bValue === "boolean") {
                 // Sort boolean values explicitly
                 return sortConfig.direction === "asc"
@@ -99,7 +115,6 @@ export default function RecordListHeader() {
             return 0; // Default for other types
         });
     })();  
-    
     
     const requestSort = (key: keyof RecordType) => {
         const direction = sortConfig?.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
@@ -142,95 +157,97 @@ export default function RecordListHeader() {
 
     // Start observing the document body (or a specific container if preferred)
     resizeObserver.observe(document.body);
-
-
-    if (!labels) {
-        return <ErrorMessage />;
-    }
     
     return (
         <>
-            {canViewContent && <section className="record-list-container container-shadow">
-                <div className="record-list-header">
-                    <h3>Band Records</h3>
-                    <button onClick={handleAllRecords}>All Records</button>
-                </div>
-                <table>
-                    <thead>
-                        <tr className="record-tr-container">
-                            <TableButton
-                                label={labels.record.fields.name}
-                                onClick={() => requestSort("name")}
-                                sortConfig={sortConfig}
-                                columnKey="name"
-                            />                            
-                            <TableButton
-                                label={labels.record.fields.email}
-                                onClick={() => requestSort("email")}
-                                sortConfig={sortConfig}
-                                columnKey="email"
-                            />
-                            <TableButton
-                                label={labels.record.fields.level}
-                                onClick={() => requestSort("level")}
-                                sortConfig={sortConfig}
-                                columnKey="level"
-                            />
-                            <TableButton
-                                label={labels.record.fields.hudsonValley}
-                                onClick={() => requestSort("hudsonValley")}
-                                sortConfig={sortConfig}
-                                columnKey="hudsonValley"
-                            />
-                            <TableButton
-                                label={labels.record.fields.isAccepted}
-                                onClick={() => requestSort("isAccepted")}
-                                sortConfig={sortConfig}
-                                columnKey="isAccepted"
-                            />
-                            <th className="more-button" onClick={handleMore}>More</th>
-                            <TableButton
-                                className="more-selection hidden-button"
-                                label={labels.record.fields.members}
-                                onClick={() => requestSort("members")}
-                                sortConfig={sortConfig}
-                                columnKey="members"
-                            />
-                            <TableButton
-                                className="more-selection hidden-button"
-                                label={labels.record.fields.link}
-                                onClick={() => requestSort("link")}
-                                sortConfig={sortConfig}
-                                columnKey="link"
-                            />
-                            {canViewEditedDetail && 
-                                <>
-                                    <TableButton
-                                        className="more-selection hidden-button"
-                                        label={labels.record.fields.nameOfUser}
-                                        onClick={() => requestSort("nameOfUser")}
-                                        sortConfig={sortConfig}
-                                        columnKey="nameOfUser"
-                                    />
-                                    <TableButton
-                                        className="more-selection hidden-button"
-                                        label={labels.record.fields.editedTime}
-                                        onClick={() => requestSort("editedTime")}
-                                        sortConfig={sortConfig}
-                                        columnKey="editedTime"
-                                    />
-                                </>
-                            } 
-                            {canViewActions && <th className="action-header">{labels.actions.action}</th>} 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {sortedRecords.map((record) => (
-                            <RecordListBody record={record} deleteRecord={() => deleteRecord(record._id)} key={record._id} />
-                        ))}
-                    </tbody>
-                </table>
-            </section>}
+            {canViewContent ? 
+                <section className="record-list-container container-shadow">
+                    <div className="record-list-header">
+                        <h3>Band Records</h3>
+                        <button onClick={handleAllRecords}>All Records</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr className="record-tr-container">
+                                <TableButton
+                                    label={labels.record.fields.name}
+                                    onClick={() => requestSort("name")}
+                                    sortConfig={sortConfig}
+                                    columnKey={labels.record.fields.name}
+                                />                            
+                                <TableButton
+                                    label={labels.record.fields.email}
+                                    onClick={() => requestSort("email")}
+                                    sortConfig={sortConfig}
+                                    columnKey={labels.record.fields.email}
+                                />
+                                <TableButton
+                                    label={labels.record.fields.level}
+                                    onClick={() => requestSort("level")}
+                                    sortConfig={sortConfig}
+                                    columnKey={labels.record.fields.level}
+                                />
+                                <TableButton
+                                    label={labels.record.fields.hudsonValley}
+                                    onClick={() => requestSort("hudsonValley")}
+                                    sortConfig={sortConfig}
+                                    columnKey={labels.record.fields.hudsonValley}
+                                />
+                                <TableButton
+                                    label={labels.record.fields.isAccepted}
+                                    onClick={() => requestSort("isAccepted")}
+                                    sortConfig={sortConfig}
+                                    columnKey={labels.record.fields.isAccepted}
+                                />
+                                <th className="more-button" onClick={handleMore}>{labels.actions.more}</th>
+                                <TableButton
+                                    className="more-selection hidden-button"
+                                    label={labels.record.fields.members}
+                                    onClick={() => requestSort("members")}
+                                    sortConfig={sortConfig}
+                                    columnKey={labels.record.fields.members}
+                                />
+                                <TableButton
+                                    className="more-selection hidden-button"
+                                    label={labels.record.fields.link}
+                                    onClick={() => requestSort("link")}
+                                    sortConfig={sortConfig}
+                                    columnKey={labels.record.fields.link}
+                                />
+                                {canViewEditedDetail && 
+                                    <>
+                                        <TableButton
+                                            className="more-selection hidden-button"
+                                            label={labels.record.fields.nameOfUser}
+                                            onClick={() => requestSort("nameOfUser")}
+                                            sortConfig={sortConfig}
+                                            columnKey="nameOfUser"
+                                        />
+                                        <TableButton
+                                            className="more-selection hidden-button"
+                                            label={labels.record.fields.editedTime}
+                                            onClick={() => requestSort("editedTime")}
+                                            sortConfig={sortConfig}
+                                            columnKey="editedTime"
+                                        />
+                                    </>
+                                } 
+                                {canViewActions && <th className="action-header">{labels.actions.action}</th>} 
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {sortedRecords.map((record) => (
+                                <RecordListBody record={record} deleteRecord={() => deleteRecord(record._id)} key={record._id} />
+                            ))}
+                        </tbody>
+                    </table>
+                </section>
+                : 
+                <>
+                    <LoginReminder />
+                    <Login />
+                </>
+            }
         </>
     );
 }

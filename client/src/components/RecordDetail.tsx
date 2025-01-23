@@ -11,7 +11,7 @@ import "../styles/RecordDetail.css";
 
 export default function RecordDetail() {
     const { id } = useParams<{ id: string }>();
-    const { canViewEditedDetail } = useRoleContext();
+    const { canViewContent, canViewEditedDetail } = useRoleContext();
     const labels = useLabels();
     const { fetchRecordById } = useRecords();
     const [record, setRecord] = useState<RecordType | null>(null);
@@ -84,32 +84,36 @@ export default function RecordDetail() {
 
     return (
         <>
-            <h3>{record.name}</h3>
-            <div className="record-detail-container container-shadow">
-                {Object.entries(labels.record.fields).map(([key, label]) => (
-                    <LabelDetail
-                        key={key}
-                        label={label}
-                        value={record[key] ? record[key].toString() : "N/A"}                    
-                    />
-                ))}
-                {canViewEditedDetail && (
-                    <>
-                        <LabelDetail
-                            label={labels.record.fields.nameOfUser}
-                            value={record.nameOfUser || "N/A"}
-                            style={{ color: "hsl(173 58% 39%)" }}
-                        />
-                        <LabelDetail
-                            label={labels.record.fields.editedTime}
-                            value={record.editedTime || "N/A"}
-                            style={{ color: "hsl(173 58% 39%)" }}
-                        />
-                    </>
-                )}
-            </div>
-            <button onClick={handleSendEmail}>{labels.actions.sendEmail}</button>
-            <button onClick={handleDownload}>Download</button>
+            {canViewContent && 
+                <>
+                    <h3>{record.name}</h3>
+                    <div className="record-detail-container container-shadow">
+                        {Object.entries(labels.record.fields).map(([key, label]) => (
+                            <LabelDetail
+                                key={key}
+                                label={label}
+                                value={record[key] ? record[key].toString() : "N/A"} 
+                            />
+                        ))}
+                        {canViewEditedDetail && (
+                            <>
+                                <LabelDetail
+                                    label={labels.record.fields.nameOfUser}
+                                    value={record.nameOfUser || "N/A"}
+                                    style={{ color: "hsl(173 58% 39%)" }} 
+                                />
+                                <LabelDetail
+                                    label={labels.record.fields.editedTime}
+                                    value={record.editedTime || "N/A"}
+                                    style={{ color: "hsl(173 58% 39%)" }} 
+                                />
+                            </>
+                        )}
+                    </div>
+                    <button onClick={handleSendEmail}>{labels.actions.sendEmail}</button>
+                    <button onClick={handleDownload}>Download</button>
+                </>
+            }
         </>
     );
 }

@@ -49,6 +49,11 @@
         "edit": "Edit",
         "submit": "Submit",
         "sendEmail": "Send Email",
+        "add": "Add ",
+        "save": "Save",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "more": "More",
         "loading": "Loading..."
     },
     "login": {
@@ -73,5 +78,13 @@
         "level2": "Member",
         "level3": "Moderator",
         "level4": "Admin"
+    },
+    "adminPanel": {
+        "title": "Members List",
+        "add": "Add Member",
+        "delete": "Delete Member",
+        "role": "Role: ",
+        "name": "Name: ",
+        "password": "Password: "
     }
 }
