@@ -3,6 +3,7 @@ import { useRoleContext } from "../../context/RoleContext";
 import Button from "../../util/Button";
 import Login from "../Login";
 import LoginReminder from "../../UI/LoginReminder";
+import useDownloadVisibility from "../../hooks/UseDownloadVisibility";
 
 type HeaderProps = {
     labels: LabelsType;
@@ -14,25 +15,6 @@ type HeaderProps = {
     onFilterReset: () => void;
 };
 
-
-function handleShowDownload(group: string) {
-    
-    // Hide all download buttons
-    const allDownloadButtons = document.querySelectorAll(".records-data-button");
-    allDownloadButtons.forEach((button) => {
-        button.classList.add("hidden-download-button");
-    });
-
-    // Show the download button for the currently selected group
-    const currentButton = document.querySelector(
-        `[data-group="${group}"] .records-data-button`
-    );
-
-    if (currentButton) {
-        currentButton.classList.remove("hidden-download-button");
-    }
-}
-
 function Header({
     selectedGroup,
     onFieldGroupChange,
@@ -42,10 +24,11 @@ function Header({
     onFilterReset,
 }: HeaderProps) {
     const { canViewContent } = useRoleContext();
+    const { showDownloadButton } = useDownloadVisibility();
 
     return (
         <>
-            {canViewContent ?
+            {canViewContent ? (
                 <section className="records-header">
                     {Object.keys(groupLabels).map((group) => (
                         <div
@@ -57,7 +40,7 @@ function Header({
                                 label={groupLabels[group]}
                                 onClick={() => {
                                     onFieldGroupChange(group);
-                                    handleShowDownload(group);
+                                    showDownloadButton(group); // Use the function returned by the hook
                                     onFilterReset();
                                 }}
                                 className={`records-show-button ${
@@ -73,15 +56,15 @@ function Header({
                             />
                         </div>
                     ))}
-            </section>
-            : 
-            <>
-                <LoginReminder />
-                <Login />
-            </>}
+                </section>
+            ) : (
+                <>
+                    <LoginReminder />
+                    <Login />
+                </>
+            )}
         </>
     );
 }
-
 
 export default Header;

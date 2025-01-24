@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import { RecordType } from "../../types/RecordType";
 import { useRoleContext } from "../../context/RoleContext";
-import LabelDetail from "../../UI/LabelDetail";
-import Label from "../../labels/UILabel.json"
+import Header from "./RecordsHeader";
+import Login from "../Login";
+import ConfirmationModal from "../ComfirmationModal";
 import useLabels from "../../hooks/UseLabels";
 import useRecords from "../../hooks/UseRecords";
-import Login from "../Login";
-import LoginReminder from "../../UI/LoginReminder";
-import ConfirmationModal from "../ComfirmationModal";
-import FieldGroups from "../../UI/FieldGroups";
+import useDownloadTextFile  from "../../hooks/useDownloadTextFile";
 import FilterButton from "../../util/FilterButton";
-import Header from "./RecordsHeader";
 import SystemMessage from "../../util/SystemMessage";
+import LabelDetail from "../../UI/LabelDetail";
+import LoginReminder from "../../UI/LoginReminder";
+import FieldGroups from "../../UI/FieldGroups";
+import Label from "../../labels/UILabel.json"
 import "../../styles/Records.css";
 
 export default function Records() {
@@ -25,6 +26,7 @@ export default function Records() {
     const [groupToDownload, setGroupToDownload] = useState<string | null>(null);
     const { canViewContent } = useRoleContext();
     const serverLabel = useLabels();
+    const { downloadTextFile } = useDownloadTextFile(FieldGroups, filteredRecords);
 
     useEffect(() => {
         if (records) {
@@ -140,13 +142,12 @@ export default function Records() {
 
     const handleConfirmAction = () => {
         if (groupToDownload) {
-            handleDownloadTextFile(groupToDownload);
+            downloadTextFile(groupToDownload);
             setGroupToDownload(null); // Reset the state after action
         }
-
+    
         setIsModalOpen(false);
     };
-    
 
     const handleCancelDownload = () => {
         setGroupToDownload(null); // Reset download state
@@ -162,37 +163,6 @@ export default function Records() {
         }
     }
 
-    const handleDownloadTextFile = (group: string) => {
-        const subject = `Records - ${FieldGroups[group]}`;
-        const downloadBody = FieldGroups[group]
-            .map((field) => {
-                return filteredRecords
-                    .map((record) => {
-                        const value = record[field as keyof RecordType];
-                        return `${record.name} - ${FieldGroups[group]}: ${
-                            typeof value === "boolean"
-                                ? value
-                                    ? "Yes"
-                                    : "No"
-                                : field.includes("Email")
-                                ? value || "N/A"
-                                : field.includes("link")
-                                ? value || "N/A"
-                                : value || "N/A"
-                        }`;
-                    })
-                    .join("\n");
-            })
-            .join("\n\n");
-    
-        const blob = new Blob([downloadBody], { type: "text/plain" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `${subject}.txt`;
-        link.click();
-    };
-    
-    
     return (
         <>
             {canViewContent ? 
