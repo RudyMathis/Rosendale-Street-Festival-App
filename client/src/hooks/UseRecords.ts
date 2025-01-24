@@ -2,11 +2,11 @@ import { useContext } from "react";
 import { RecordContext } from "../context/RecordContext";
 
 export default function useRecords() {
-    const context = useContext(RecordContext);
+    const record = useContext(RecordContext);
 
-    if (!context) {
+    if (!record) {
         throw new Error("useRecords must be used within a RecordProvider");
     }
 
-    return context;
+    return record;
 }

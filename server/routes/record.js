@@ -10,7 +10,7 @@ const getFormBodyData = async (body) => {
     // Fetch the labels from the labels endpoint
     const labelsResponse = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/labels`);
     const labels = await labelsResponse.json();
-    const fieldMappings = labels.record.fields;
+    const fieldMappings = labels.record;
     const formData = {};
 
     Object.keys(fieldMappings).forEach((key) => {

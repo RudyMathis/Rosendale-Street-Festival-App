@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useLabels from "../../hooks/UseLabels";
-import ErrorMessage from "../../UI/ErrorMessage";
+import Button from "../../util/Button";
+import Label from "../../labels/UILabel.json"
 type AddMemberProps = {
     onAdd: (newMember: { name: string; role: string; password: string }) => void;
 };
@@ -11,11 +12,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
         role: "member",  // Default role
         password: "",
     });
-    const labels = useLabels();
-
-    if (!labels) {
-        return <ErrorMessage />
-    }
+    const serverLabel = useLabels();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -28,15 +25,15 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         onAdd(newMember);
-        setNewMember({ name: "", role: labels.role.level2, password: "" }); // Clear form after submission
+        setNewMember({ name: "", role: serverLabel.role.level2, password: "" }); // Clear form after submission
     };
 
     return (
         <div className="add-member">
-        <h2>{labels.adminPanel.add} </h2>
+        <h2>{Label.adminPanel.add} </h2>
             <form className="container-shadow" onSubmit={handleSubmit}>
                 <label className="member-label">
-                    {labels.adminPanel.name} 
+                    {Label.adminPanel.name} 
                     <input
                         type="text"
                         name="name"
@@ -47,20 +44,20 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
                     />
                 </label>
                 <label className="member-label">
-                {labels.adminPanel.role}  
+                {Label.adminPanel.role}  
                     <select
                         name="role"
                         value={newMember.role}
                         onChange={handleInputChange}
                         required
                     >
-                        <option value={labels.role.level2}>{labels.displayRole.level2}</option>
-                        <option value={labels.role.level3}>{labels.displayRole.level3}</option>
-                        <option value={labels.role.level4}>{labels.displayRole.level4}</option>
+                        <option value={serverLabel.role.level2}>{Label.displayRole.level2}</option>
+                        <option value={serverLabel.role.level3}>{Label.displayRole.level3}</option>
+                        <option value={serverLabel.role.level4}>{Label.displayRole.level4}</option>
                     </select>
                 </label>
                 <label className="member-label">
-                    {labels.adminPanel.password}  
+                    {Label.adminPanel.password}  
                     <input
                         type="password"
                         name="password"
@@ -69,7 +66,12 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
                         required
                     />
                 </label>
-                <button className="add-member-button" type="submit">{labels.actions.add}{labels.displayRole.level2}</button>
+                <Button 
+                    label={Label.actions.add}
+                    secondaryLabel={Label.displayRole.level2}
+                    className="add-member-button"
+                    type="submit"
+                />
             </form>
         </div>
     );

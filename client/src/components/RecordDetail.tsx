@@ -5,14 +5,16 @@ import { RecordType } from "../types/RecordType";
 import LabelDetail from "../UI/LabelDetail";
 import useLabels from "../hooks/UseLabels";
 import useRecords from "../hooks/UseRecords";
+import Button from "../util/Button"
+import SystemMessage from "../util/SystemMessage";
 import LoadingMessage from "../UI/LoadingMessage";
-import ErrorMessage from "../UI/ErrorMessage";
+import Label from "../labels/UILabel.json"
 import "../styles/RecordDetail.css";
 
 export default function RecordDetail() {
     const { id } = useParams<{ id: string }>();
     const { canViewContent, canViewEditedDetail } = useRoleContext();
-    const labels = useLabels();
+    const serverLabel = useLabels();
     const { fetchRecordById } = useRecords();
     const [record, setRecord] = useState<RecordType | null>(null);
     const [loading, setLoading] = useState(true); // Add loading state
@@ -38,17 +40,31 @@ export default function RecordDetail() {
     }, [id, fetchRecordById]);
 
     if (loading) {
-        return <LoadingMessage message="Loading record details..." />;
+        return <LoadingMessage message="Loading record details..." />; // fix this
     }
 
-    if (error || !labels || !record) {
-        return <ErrorMessage />;
+    if (!record) {
+        return <SystemMessage
+                    title="Error"
+                    message="Missing Records"
+                    type="Error"
+                    parentElement="div"
+                />
+    }
+
+    if (error) {
+        return <SystemMessage
+                    title="Error"
+                    message="System Error"
+                    type="Error"
+                    parentElement="div"
+                />
     }
 
     const createEmailBody = () => {
         const emailContent = Object.entries(record)
             .filter(([key]) => !["_id", "nameOfUser", "editedTime"].includes(key)) // Exclude specific keys
-            .map(([key, value]) => `${labels.record.fields[key] || key}: ${value || "N/A"}`)
+            .map(([key, value]) => `${serverLabel.record[key] || key}: ${value || "N/A"}`)
             .join("\n");
     
         return encodeURIComponent(emailContent); // Encode email body
@@ -66,7 +82,7 @@ export default function RecordDetail() {
         // Generate content similar to email body
         return Object.entries(record)
             .filter(([key]) => !["_id", "nameOfUser", "editedTime"].includes(key)) // Exclude specific keys
-            .map(([key, value]) => `${labels.record.fields[key] || key}: ${value || "N/A"}`)
+            .map(([key, value]) => `${serverLabel.record[key] || key}: ${value || "N/A"}`)
             .join("\n");
     };
 
@@ -88,7 +104,7 @@ export default function RecordDetail() {
                 <>
                     <h3>{record.name}</h3>
                     <div className="record-detail-container container-shadow">
-                        {Object.entries(labels.record.fields).map(([key, label]) => (
+                        {Object.entries(serverLabel.record).map(([key, label]) => (
                             <LabelDetail
                                 key={key}
                                 label={label}
@@ -98,20 +114,30 @@ export default function RecordDetail() {
                         {canViewEditedDetail && (
                             <>
                                 <LabelDetail
-                                    label={labels.record.fields.nameOfUser}
+                                    label={serverLabel.record.nameOfUser}
                                     value={record.nameOfUser || "N/A"}
                                     style={{ color: "hsl(173 58% 39%)" }} 
                                 />
                                 <LabelDetail
-                                    label={labels.record.fields.editedTime}
+                                    label={serverLabel.record.editedTime}
                                     value={record.editedTime || "N/A"}
                                     style={{ color: "hsl(173 58% 39%)" }} 
                                 />
                             </>
                         )}
                     </div>
-                    <button onClick={handleSendEmail}>{labels.actions.sendEmail}</button>
-                    <button onClick={handleDownload}>Download</button>
+                    <Button 
+                        label={Label.actions.sendEmail} 
+                        onClick={handleSendEmail} 
+                        className="button"
+                        type="button"
+                    />
+                    <Button 
+                        label={Label.actions.download} 
+                        onClick={handleDownload} 
+                        className="button"
+                        type="button"
+                    />
                 </>
             }
         </>

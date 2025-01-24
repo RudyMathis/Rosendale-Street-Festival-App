@@ -1,17 +1,18 @@
-type ErrorMessageProps = {
-    message?: string; 
+type SystemMessageProps = {
+    title: string;
+    message: string;
+    type: string;
+    parentElement: keyof JSX.IntrinsicElements;
 };
 
-const ErrorMessage: React.FC<ErrorMessageProps> = ({ message = "Something went wrong" }) => {
+const SystemMessage: React.FC<SystemMessageProps> = ({ title, message, type, parentElement }) => {
+    const ParentElement = parentElement;
     return (
-        <div style={styles.container}>
-            <h2 style={styles.heading}>Something went wrong</h2>
+        <ParentElement style={styles.container} data-type={type}>
+            <h2 style={styles.heading}>{title}</h2>
             <p style={styles.message}>{message}</p>
-            <p style={styles.contact}>
-                If the issue persists, please contact the admin at 
-                <a href="mailto:admin@example.com" style={styles.email}> admin@example.com</a>
-            </p>
-        </div>
+            <a href="mailto:admin@example.com" style={styles.email}>admin@example.com</a>
+        </ParentElement>
     );
 };
 
@@ -35,13 +36,10 @@ const styles = {
         fontSize: '1em',
         marginBottom: '10px',
     },
-    contact: {
-        fontSize: '1em',
-    },
     email: {
         color: '#007bff',
         textDecoration: 'none',
     },
 };
 
-export default ErrorMessage;
+export default SystemMessage;

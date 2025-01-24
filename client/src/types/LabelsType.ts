@@ -7,14 +7,6 @@
     *******************************************/
 
 export type LabelsType = {
-    record: {
-        fields: Record<string, string>;
-    };
-    download: Record<string, string>;
-    actions: Record<string, string>;
-    login: Record<string, string>;
-    otherLabels: Record<string, string>;
+    record: Record<string, string>;
     role: Record<string, string>;
-    displayRole: Record<string, string>;
-    adminPanel: Record<string, string>;
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useLabels from "../../hooks/UseLabels";
-import ErrorMessage from "../../UI/ErrorMessage";
+import Button from "../../util/Button";
+import Label from "../../labels/UILabel.json"
 import "../../styles/members.css";
 
 type EditMemberProps = {
@@ -11,7 +12,7 @@ type EditMemberProps = {
 
 const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => {
     const [updatedMember, setUpdatedMember] = useState(member);
-    const labels = useLabels();
+    const serverLabel = useLabels();
 
     useEffect(() => {
         setUpdatedMember(member); // Reset to the original member data if the component re-renders
@@ -30,27 +31,23 @@ const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => 
         onSave(updatedMember);
     };
 
-    if (!labels) {
-        return <ErrorMessage />
-    }
-
     return (
             <form className="edit-member-form" onSubmit={handleSubmit}>
                 <label className="member-label">
-                    {labels.adminPanel.role}
+                    {Label.adminPanel.role}
                     <select
                         name="role"
                         value={updatedMember.role}
                         onChange={handleInputChange}
                         required
                     >
-                        <option value={labels.role.level2}>{labels.displayRole.level2}</option>
-                        <option value={labels.role.level3}>{labels.displayRole.level3}</option>
-                        <option value={labels.role.level4}>{labels.displayRole.level4}</option>
+                        <option value={serverLabel.role.level2}>{Label.displayRole.level2}</option>
+                        <option value={serverLabel.role.level3}>{Label.displayRole.level3}</option>
+                        <option value={serverLabel.role.level4}>{Label.displayRole.level4}</option>
                     </select>
                 </label>
                 <label className="member-label">
-                    {labels.adminPanel.name}
+                    {Label.adminPanel.name}
                     <input
                         type="text"
                         name="name"
@@ -60,7 +57,7 @@ const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => 
                     />
                 </label>
                 <label className="member-label">
-                    {labels.adminPanel.password}
+                    {Label.adminPanel.password}
                     <input
                         type="password"
                         name="password"
@@ -70,8 +67,17 @@ const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => 
                     />
                 </label>
                 <div className="edit-member-buttons">
-                    <button type="submit">{labels.actions.save}</button>
-                    <button type="button" onClick={onCancel}>{labels.actions.cancel}</button>
+                    <Button 
+                        label={Label.actions.save} 
+                        className="button"
+                        type="submit"
+                    />
+                    <Button 
+                        label={Label.actions.cancel}
+                        onClick={onCancel}
+                        className="button"
+                        type="button"
+                    />
                 </div>
             </form>
     );

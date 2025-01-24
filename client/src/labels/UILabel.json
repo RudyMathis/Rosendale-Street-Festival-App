@@ -1,0 +1,49 @@
+{
+    "download": {
+        "downloadAll": "Download All",
+        "downloadEmails": "Download Emails",
+        "downloadLevels": "Download Levels",
+        "downloadAccpeted": "Download Accepted",
+        "downloadContacts": "Download Contacts",
+        "downloadShirtSizes": "Download Shirt Sizes"
+    },
+    "actions": {
+        "action": "Action",
+        "delete": "Delete",
+        "edit": "Edit",
+        "submit": "Submit",
+        "sendEmail": "Send Email",
+        "add": "Add ",
+        "save": "Save",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "download": "Download",
+        "more": "More",
+        "loading": "Loading..."
+    },
+    "login": {
+        "login": "Log In",
+        "logout": "Log Out",
+        "name": "Name",
+        "password": "Password"
+    },
+    "otherLabels": {
+        "all": "All",
+        "contacts": "Contacts",
+        "shirts": "Shirts"
+    },
+    "displayRole": {
+        "level1": "Guest",
+        "level2": "Member",
+        "level3": "Moderator",
+        "level4": "Admin"
+    },
+    "adminPanel": {
+        "title": "Members List",
+        "add": "Add Member",
+        "delete": "Delete Member",
+        "role": "Role: ",
+        "name": "Name: ",
+        "password": "Password: "
+    }
+}

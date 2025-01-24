@@ -31,5 +31,6 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
         return <Loading message="Loading data from the server..." />;
     }
 
+
     return <LabelContext.Provider value={labels}>{children}</LabelContext.Provider>;
 };

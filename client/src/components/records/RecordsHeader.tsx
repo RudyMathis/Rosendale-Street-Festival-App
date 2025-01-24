@@ -1,7 +1,8 @@
-import { LabelsType } from "../types/LabelsType";
-import { useRoleContext } from "../context/RoleContext";
-import Login from "./Login";
-import LoginReminder from "../UI/LoginReminder";
+import { LabelsType } from "../../types/LabelsType";
+import { useRoleContext } from "../../context/RoleContext";
+import Button from "../../util/Button";
+import Login from "../Login";
+import LoginReminder from "../../UI/LoginReminder";
 
 type HeaderProps = {
     labels: LabelsType;
@@ -52,24 +53,24 @@ function Header({
                             data-group={group}
                             className={"record-header-button-container"}
                         >
-                            <button
-                                className={`records-show-button ${
-                                    selectedGroup === group ? "selected" : ""
-                                }`}
+                            <Button 
+                                label={groupLabels[group]}
                                 onClick={() => {
                                     onFieldGroupChange(group);
                                     handleShowDownload(group);
                                     onFilterReset();
                                 }}
-                            >
-                                {groupLabels[group]}
-                            </button>
-                            <button
-                                className="records-data-button hidden-download-button"
+                                className={`records-show-button ${
+                                    selectedGroup === group ? "selected" : ""
+                                }`}
+                                type="button"
+                            />
+                            <Button 
+                                label={downloadLabels[group]}
                                 onClick={() => onDownloadButtonClick(group)}
-                            >
-                                {downloadLabels[group]}
-                            </button>
+                                className="records-data-button hidden-download-button"
+                                type="button"
+                            />
                         </div>
                     ))}
             </section>

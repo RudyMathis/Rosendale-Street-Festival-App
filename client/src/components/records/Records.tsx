@@ -1,18 +1,18 @@
-
 import { useEffect, useState } from "react";
-import { RecordType } from "../types/RecordType";
-import { useRoleContext } from "../context/RoleContext";
-import LabelDetail from "../UI/LabelDetail";
-import useLabels from "../hooks/UseLabels";
-import useRecords from "../hooks/UseRecords";
-import Login from "./Login";
-import LoginReminder from "../UI/LoginReminder";
-import ConfirmationModal from "./ComfirmationModal";
-import FieldGroups from "../UI/FieldGroups";
-import FilterButton from "../UI/FilterButton";
+import { RecordType } from "../../types/RecordType";
+import { useRoleContext } from "../../context/RoleContext";
+import LabelDetail from "../../UI/LabelDetail";
+import Label from "../../labels/UILabel.json"
+import useLabels from "../../hooks/UseLabels";
+import useRecords from "../../hooks/UseRecords";
+import Login from "../Login";
+import LoginReminder from "../../UI/LoginReminder";
+import ConfirmationModal from "../ComfirmationModal";
+import FieldGroups from "../../UI/FieldGroups";
+import FilterButton from "../../util/FilterButton";
 import Header from "./RecordsHeader";
-import ErrorMessage from "../UI/ErrorMessage";
-import "../styles/Records.css"
+import SystemMessage from "../../util/SystemMessage";
+import "../../styles/Records.css";
 
 export default function Records() {
     const { records,  } = useRecords();
@@ -24,7 +24,7 @@ export default function Records() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [groupToDownload, setGroupToDownload] = useState<string | null>(null);
     const { canViewContent } = useRoleContext();
-    const labels = useLabels();
+    const serverLabel = useLabels();
 
     useEffect(() => {
         if (records) {
@@ -37,41 +37,47 @@ export default function Records() {
     }, []);
 
     if (!records) {
-        return <ErrorMessage />;
-    }
-
-    if (!labels) {
-        return <ErrorMessage />;
+        return <SystemMessage
+                    title="Error"
+                    message="Missing Records"
+                    type="Error"
+                    parentElement="div"
+                />
     }
 
     if (records.length === 0) {
-        return <p>{labels.actions.loading}</p>;
+        return <p>{Label.actions.loading}</p>; // fix this
     }
 
     const groupLabels = {
-        all: labels.otherLabels.all,
-        levels: labels.record.fields.level,
-        emails: labels.record.fields.email,
-        contacts: labels.otherLabels.contacts,
-        isAccepted: labels.record.fields.isAccepted,
-        shirts: labels.otherLabels.shirts,
+        all: Label.otherLabels.all,
+        levels: serverLabel.record.level,
+        emails: serverLabel.record.email,
+        contacts: Label.otherLabels.contacts,
+        isAccepted: serverLabel.record.isAccepted,
+        shirts: Label.otherLabels.shirts,
     };
 
     const downloadLabels = {
-        all: labels.download.downloadAll,
-        levels: labels.download.downloadLevels,
-        emails: labels.download.downloadEmails,
-        contacts: labels.download.downloadContacts,
-        isAccepted: labels.download.downloadAccpeted,
-        shirts: labels.download.downloadShirtSizes,
+        all: Label.download.downloadAll,
+        levels: Label.download.downloadLevels,
+        emails: Label.download.downloadEmails,
+        contacts: Label.download.downloadContacts,
+        isAccepted: Label.download.downloadAccpeted,
+        shirts: Label.download.downloadShirtSizes,
     };
 
     function handleFieldGroup(group: string) {
         setSelectedFields(FieldGroups[group]);
         setSelectedGroup(group);
-
+        
         if (!records) {
-            return <ErrorMessage />;
+            return <SystemMessage
+                        title="Error"
+                        message="Missing Field Group"
+                        type="Error"
+                        parentElement="div"
+                    />
         }
         
         // reset the filtered records
@@ -81,7 +87,12 @@ export default function Records() {
 
     function handleLevelFilter(level: string) {
         if (!records) {
-            return <ErrorMessage />;
+            return <SystemMessage
+                        title="Error"
+                        message="Missing Level Filter"
+                        type="Error"
+                        parentElement="div"
+                    />
         }
 
         const filtered = records.filter((record) => record.level.toLowerCase() === level.toLowerCase());
@@ -91,7 +102,12 @@ export default function Records() {
 
     function handleIsAcceptedFilter(isAccepted: boolean) {
         if (!records) {
-            return <ErrorMessage />;
+            return <SystemMessage
+                        title="Error"
+                        message="Missing Accepted Filter"
+                        type="Error"
+                        parentElement="div"
+                    />
         }
 
         const filtered = records.filter((record) => record.isAccepted === isAccepted);
@@ -101,7 +117,12 @@ export default function Records() {
 
     function handleShirtFilter(size: string) {
         if (!records) {
-            return <ErrorMessage />;
+            return <SystemMessage
+                        title="Error"
+                        message="Missing Shirt Filter"
+                        type="Error"
+                        parentElement="div"
+                    />
         }
 
         const filtered = records.filter((record) => record[`shirtSize${size}` as keyof RecordType]);
@@ -176,9 +197,9 @@ export default function Records() {
         <>
             {canViewContent ? 
                 <section className="records-container">
-                    <h3>{labels.record.fields.allRecords}</h3>
+                    <h3>{serverLabel.record.allRecords}</h3>
                     <Header
-                        labels={labels}
+                        labels={serverLabel}
                         selectedGroup={selectedGroup}
                         onFieldGroupChange={handleFieldGroup}
                         onDownloadButtonClick={handleDownloadButtonClick}
@@ -244,7 +265,7 @@ export default function Records() {
                             {selectedFields.map((field) => (
                                 <LabelDetail
                                     key={field}
-                                    label={labels.record.fields[field]} 
+                                    label={serverLabel.record[field]} 
                                     value={String(record[field as keyof RecordType]) || "N/A"} 
                                 />
                             ))}

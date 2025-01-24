@@ -19,11 +19,11 @@ export const UserContextProvider: React.FC<{ children: ReactNode }> = ({ childre
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [isUserLoaded, setIsUserLoaded] = useState(false);
 
-    const labels = useContext(LabelContext); // Access the labels context
+    const serverLabel = useContext(LabelContext); // Access the labels context
 
     useEffect(() => {
 
-        if (labels) {
+        if (serverLabel) {
             const storedUser = localStorage.getItem("currentUser");
             const loggedIn = localStorage.getItem("loggedIn");
 
@@ -35,9 +35,9 @@ export const UserContextProvider: React.FC<{ children: ReactNode }> = ({ childre
             }
             setIsUserLoaded(true);
         }
-    }, [labels]);
+    }, [serverLabel]);
 
-    if (!isUserLoaded || !labels) {
+    if (!isUserLoaded || !serverLabel) {
         return <Loading message="Loading user and labels..." />;
     }
 

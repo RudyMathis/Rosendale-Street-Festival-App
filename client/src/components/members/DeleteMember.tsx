@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ConfirmationModal from "../ComfirmationModal"
 import useLabels from "../../hooks/UseLabels";
-import ErrorMessage from "../../UI/ErrorMessage";
+import Label from "../../labels/UILabel.json"
 
 type DeleteMemberProps = {
     memberId: string;
@@ -13,15 +13,12 @@ const DeleteMember: React.FC<DeleteMemberProps> = ({ memberId, role, deleteMemeb
     const [modalOpen, setModalOpen] = useState(false);
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
-    const labels = useLabels();
+    const serverLabel = useLabels();
 
     const handleConfirmDelete = () => {
         deleteMemeber(memberId);
         closeModal();
     };
-    if (!labels) {
-        return <ErrorMessage />
-    }
 
     return (
         <>
@@ -30,9 +27,9 @@ const DeleteMember: React.FC<DeleteMemberProps> = ({ memberId, role, deleteMemeb
                     className="action-delete"
                     type="button"
                     onClick={openModal}
-                    disabled={role === `${labels.role.level4}`} // Disable button for admin members
+                    disabled={role === `${serverLabel.role.level4}`} // Disable button for admin members
                 >
-                    {labels.adminPanel.delete}
+                    {Label.adminPanel.delete}
                 </button>
             </div>
             {modalOpen && (

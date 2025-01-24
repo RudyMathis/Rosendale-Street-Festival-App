@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
-import useLabels from "../hooks/UseLabels";
-import ErrorMessage from "../UI/ErrorMessage";
-import "../styles/Login.css";
 import { UserRole } from "../types/RoleType";
+import Button from "../util/Button";
+import Label from "../labels/UILabel.json"
+import "../styles/Login.css";
 
 type Member = {
     _id: string;
@@ -20,14 +20,12 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const labels = useLabels();
 
-    // Fetch the members from your API (assuming the API exists)
     useEffect(() => {
         const fetchMembers = async () => {
             try {
                 const response = await fetch(
-                    `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/members`
+                    `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/members` // Make into hook
                 );
 
                 if (!response.ok) {
@@ -65,13 +63,9 @@ const Login: React.FC = () => {
         navigate("/");
     };
 
-    if (!labels) {
-        return <ErrorMessage />;
-    }
-
     return (
         <section className="login-container container-shadow">
-            <h2>{labels.login.login}</h2>
+            <h2>{Label.login.login}</h2>
             <form
                 className="login-form"
                 onSubmit={(e) => {
@@ -81,7 +75,7 @@ const Login: React.FC = () => {
             >
                 <div className="login-content">
                     <label className="login-label">
-                        {labels.login.name}:
+                        {Label.login.name}:
                         <input
                             type="text"
                             name="name"
@@ -92,7 +86,7 @@ const Login: React.FC = () => {
                         />
                     </label>
                     <label className="login-label">
-                        {labels.login.password}:
+                        {Label.login.password}:
                         <input
                             type="password"
                             name="password"
@@ -103,9 +97,11 @@ const Login: React.FC = () => {
                     </label>
                     {error && <p style={{ color: "red" }}>{error}</p>}
                 </div>
-                <button className="submit-button" type="submit">
-                    {labels.actions.submit}
-                </button>
+                <Button 
+                    label={Label.actions.submit}
+                    className="submit-button"
+                    type="submit"
+                />
             </form>
         </section>
     );

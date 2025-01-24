@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import FormInput from "../UI/FormInput";
+import FormInput from "../util/FormInput";
 import { useRoleContext } from "../context/RoleContext";
 import { useUserContext } from "../context/UserContext";
 import Login from "./Login";
 import LoginReminder from "../UI/LoginReminder";
 import useLabels from "../hooks/UseLabels";
-import ErrorMessage from "../UI/ErrorMessage";
 import "../styles/CreateRecord.css";
 
 export default function Record() {
@@ -21,7 +20,7 @@ export default function Record() {
       if (!id) return;
 
       setIsNew(false);
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}`);
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}`); // part of hook
       if (!response.ok) {
         console.error(`An error has occurred: ${response.statusText}`);
         return;
@@ -75,50 +74,47 @@ export default function Record() {
     editedTime: new Date().toLocaleDateString(),
   });
 
-  const labels = useLabels();
-  if (!labels) {
-    return <ErrorMessage />;
-  }
+  const serverLabel = useLabels();
 
   const formSections = [
     {
       title: "Performer/Band",
       fields: [
-        { label: labels.record.fields.name, name: labels.record.fields.name, type: "text", placeholder: "Enter your name", required: true },
-        { label: labels.record.fields.email, name: labels.record.fields.email, type: "email", placeholder: "Enter your email", required: true },
-        { label: labels.record.fields.level, name: labels.record.fields.level, type: "radio", options: ["Low", "Medium", "High"] },
-        { label: labels.record.fields.committeNotes, name: labels.record.fields.committeNotes, type: "textarea", placeholder: "Committee Notes" },
-        { label: labels.record.fields.members, name: labels.record.fields.members, type: "number", placeholder: "Number of members", required: true },
-        { label: labels.record.fields.hudsonValley, name: labels.record.fields.hudsonValley, type: "checkbox" },
+        { label: serverLabel.record.name, name: serverLabel.record.name, type: "text", placeholder: "Enter your name", required: true },
+        { label: serverLabel.record.email, name: serverLabel.record.email, type: "email", placeholder: "Enter your email", required: true },
+        { label: serverLabel.record.level, name: serverLabel.record.level, type: "radio", options: ["Low", "Medium", "High"] },
+        { label: serverLabel.record.committeNotes, name: serverLabel.record.committeNotes, type: "textarea", placeholder: "Committee Notes" },
+        { label: serverLabel.record.members, name: serverLabel.record.members, type: "number", placeholder: "Number of members", required: true },
+        { label: serverLabel.record.hudsonValley, name: serverLabel.record.hudsonValley, type: "checkbox" },
       ],
     },
     {
       title: "T-shirt Sizes",
       fields: [
-        { label: labels.record.fields.shirtSizeXS, name: labels.record.fields.shirtSizeXS, type: "number" },
-        { label: labels.record.fields.shirtSizeS, name: labels.record.fields.shirtSizeS, type: "number" },
-        { label: labels.record.fields.shirtSizeM, name: labels.record.fields.shirtSizeM, type: "number" },
-        { label: labels.record.fields.shirtSizeL, name: labels.record.fields.shirtSizeL, type: "number" },
-        { label: labels.record.fields.shirtSizeXL, name: labels.record.fields.shirtSizeXL, type: "number" },
-        { label: labels.record.fields.shirtSizeXXL, name: labels.record.fields.shirtSizeXXL, type: "number" },
+        { label: serverLabel.record.shirtSizeXS, name: serverLabel.record.shirtSizeXS, type: "number" },
+        { label: serverLabel.record.shirtSizeS, name: serverLabel.record.shirtSizeS, type: "number" },
+        { label: serverLabel.record.shirtSizeM, name: serverLabel.record.shirtSizeM, type: "number" },
+        { label: serverLabel.record.shirtSizeL, name: serverLabel.record.shirtSizeL, type: "number" },
+        { label: serverLabel.record.shirtSizeXL, name: serverLabel.record.shirtSizeXL, type: "number" },
+        { label: serverLabel.record.shirtSizeXXL, name: serverLabel.record.shirtSizeXXL, type: "number" },
       ],
     },
     {
       title: "Contact Information",
       fields: [
-        { label: labels.record.fields.primaryContact, name: labels.record.fields.primaryContact, type: "text", required: true },
-        { label: labels.record.fields.primaryEmail, name: labels.record.fields.primaryEmail, type: "email", required: true },
-        { label: labels.record.fields.primaryPhone, name: labels.record.fields.primaryPhone, type: "tel", required: true },
-        { label: labels.record.fields.primaryAddress, name: labels.record.fields.primaryAddress, type: "text", required: true },
-        { label: labels.record.fields.secondaryContact, name: labels.record.fields.secondaryContact, type: "text" },
-        { label: labels.record.fields.secondaryEmail, name: labels.record.fields.secondaryEmail, type: "email" },
-        { label: labels.record.fields.secondaryPhone, name: labels.record.fields.secondaryPhone, type: "tel" },
+        { label: serverLabel.record.primaryContact, name: serverLabel.record.primaryContact, type: "text", required: true },
+        { label: serverLabel.record.primaryEmail, name: serverLabel.record.primaryEmail, type: "email", required: true },
+        { label: serverLabel.record.primaryPhone, name: serverLabel.record.primaryPhone, type: "tel", required: true },
+        { label: serverLabel.record.primaryAddress, name: serverLabel.record.primaryAddress, type: "text", required: true },
+        { label: serverLabel.record.secondaryContact, name: serverLabel.record.secondaryContact, type: "text" },
+        { label: serverLabel.record.secondaryEmail, name: serverLabel.record.secondaryEmail, type: "email" },
+        { label: serverLabel.record.secondaryPhone, name: serverLabel.record.secondaryPhone, type: "tel" },
       ],
     },
     {
       title: "Approval",
       fields: [
-        { label: labels.record.fields.approval, name: labels.record.fields.approval, type: "checkbox" },
+        { label: serverLabel.record.approval, name: serverLabel.record.approval, type: "checkbox" },
       ],
     },
   ];
@@ -155,7 +151,7 @@ export default function Record() {
           <h3>{isNew ? "Create" : "Update"} Performer/Band</h3>
           <form className="record-form" onSubmit={onSubmit}>
             {formSections.map(({ title, fields }) => (
-              title === labels.record.fields.approval ? (
+              title === serverLabel.record.approval ? (
                 canViewActions && (
                   <fieldset key={title} className="create-record-form-section">
                     <legend className="create-record-form-section-title">{title}</legend>

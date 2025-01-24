@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useRoleContext } from "../../context/RoleContext";
-import useLabels from "../../hooks/UseLabels";
 import AddMember from "./AddMember";
 import EditMember from "./EditMember";
 import DeleteMember from "./DeleteMember";
 import Login from "../Login";
+import Button from "../../util/Button";
 import LoginReminder from "../../UI/LoginReminder";
-import ErrorMessage from "../../UI/ErrorMessage";
+import Label from "../../labels/UILabel.json"
 
 type Member = {
   _id: string;
@@ -21,13 +21,12 @@ const MembersPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [editingMemberId, setEditingMemberId] = useState<string | null>(null);
   const { canEditRecords } = useRoleContext();
-  const labels = useLabels();
 
   useEffect(() => {
     const fetchMembers = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/members`
+          `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/members` // Make into hook
         );
 
         if (!response.ok) {
@@ -115,38 +114,42 @@ const MembersPage = () => {
 };
 
 
-  if (loading) return <p>Loading members...</p>;
-  if (error) return <p>Error: {error}</p>;
-
-  if (!labels) {
-    return <ErrorMessage />
-}
-
+  if (loading) return <p>Loading members...</p>; // update
+  if (error) return <p>Error: {error}</p>; // update
 
   return (
     <>
       {canEditRecords ? 
         <section>
           <AddMember onAdd={handleAddMember} />
-          <h2>{labels.adminPanel.title}</h2>
+          <h2>{Label.adminPanel.title}</h2>
           <ul>
             {members.map((member) => (
               <li className="container-shadow member-list-container" key={member._id}>
                 <div className="member-container">
                   <div className="member-details">
                     <div className="member-label">
-                        <strong>{labels.adminPanel.role}</strong><span>{member.role}</span>
+                        <strong>{Label.adminPanel.role}</strong><span>{member.role}</span>
                     </div>
                     <div className="member-label">
-                        <strong>{labels.adminPanel.name}</strong><span>{member.name}</span>
+                        <strong>{Label.adminPanel.name}</strong><span>{member.name}</span>
                     </div>
                     <div className="member-label">
-                        <strong>{labels.adminPanel.password}</strong><span>{member.password}</span>
+                        <strong>{Label.adminPanel.password}</strong><span>{member.password}</span>
                     </div>
                   </div>
                   <div className="member-button-container">
-                    <button onClick={() => setEditingMemberId(member._id)}>{labels.actions.edit}</button>
-                      <DeleteMember memberId={member._id} deleteMemeber={handleDeleteMember} role={member.role} />
+                    <Button 
+                          label={Label.actions.edit} 
+                          onClick={() => setEditingMemberId(member._id)}
+                          className="button"
+                          type="button"
+                      />
+                      <DeleteMember 
+                        memberId={member._id} 
+                        deleteMemeber={handleDeleteMember} 
+                        role={member.role} 
+                      />
                   </div>
                 </div>
                 {editingMemberId === member._id && (

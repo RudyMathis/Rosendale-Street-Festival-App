@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useRoleContext } from "../../context/RoleContext";
 import ConfirmationModal from "../ComfirmationModal";
+import Label from "../../labels/UILabel.json"
 import useLabels from "../../hooks/UseLabels";
-import ErrorMessage from '../../UI/ErrorMessage';
 import "../../styles/RecordList.css";
 type RecordType = {
     _id: string;
@@ -31,7 +31,7 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [, setRecords] = useState<RecordType[]>([]);
     const [updateisAccepted, setUpdateIsAccepted] = useState(record.isAccepted);
-    const labels = useLabels();
+    const serverLabel = useLabels();
     
 
     const openModal = () => setModalOpen(true);
@@ -45,7 +45,7 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
     async function updateAccepted(id: string) {
         try {
             const newIsAccepted = !updateisAccepted;
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}/isAccepted`, {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}/isAccepted`, { // hook
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -73,30 +73,26 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
             console.error("Failed to update isAccepted:", error);
         }
     }
-
-    if (!labels) {
-        return <ErrorMessage />;
-    }
     
     return (
         <>
             <tr>
                 <td className="record-td-container">
-                    <div className="hidden-desktop">{labels.record.fields.name}</div>
+                    <div className="hidden-desktop">{serverLabel.record.name}</div>
                     <Link to={`/record/${record._id}`}>{record.name}</Link>
                 </td>
                 <td className="record-td-container">
-                    <div className="hidden-desktop">{labels.record.fields.email}</div>
+                    <div className="hidden-desktop">{serverLabel.record.email}</div>
                     <a className="link" href={`mailto:${record.email}`} target="_blank" rel="noopener noreferrer">
                         {record.email}
                     </a>
                 </td>
                 <td className={`record-td-container level-${record.level.toLowerCase()}`}>
-                    <div className="hidden-desktop">{labels.record.fields.level}</div>
+                    <div className="hidden-desktop">{serverLabel.record.level}</div>
                     {record.level}
                 </td>
                 <td className="record-td-container">
-                    <div className="hidden-desktop">{labels.record.fields.hudsonValley}</div>
+                    <div className="hidden-desktop">{serverLabel.record.hudsonValley}</div>
                     <input
                         type="checkbox"
                         name="Hudson Valley"
@@ -106,7 +102,7 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
                     />
                 </td>
                 <td className={`record-td-container ${updateisAccepted ? "approved" : "pending"}`}>
-                    <div className="hidden-desktop">{labels.record.fields.isAccepted}</div>
+                    <div className="hidden-desktop">{serverLabel.record.isAccepted}</div>
                     <input
                         type="checkbox"
                         name="Accpepted"
@@ -116,11 +112,11 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
                     />
                 </td> 
                 <td className="record-td-container">
-                    <div className="hidden-desktop">{labels.record.fields.members}</div>
+                    <div className="hidden-desktop">{serverLabel.record.members}</div>
                     {record.members}
                 </td>
                 <td className="record-td-container">
-                    <div className="hidden-desktop">{labels.record.fields.link}</div>
+                    <div className="hidden-desktop">{serverLabel.record.link}</div>
                     <a className="link" ref={record.link} target="_blank" rel="noopener noreferrer">
                         {record.link}
                     </a>
@@ -128,11 +124,11 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
                 {canViewEditedDetail && (
                     <>
                         <td className="record-td-container">
-                            <div className="hidden-desktop">{labels.record.fields.addedBy}</div>
+                            <div className="hidden-desktop">{serverLabel.record.addedBy}</div>
                             {record.nameOfUser}
                         </td>
                         <td className="record-td-container">
-                            <div className="hidden-desktop">{labels.record.fields.editedTime}</div>
+                            <div className="hidden-desktop">{serverLabel.record.editedTime}</div>
                             {record.editedTime}
                         </td>
                     </>
@@ -141,9 +137,9 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
                     <td>
                         <div className="action-container">
                             <Link to={`/edit/${record._id}`}>
-                                <button className="action-edit">{labels.actions.edit}</button>
+                                <button className="action-edit">{Label.actions.edit}</button>
                             </Link>
-                            <button className="action-delete" type="button" onClick={openModal}>{labels.actions.delete}</button>
+                            <button className="action-delete" type="button" onClick={openModal}>{Label.actions.delete}</button>
                         </div>
                     </td>
                 )}

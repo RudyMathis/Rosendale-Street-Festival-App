@@ -7,7 +7,7 @@ import {
 import App from "./App";
 import CreateRecord from "./components/CreateRecord";
 import RecordDetail from "./components/RecordDetail";
-import Records from "./components/Records";
+import Records from "./components/records/Records";
 import RecordListHeader from "./components/record list/RecordListHeader";
 import Login from "./components/Login";
 import MembersPage from "./components/members/MembersPage";

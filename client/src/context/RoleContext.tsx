@@ -1,7 +1,6 @@
 import { createContext, useContext, ReactNode } from "react";
 import { useUserContext } from "./UserContext";
 import useLabels from "../hooks/UseLabels";
-import ErrorMessage from "../UI/ErrorMessage";
 
 // Define all possible permissions
 type RoleContextType = {
@@ -17,14 +16,10 @@ const RoleContext = createContext<RoleContextType | undefined>(undefined);
 
 export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { currentUser } = useUserContext();
-  const labels = useLabels();
-  
-  if (!labels) {
-    return <ErrorMessage />;
-  }
+  const serverLabel = useLabels();
   
   const roleHierarchy = {
-    [labels.role.level1]: {
+    [serverLabel.role.level1]: {
       differentDisplay: "",
       canViewContent: false,
       canViewActions: false,
@@ -32,7 +27,7 @@ export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ childre
       canViewEditedDetail: false,
       canEditRecords: false,
     },
-    [labels.role.level2]: {
+    [serverLabel.role.level2]: {
       differentDisplay: "Suggest Performer/Band",
       canViewContent: true,
       canViewActions: false,
@@ -40,7 +35,7 @@ export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ childre
       canViewEditedDetail: false,
       canEditRecords: false,
     },
-    [labels.role.level3]: {
+    [serverLabel.role.level3]: {
       differentDisplay: "Add Performer/Band",
       canViewContent: true,
       canViewActions: true,
@@ -48,7 +43,7 @@ export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ childre
       canViewEditedDetail: true,
       canEditRecords: false,
     },
-    [labels.role.level4]: {
+    [serverLabel.role.level4]: {
       differentDisplay: "Add Performer/Band",
       canViewContent: true,
       canViewActions: true,
@@ -59,7 +54,7 @@ export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ childre
   };
 
   // Resolve permissions based on currentUser's role, default to "guest" if no user
-  const permissions = roleHierarchy[currentUser?.role ?? labels.role.level1];
+  const permissions = roleHierarchy[currentUser?.role ?? serverLabel.role.level1];
 
   return (
     <RoleContext.Provider value={permissions}>
