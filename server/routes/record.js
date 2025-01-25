@@ -5,51 +5,6 @@ import { connectToMongoDB, getDatabase } from "../database/connection.js";
 const router = express.Router();
 
 // Utility to map request body to the form fields
-// const getFormBodyData = async (body) => {
-//   try {
-//     // Fetch the labels from the labels endpoint
-//     const labelsResponse = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/labels`);
-//     const labels = await labelsResponse.json();
-//     const fieldMappings = labels.record;
-//     const formData = {};
-
-//     Object.keys(fieldMappings).forEach((key) => {
-//       formData[key] = body[key];
-//     });
-
-//     return formData;
-//   } catch (err) {
-//     console.error("Error fetching labels:", err);
-//     throw new Error("Error fetching labels");
-//   }
-// };
-// const getFormBodyData = async (body) => {
-//   try {
-//     const baseUrl = process.env.API_BASE_URL || "http://localhost:5050";
-//     const labelsResponse = await fetch(`${baseUrl}/labels`);
-//     const labels = await labelsResponse.json();
-
-//     if (!labels || !labels.record) {
-//       throw new Error("Invalid labels structure");
-//     }
-
-//     const fieldMappings = labels.record;
-//     const formData = {};
-
-//     // Iterate over each field mapping to ensure only one entry per field
-//     Object.entries(fieldMappings).forEach(([dbKey, formKey]) => {
-//       if (body[formKey] !== undefined) {
-//         formData[dbKey] = body[formKey];
-//       }
-//     });
-
-//     console.log("Mapped form data:", formData);
-//     return formData;
-//   } catch (err) {
-//     console.error("Error in getFormBodyData:", err.message);
-//     throw new Error("Failed to process form data");
-//   }
-// };
 
 const getFormBodyData = (body) => ({
   name: body.name,
@@ -84,9 +39,6 @@ const getFormBodyData = (body) => ({
   nameOfUser: body.nameOfUser,
   editedTime: body.editedTime,
 });
-
-
-
 
 // Get all records
 router.get("/", async (req, res) => {
@@ -135,33 +87,6 @@ router.post("/", async (req, res) => {
     res.status(500).send({ error: "Error adding record" });
   }
 });
-
-// router.post("/", async (req, res) => {
-//   try {
-//     console.log("Incoming request body:", req.body);
-
-//     // Fetch and log the labels
-//     const newDocument = await getFormBodyData(req.body);
-//     console.log("Mapped document to insert:", newDocument);
-
-//     // Log database connection status
-//     await connectToMongoDB();
-//     console.log("Connected to MongoDB");
-
-//     const db = getDatabase("bands");
-//     const collection = db.collection("records");
-
-//     // Attempt insertion and log the result
-//     const result = await collection.insertOne(newDocument);
-//     console.log("Insert result:", result);
-
-//     res.status(201).send(result);
-//   } catch (err) {
-//     console.error("Error adding record:", err);
-//     res.status(500).send({ error: err.message || "Error adding record" });
-//   }
-// });
-
 
 // Update a record by ID
 router.patch("/:id", async (req, res) => {
