@@ -36,6 +36,11 @@ const getFormBodyData = async (body) => {
     const fieldMappings = labels.record;
     const formData = {};
 
+    console.log("labels", labels);
+    console.log("fieldMappings", fieldMappings);
+    console.log("labels.record", labels.record);
+    console.log("formData", formData);
+
     // Iterate over each field mapping to ensure only one entry per field
     Object.entries(fieldMappings).forEach(([dbKey, formKey]) => {
       if (body[formKey] !== undefined) {
