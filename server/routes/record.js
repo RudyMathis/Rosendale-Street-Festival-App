@@ -23,42 +23,67 @@ const router = express.Router();
 //     throw new Error("Error fetching labels");
 //   }
 // };
-const getFormBodyData = async (body) => {
-  try {
-    const baseUrl = process.env.API_BASE_URL || "http://localhost:5050";
-    const labelsResponse = await fetch(`${baseUrl}/labels`);
-    const labels = await labelsResponse.json();
+// const getFormBodyData = async (body) => {
+//   try {
+//     const baseUrl = process.env.API_BASE_URL || "http://localhost:5050";
+//     const labelsResponse = await fetch(`${baseUrl}/labels`);
+//     const labels = await labelsResponse.json();
 
-    if (!labels || !labels.record) {
-      throw new Error("Invalid labels structure");
-    }
+//     if (!labels || !labels.record) {
+//       throw new Error("Invalid labels structure");
+//     }
 
-    const fieldMappings = labels.record;
-    const formData = {};
+//     const fieldMappings = labels.record;
+//     const formData = {};
 
-    console.log("labels", labels);
-    console.log("fieldMappings", fieldMappings);
-    console.log("labels.record", labels.record);
-    console.log("formData", formData);
+//     // Iterate over each field mapping to ensure only one entry per field
+//     Object.entries(fieldMappings).forEach(([dbKey, formKey]) => {
+//       if (body[formKey] !== undefined) {
+//         formData[dbKey] = body[formKey];
+//       }
+//     });
 
-    // Iterate over each field mapping to ensure only one entry per field
-    Object.entries(fieldMappings).forEach(([dbKey, formKey]) => {
-      if (body[formKey] !== undefined) {
-        formData[dbKey] = body[formKey];
-      }
-    });
+//     console.log("Mapped form data:", formData);
+//     return formData;
+//   } catch (err) {
+//     console.error("Error in getFormBodyData:", err.message);
+//     throw new Error("Failed to process form data");
+//   }
+// };
 
-    console.log("Mapped form data:", formData);
-    return formData;
-  } catch (err) {
-    console.error("Error in getFormBodyData:", err.message);
-    console.error("labels", labels);
-    console.error("fieldMappings", fieldMappings);
-    console.error("labels.record", labels.record);
-    console.error("formData", formData);
-    throw new Error("Failed to process form data");
-  }
-};
+const getFormBodyData = (body) => ({
+  name: body.name,
+  email: body.email,
+  level: body.level,
+  committeNotes: body.committeNotes,
+  members: body.members,
+  hudsonValley: body.hudsonValley,
+  summary: body.summary,
+  genre: body.genre,
+  link: body.link,
+  dates: body.dates,
+  anotherGig: body.anotherGig,
+  gigIfYes: body.gigIfYes,
+  shirtSizeXS: body.shirtSizeXS,
+  shirtSizeS: body.shirtSizeS,
+  shirtSizeM: body.shirtSizeM,
+  shirtSizeL: body.shirtSizeL,
+  shirtSizeXL: body.shirtSizeXL,
+  shirtSizeXXL: body.shirtSizeXXL,
+  primaryContact: body.primaryContact,
+  primaryEmail: body.primaryEmail,
+  primaryPhone: body.primaryPhone,
+  primaryAddress: body.primaryAddress,
+  secondaryContact: body.secondaryContact,
+  secondaryEmail: body.secondaryEmail,
+  secondaryPhone: body.secondaryPhone,
+  isNewToStreeFest: body.isNewToStreeFest,
+  isWillingToFundraise: body.isWillingToFundraise,
+  anythingElse: body.anythingElse,
+  isAccepted: body.isAccepted,
+  nameOfUser: body.nameOfUser,
+  editedTime: body.editedTime,
+});
 
 
 
