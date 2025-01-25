@@ -4,12 +4,35 @@ import { connectToMongoDB, getDatabase } from "../database/connection.js";
 
 const router = express.Router();
 
-// Utility to map request body to the form fields
+// // Utility to map request body to the form fields
+// const getFormBodyData = async (body) => {
+//   try {
+//     // Fetch the labels from the labels endpoint
+//     const labelsResponse = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/labels`);
+//     const labels = await labelsResponse.json();
+//     const fieldMappings = labels.record;
+//     const formData = {};
+
+//     Object.keys(fieldMappings).forEach((key) => {
+//       formData[key] = body[key];
+//     });
+
+//     return formData;
+//   } catch (err) {
+//     console.error("Error fetching labels:", err);
+//     throw new Error("Error fetching labels");
+//   }
+// };
+
 const getFormBodyData = async (body) => {
   try {
-    // Fetch the labels from the labels endpoint
-    const labelsResponse = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/labels`);
+    const baseUrl = process.env.API_BASE_URL || "http://localhost:5050";
+    const labelsResponse = await fetch(`${baseUrl}/labels`);
+    if (!labelsResponse.ok) {
+      throw new Error(`Failed to fetch labels: ${labelsResponse.statusText}`);
+    }
     const labels = await labelsResponse.json();
+
     const fieldMappings = labels.record;
     const formData = {};
 
@@ -23,6 +46,7 @@ const getFormBodyData = async (body) => {
     throw new Error("Error fetching labels");
   }
 };
+
 
 // Get all records
 router.get("/", async (req, res) => {
