@@ -4,7 +4,7 @@ import { connectToMongoDB, getDatabase } from "../database/connection.js";
 
 const router = express.Router();
 
-// // Utility to map request body to the form fields
+// Utility to map request body to the form fields
 // const getFormBodyData = async (body) => {
 //   try {
 //     // Fetch the labels from the labels endpoint
@@ -23,29 +23,35 @@ const router = express.Router();
 //     throw new Error("Error fetching labels");
 //   }
 // };
-
 const getFormBodyData = async (body) => {
   try {
     const baseUrl = process.env.API_BASE_URL || "http://localhost:5050";
     const labelsResponse = await fetch(`${baseUrl}/labels`);
-    if (!labelsResponse.ok) {
-      throw new Error(`Failed to fetch labels: ${labelsResponse.statusText}`);
-    }
     const labels = await labelsResponse.json();
+
+    if (!labels || !labels.record) {
+      throw new Error("Invalid labels structure");
+    }
 
     const fieldMappings = labels.record;
     const formData = {};
 
-    Object.keys(fieldMappings).forEach((key) => {
-      formData[key] = body[key];
+    // Iterate over each field mapping to ensure only one entry per field
+    Object.entries(fieldMappings).forEach(([dbKey, formKey]) => {
+      if (body[formKey] !== undefined) {
+        formData[dbKey] = body[formKey];
+      }
     });
 
+    console.log("Mapped form data:", formData);
     return formData;
   } catch (err) {
-    console.error("Error fetching labels:", err);
-    throw new Error("Error fetching labels");
+    console.error("Error in getFormBodyData:", err.message);
+    throw new Error("Failed to process form data");
   }
 };
+
+
 
 
 // Get all records
@@ -95,23 +101,30 @@ router.get("/:id", async (req, res) => {
 //     res.status(500).send({ error: "Error adding record" });
 //   }
 // });
+
 router.post("/", async (req, res) => {
   try {
     console.log("Incoming request body:", req.body);
 
+    // Fetch and log the labels
     const newDocument = await getFormBodyData(req.body);
     console.log("Mapped document to insert:", newDocument);
 
+    // Log database connection status
     await connectToMongoDB();
+    console.log("Connected to MongoDB");
+
     const db = getDatabase("bands");
     const collection = db.collection("records");
-    const result = await collection.insertOne(newDocument);
 
+    // Attempt insertion and log the result
+    const result = await collection.insertOne(newDocument);
     console.log("Insert result:", result);
+
     res.status(201).send(result);
   } catch (err) {
     console.error("Error adding record:", err);
-    res.status(500).send({ error: "Error adding record" });
+    res.status(500).send({ error: err.message || "Error adding record" });
   }
 });
 

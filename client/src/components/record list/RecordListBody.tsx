@@ -30,7 +30,7 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
     const { canViewActions, canAccept, canViewEditedDetail } = useRoleContext();
     const [modalOpen, setModalOpen] = useState(false);
     const [, setRecords] = useState<RecordType[]>([]);
-    const [updateisAccepted, setUpdateIsAccepted] = useState(record.isAccepted);
+    const [updateIsAccepted, setUpdateIsAccepted] = useState(record.isAccepted);
     const serverLabel = useLabels();
     
 
@@ -42,10 +42,42 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
         closeModal();
     };
 
+    // async function updateAccepted(id: string) {
+    //     try {
+    //         const newIsAccepted = !updateisAccepted;
+    //         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}/isAccepted`, { // hook
+    //             method: "PATCH",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //             },
+    //             body: JSON.stringify({ isAccepted: newIsAccepted }),
+    //         });
+    
+    //         if (!response.ok) {
+    //             throw new Error("Failed to update isAccepted");
+    //         }
+    
+    //         const updatedRecord = await response.json();
+    
+    //         // Update the main records state
+    //         setRecords((prevRecords) =>
+    //             prevRecords.map((record) =>
+    //                 record._id === id ? { ...record, isAccepted: updatedRecord.isAccepted } : record
+    //             )
+    //         );
+            
+    //         // Update local state for immediate feedback
+    //         setUpdateIsAccepted(updatedRecord.isAccepted);
+    
+    //     } catch (error) {
+    //         console.error("Failed to update isAccepted:", error);
+    //     }
+    // }
+
     async function updateAccepted(id: string) {
         try {
-            const newIsAccepted = !updateisAccepted;
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}/isAccepted`, { // hook
+            const newIsAccepted = !updateIsAccepted;
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}/isAccepted`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -59,13 +91,13 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
     
             const updatedRecord = await response.json();
     
-            // Update the main records state
+            // Update the record list immediately with the updated record
             setRecords((prevRecords) =>
-                prevRecords.map((record) =>
+                prevRecords?.map((record) =>
                     record._id === id ? { ...record, isAccepted: updatedRecord.isAccepted } : record
-                )
+                ) || []
             );
-            
+    
             // Update local state for immediate feedback
             setUpdateIsAccepted(updatedRecord.isAccepted);
     
@@ -73,6 +105,7 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
             console.error("Failed to update isAccepted:", error);
         }
     }
+    
     
     return (
         <>
@@ -87,7 +120,7 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
                         {record.email}
                     </a>
                 </td>
-                <td className={`record-td-container level-${record.level.toLowerCase()}`}>
+                <td className={`record-td-container level-${record.level}`}>
                     <div className="hidden-desktop">{serverLabel.record.level}</div>
                     {record.level}
                 </td>
@@ -101,13 +134,13 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
                         onChange={() => {}}
                     />
                 </td>
-                <td className={`record-td-container ${updateisAccepted ? "approved" : "pending"}`}>
+                <td className={`record-td-container ${updateIsAccepted ? "approved" : "pending"}`}>
                     <div className="hidden-desktop">{serverLabel.record.isAccepted}</div>
                     <input
                         type="checkbox"
                         name="Accpepted"
                         disabled={!canAccept}
-                        checked={updateisAccepted}
+                        checked={updateIsAccepted}
                         onChange={() => updateAccepted(record._id)}
                     />
                 </td> 

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import FormInput from "../util/FormInput";
 import { useRoleContext } from "../context/RoleContext";
 import { useUserContext } from "../context/UserContext";
 import Login from "./Login";
-import LoginReminder from "../UI/LoginReminder";
 import useLabels from "../hooks/UseLabels";
+import FormInput from "../util/FormInput";
+import LoginReminder from "../UI/LoginReminder";
 import "../styles/CreateRecord.css";
 
 export default function Record() {
@@ -48,33 +48,33 @@ export default function Record() {
   *******************************************
   *******************************************
   *******************************************/
+  const serverLabel = useLabels();
 
   const [form, setForm] = useState({
-    name: "", 
-    email: "", 
-    level: "", 
-    committeNotes: "", 
-    members: 1,
-    hudsonValley: false, 
-    shirtSizeXS: 0, 
-    shirtSizeS: 0, 
-    shirtSizeM: 0,
-    shirtSizeL: 0,
-    shirtSizeXL: 0, 
-    shirtSizeXXL: 0, 
-    primaryContact: "",
-    primaryEmail: "", 
-    primaryPhone: "", 
-    primaryAddress: "",
-    secondaryContact: "", 
-    secondaryEmail: "", 
-    secondaryPhone: "", 
-    approval: false,
-    nameOfUser: currentUser?.name,
-    editedTime: new Date().toLocaleDateString(),
+    [serverLabel.record.name]: "", 
+    [serverLabel.record.email]: "", 
+    [serverLabel.record.level]: "", 
+    [serverLabel.record.committeNotes]: "", 
+    [serverLabel.record.members]: 1,
+    [serverLabel.record.hudsonValley]: false, 
+    [serverLabel.record.shirtSizeXS]: 0, 
+    [serverLabel.record.shirtSizeS]: 0, 
+    [serverLabel.record.shirtSizeM]: 0,
+    [serverLabel.record.shirtSizeL]: 0,
+    [serverLabel.record.shirtSizeXL]: 0, 
+    [serverLabel.record.shirtSizeXXL]: 0, 
+    [serverLabel.record.primaryContact]: "",
+    [serverLabel.record.primaryEmail]: "", 
+    [serverLabel.record.primaryPhone]: "", 
+    [serverLabel.record.primaryAddress]: "",
+    [serverLabel.record.secondaryContact]: "", 
+    [serverLabel.record.secondaryEmail]: "", 
+    [serverLabel.record.secondaryPhone]: "", 
+    [serverLabel.record.approval]: false,
+    [serverLabel.record.nameOfUser]: currentUser?.name,
+    [serverLabel.record.editedTime]: new Date().toLocaleDateString(),
   });
 
-  const serverLabel = useLabels();
 
   const formSections = [
     {
