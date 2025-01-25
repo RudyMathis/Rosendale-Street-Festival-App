@@ -52,6 +52,10 @@ const getFormBodyData = async (body) => {
     return formData;
   } catch (err) {
     console.error("Error in getFormBodyData:", err.message);
+    console.error("labels", labels);
+    console.error("fieldMappings", fieldMappings);
+    console.error("labels.record", labels.record);
+    console.error("formData", formData);
     throw new Error("Failed to process form data");
   }
 };
