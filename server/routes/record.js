@@ -88,45 +88,45 @@ router.get("/:id", async (req, res) => {
 });
 
 // Create a new record
-// router.post("/", async (req, res) => {
-//   try {
-//     const newDocument = await getFormBodyData(req.body); // Get form data
-//     await connectToMongoDB();
-//     const db = getDatabase("bands");
-//     const collection = db.collection("records");
-//     const result = await collection.insertOne(newDocument);
-//     res.status(201).send(result);
-//   } catch (err) {
-//     console.error("Error adding record:", err);
-//     res.status(500).send({ error: "Error adding record" });
-//   }
-// });
-
 router.post("/", async (req, res) => {
   try {
-    console.log("Incoming request body:", req.body);
-
-    // Fetch and log the labels
-    const newDocument = await getFormBodyData(req.body);
-    console.log("Mapped document to insert:", newDocument);
-
-    // Log database connection status
+    const newDocument = await getFormBodyData(req.body); // Get form data
     await connectToMongoDB();
-    console.log("Connected to MongoDB");
-
     const db = getDatabase("bands");
     const collection = db.collection("records");
-
-    // Attempt insertion and log the result
     const result = await collection.insertOne(newDocument);
-    console.log("Insert result:", result);
-
     res.status(201).send(result);
   } catch (err) {
     console.error("Error adding record:", err);
-    res.status(500).send({ error: err.message || "Error adding record" });
+    res.status(500).send({ error: "Error adding record" });
   }
 });
+
+// router.post("/", async (req, res) => {
+//   try {
+//     console.log("Incoming request body:", req.body);
+
+//     // Fetch and log the labels
+//     const newDocument = await getFormBodyData(req.body);
+//     console.log("Mapped document to insert:", newDocument);
+
+//     // Log database connection status
+//     await connectToMongoDB();
+//     console.log("Connected to MongoDB");
+
+//     const db = getDatabase("bands");
+//     const collection = db.collection("records");
+
+//     // Attempt insertion and log the result
+//     const result = await collection.insertOne(newDocument);
+//     console.log("Insert result:", result);
+
+//     res.status(201).send(result);
+//   } catch (err) {
+//     console.error("Error adding record:", err);
+//     res.status(500).send({ error: err.message || "Error adding record" });
+//   }
+// });
 
 
 // Update a record by ID
