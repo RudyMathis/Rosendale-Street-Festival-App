@@ -82,19 +82,39 @@ router.get("/:id", async (req, res) => {
 });
 
 // Create a new record
+// router.post("/", async (req, res) => {
+//   try {
+//     const newDocument = await getFormBodyData(req.body); // Get form data
+//     await connectToMongoDB();
+//     const db = getDatabase("bands");
+//     const collection = db.collection("records");
+//     const result = await collection.insertOne(newDocument);
+//     res.status(201).send(result);
+//   } catch (err) {
+//     console.error("Error adding record:", err);
+//     res.status(500).send({ error: "Error adding record" });
+//   }
+// });
 router.post("/", async (req, res) => {
   try {
-    const newDocument = await getFormBodyData(req.body); // Get form data
+    console.log("Incoming request body:", req.body);
+
+    const newDocument = await getFormBodyData(req.body);
+    console.log("Mapped document to insert:", newDocument);
+
     await connectToMongoDB();
     const db = getDatabase("bands");
     const collection = db.collection("records");
     const result = await collection.insertOne(newDocument);
+
+    console.log("Insert result:", result);
     res.status(201).send(result);
   } catch (err) {
     console.error("Error adding record:", err);
     res.status(500).send({ error: "Error adding record" });
   }
 });
+
 
 // Update a record by ID
 router.patch("/:id", async (req, res) => {
