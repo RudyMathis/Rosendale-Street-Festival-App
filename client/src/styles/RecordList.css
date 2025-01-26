@@ -103,26 +103,17 @@ td {
     border: 1px solid var(--destructive);
 }
 
-.pending {
-    background-color: var(--chart-7);
-}
-
-.approved {
-    background-color: var(--chart-6);
-    color: var(--accent);
-}
-
-.level-low {
+.level-Low {
     background-color: var(--chart-2);
     color: var(--accent);
 }
 
-.level-medium {
+.level-Medium {
     background-color: var(--chart-4);
     color: var(--accent);
 }
 
-.level-high {
+.level-High {
     background-color: var(--chart-1);
     color: var(--accent);
 } 

@@ -5,6 +5,7 @@ import { useRoleContext } from "../../context/RoleContext";
 import ConfirmationModal from "../ComfirmationModal";
 import Label from "../../labels/UILabel.json"
 import useLabels from "../../hooks/UseLabels";
+import useRecords from "../../hooks/UseRecords";
 import "../../styles/RecordList.css";
 type RecordType = {
     _id: string;
@@ -24,16 +25,14 @@ type RecordProps = {
     deleteRecord: (id: string) => void;
 };
 
-
 const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
     
     const { canViewActions, canAccept, canViewEditedDetail } = useRoleContext();
     const [modalOpen, setModalOpen] = useState(false);
-    const [, setRecords] = useState<RecordType[]>([]);
+    const [ , setRecords] = useState<RecordType[]>([]);
     const [updateIsAccepted, setUpdateIsAccepted] = useState(record.isAccepted);
     const serverLabel = useLabels();
-    
-
+    const currentRecords = useRecords();
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
 
@@ -41,38 +40,6 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
         deleteRecord(record._id);
         closeModal();
     };
-
-    // async function updateAccepted(id: string) {
-    //     try {
-    //         const newIsAccepted = !updateisAccepted;
-    //         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}/isAccepted`, { // hook
-    //             method: "PATCH",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //             },
-    //             body: JSON.stringify({ isAccepted: newIsAccepted }),
-    //         });
-    
-    //         if (!response.ok) {
-    //             throw new Error("Failed to update isAccepted");
-    //         }
-    
-    //         const updatedRecord = await response.json();
-    
-    //         // Update the main records state
-    //         setRecords((prevRecords) =>
-    //             prevRecords.map((record) =>
-    //                 record._id === id ? { ...record, isAccepted: updatedRecord.isAccepted } : record
-    //             )
-    //         );
-            
-    //         // Update local state for immediate feedback
-    //         setUpdateIsAccepted(updatedRecord.isAccepted);
-    
-    //     } catch (error) {
-    //         console.error("Failed to update isAccepted:", error);
-    //     }
-    // }
 
     async function updateAccepted(id: string) {
         try {
@@ -105,7 +72,17 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
             console.error("Failed to update isAccepted:", error);
         }
     }
-    
+    // function that returns the amount of times a record name has been repeated in the records array
+    function countNameRepetitions(name: string): number {
+        if (!currentRecords.records) {
+            return 0;
+        }
+            // Count occurrences of the name in the records
+        return currentRecords.records.reduce(
+            (count, record) => (record.name === name ? count + 1 : count),
+            0
+        );
+    }
     
     return (
         <>
@@ -113,6 +90,9 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
                 <td className="record-td-container">
                     <div className="hidden-desktop">{serverLabel.record.name}</div>
                     <Link to={`/record/${record._id}`}>{record.name}</Link>
+                    {record && countNameRepetitions(record.name) > 1 
+                    ? <div>Repeated: {countNameRepetitions(record.name)}</div>
+                    : undefined}
                 </td>
                 <td className="record-td-container">
                     <div className="hidden-desktop">{serverLabel.record.email}</div>
@@ -134,7 +114,7 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
                         onChange={() => {}}
                     />
                 </td>
-                <td className={`record-td-container ${updateIsAccepted ? "approved" : "pending"}`}>
+                <td className="record-td-container">
                     <div className="hidden-desktop">{serverLabel.record.isAccepted}</div>
                     <input
                         type="checkbox"
@@ -178,12 +158,16 @@ const RecordListBody = ({ record, deleteRecord }: RecordProps) => {
                 )}
             </tr>
             {modalOpen && (
-                <ConfirmationModal
-                    isOpen={modalOpen}
-                    message="Are you sure you want to delete this record?"
-                    onConfirm={handleConfirmDelete}
-                    onCancel={closeModal}
-                />
+                <tr>
+                    <td className="confirmation-modal-container">
+                        <ConfirmationModal
+                            isOpen={modalOpen}
+                            message="Are you sure you want to delete this record?"
+                            onConfirm={handleConfirmDelete}
+                            onCancel={closeModal}
+                            />
+                    </td>
+                </tr>
             )}
         </>
         );

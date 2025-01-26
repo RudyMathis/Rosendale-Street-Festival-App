@@ -20,24 +20,22 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     if (!isOpen) return null;
 
     return (
-        <div className="confirmation-modal-container">
-            <div className="confirmation-modal-overlay">
-                <div className="confirmation-modal">
-                    <p className="confirmation-message">{message}</p>
-                    <div className="confirmation-buttons">
-                        <Button 
-                            label={Label.actions.confirm}
-                            onClick={onConfirm}
-                            className="confirm-button"
-                            type="button"
-                        />
-                        <Button 
-                            label={Label.actions.cancel}
-                            onClick={onCancel}
-                            className="cancel-button"
-                            type="button"
-                        />
-                    </div>
+        <div className="confirmation-modal-overlay">
+            <div className="confirmation-modal">
+                <p className="confirmation-message">{message}</p>
+                <div className="confirmation-buttons">
+                    <Button 
+                        label={Label.actions.confirm}
+                        onClick={onConfirm}
+                        className="confirm-button"
+                        type="button"
+                    />
+                    <Button 
+                        label={Label.actions.cancel}
+                        onClick={onCancel}
+                        className="cancel-button"
+                        type="button"
+                    />
                 </div>
             </div>
         </div>

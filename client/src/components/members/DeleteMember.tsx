@@ -33,12 +33,14 @@ const DeleteMember: React.FC<DeleteMemberProps> = ({ memberId, role, deleteMemeb
                 </button>
             </div>
             {modalOpen && (
-                <ConfirmationModal
-                    isOpen={modalOpen}
-                    message="Are you sure you want to delete this member?"
-                    onConfirm={handleConfirmDelete}
-                    onCancel={closeModal}
-                />
+                <div className="confirmation-modal-container">
+                    <ConfirmationModal
+                        isOpen={modalOpen}
+                        message="Are you sure you want to delete this member?"
+                        onConfirm={handleConfirmDelete}
+                        onCancel={closeModal}
+                    />
+                </div>
             )}
         </>
     );

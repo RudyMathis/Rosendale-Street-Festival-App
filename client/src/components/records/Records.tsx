@@ -241,12 +241,14 @@ export default function Records() {
                             ))}
                         </div>
                     ))}
-                    <ConfirmationModal
-                        isOpen={isModalOpen}
-                        message={`Are you sure you want to download the records for ${groupToDownload}?`}
-                        onConfirm={handleConfirmAction}
-                        onCancel={handleCancelDownload}
-                    />
+                    <div className="confirmation-modal-container">
+                        <ConfirmationModal
+                            isOpen={isModalOpen}
+                            message={`Are you sure you want to download the records for ${groupToDownload}?`}
+                            onConfirm={handleConfirmAction}
+                            onCancel={handleCancelDownload}
+                        />
+                    </div>
                 </section>
                 : 
                 <>
