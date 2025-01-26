@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import App from "./App";
 import CreateRecord from "./components/CreateRecord";
+import UploadRecords from "./components/csv/UploadRecords";
 import RecordDetail from "./components/RecordDetail";
 import Records from "./components/records/Records";
 import RecordListHeader from "./components/record list/RecordListHeader";
@@ -62,6 +63,16 @@ const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter([
       {
         path: "/create",
         element: <CreateRecord />,
+      },
+    ],
+  },
+  {
+    path: "/upload",
+    element: <App />,
+    children: [
+      {
+        path: "/upload",
+        element: <UploadRecords />,
       },
     ],
   },

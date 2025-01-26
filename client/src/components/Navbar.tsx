@@ -37,7 +37,10 @@ const Navbar: React.FC = () => {
                 <NavLink className="link" to="/create">{differentDisplay}</NavLink>
                 {currentUser && currentUser.role === serverLabel.role.level4
                     ? 
-                    <NavLink className="link" to="/members">Members Page</NavLink> 
+                    <>
+                        <NavLink className="link" to="/members">Members Page</NavLink>
+                        <NavLink className="link" to="/upload">Upload CSV</NavLink>
+                    </> 
                     : "" 
                 }
             </nav>
