@@ -5,12 +5,14 @@ import Loading from "../UI/LoadingMessage";
 export const RecordContext = createContext<{
     records: RecordType[] | null;
     setRecords: React.Dispatch<React.SetStateAction<RecordType[] | null>>;
+    refreshRecords: () => void;
     fetchRecordById: (id: string) => Promise<RecordType | null>;
 } | null>(null);
 
 export const RecordProvider = ({ children }: { children: ReactNode }) => {
     const [records, setRecords] = useState<RecordType[] | null>(null);
     const [loading, setLoading] = useState(true);
+    const [refreshKey, setRefreshKey] = useState(0); // This will force re-fetching when incremented
 
     useEffect(() => {
         const fetchRecords = async () => {
@@ -29,8 +31,8 @@ export const RecordProvider = ({ children }: { children: ReactNode }) => {
         };
 
         fetchRecords();
-    }, []);
-
+    }, [refreshKey]);
+    const refreshRecords = () => setRefreshKey((key) => key + 1);
     const fetchRecordById = async (id: string): Promise<RecordType | null> => {
         try {
             const response = await fetch(
@@ -54,7 +56,7 @@ export const RecordProvider = ({ children }: { children: ReactNode }) => {
     }
 
     return (
-        <RecordContext.Provider value={{ records, setRecords, fetchRecordById }}>
+        <RecordContext.Provider value={{ records, setRecords, refreshRecords, fetchRecordById }}>
             {children}
         </RecordContext.Provider>
     );

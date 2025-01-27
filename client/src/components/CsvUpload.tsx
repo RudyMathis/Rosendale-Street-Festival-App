@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Papa from "papaparse";
 import { useNavigate } from "react-router-dom";
+import useRecords from "../hooks/UseRecords";
 
 const CsvUpload = ({ formFields }: { formFields: string[] }) => {
     const [csvData, setCsvData] = useState<Record<string, unknown>[]>([]);
@@ -8,6 +9,7 @@ const CsvUpload = ({ formFields }: { formFields: string[] }) => {
     const [mappedFields, setMappedFields] = useState<Record<string, string>>({});
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const { refreshRecords } = useRecords(); // Import from context
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -46,23 +48,20 @@ const CsvUpload = ({ formFields }: { formFields: string[] }) => {
             return updatedData;
         });
     };
-    
-
 
     const preprocessData = () => {
         return csvData.map((row) => {
-          const newRow: Record<string, unknown> = {};
-          Object.entries(mappedFields).forEach(([csvHeader, mappedField]) => {
-            if (mappedField && row[csvHeader]) {  // Ensure there is data in the row
-              newRow[mappedField] = row[csvHeader as keyof typeof row];
-            } else {
-              console.warn(`Missing value for ${csvHeader}`);
-            }
-          });
-          return newRow;
-        });
-      };
-      
+            const newRow: Record<string, unknown> = {};
+            Object.entries(mappedFields).forEach(([csvHeader, mappedField]) => {
+                if (mappedField && row[csvHeader]) {  // Ensure there is data in the row
+                    newRow[mappedField] = row[csvHeader as keyof typeof row];
+                } else {
+                    console.warn(`Missing value for ${csvHeader}`);
+                }
+            });
+                return newRow;
+            });
+        };
 
     const handleSubmit = async () => {
         const chunkSize = 10;
@@ -73,26 +72,28 @@ const CsvUpload = ({ formFields }: { formFields: string[] }) => {
             const chunk = processedData.slice(i, i + chunkSize);
             
             try {
-              const response = await fetch(
-                `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record`,
-                {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(chunk),
+                const response = await fetch(
+                    `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record`,
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(chunk),
+                    }
+                );
+                
+                if (!response.ok) {
+                    const responseBody = await response.text();
+                    console.error(`Error: ${response.status}, ${responseBody}`);
+                    throw new Error(`Error submitting chunk starting at record ${i}`);
                 }
-              );
-              
-              if (!response.ok) {
-                const responseBody = await response.text();
-                console.error(`Error: ${response.status}, ${responseBody}`);
-                throw new Error(`Error submitting chunk starting at record ${i}`);
-              }
-            } catch (err) {
-              console.error(err);
-              setError("Failed to submit some records. Check the console for details.");
-              return;
+                refreshRecords();
+
+                } catch (err) {
+                    console.error(err);
+                    setError("Failed to submit some records. Check the console for details.");
+                    return;
+                }
             }
-          }
         navigate("/");
     };
     

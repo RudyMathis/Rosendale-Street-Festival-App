@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useRoleContext } from "../context/RoleContext";
 import { useUserContext } from "../context/UserContext";
 import Login from "./Login";
+import useRecords from "../hooks/UseRecords";
 import useLabels from "../hooks/UseLabels";
 import FormInput from "../util/FormInput";
 import LoginReminder from "../UI/LoginReminder";
@@ -13,6 +14,7 @@ export default function Record() {
   const [isNew, setIsNew] = useState(true);
   const params = useParams();
   const navigate = useNavigate();
+  const { refreshRecords } = useRecords(); // Import from context
 
   useEffect(() => {
     async function fetchData() {
@@ -137,6 +139,7 @@ export default function Record() {
       );
 
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      refreshRecords();
     } catch (error) {
       console.error("A problem occurred with your fetch operation: ", error);
     } finally {
