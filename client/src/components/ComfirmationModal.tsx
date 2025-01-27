@@ -9,7 +9,6 @@ type ConfirmationModalProps = {
     onCancel: () => void;
 };
 
-
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     isOpen,
     message,
@@ -20,8 +19,8 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     if (!isOpen) return null;
 
     return (
-        <div className="confirmation-modal-overlay">
-            <div className="confirmation-modal">
+        <div className="confirmation-modal-overlay" onClick={onCancel}>
+            <div className="confirmation-modal" onClick={(e) => e.stopPropagation()}>
                 <p className="confirmation-message">{message}</p>
                 <div className="confirmation-buttons">
                     <Button 

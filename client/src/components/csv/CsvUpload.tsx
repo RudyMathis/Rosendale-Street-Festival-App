@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Papa from "papaparse";
 import { useNavigate } from "react-router-dom";
-import useRecords from "../hooks/UseRecords";
+import useRecords from "../../hooks/UseRecords";
 
-const CsvUpload = ({ formFields }: { formFields: string[] }) => {
+const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displayLabels: string[] }) => {
     const [csvData, setCsvData] = useState<Record<string, unknown>[]>([]);
     const [headers, setHeaders] = useState<string[]>([]);
     const [mappedFields, setMappedFields] = useState<Record<string, string>>({});
@@ -127,17 +127,18 @@ const CsvUpload = ({ formFields }: { formFields: string[] }) => {
                     <td>{header}</td>
                     <td>
                         <select
-                        value={mappedFields[header] || ""}
-                        onChange={(e) =>
-                            handleFieldMappingChange(header, e.target.value)
-                        }
+                            value={mappedFields[header] || ""}
+                            name={mappedFields[header] || "Ignore"}
+                            onChange={(e) =>
+                                handleFieldMappingChange(header, e.target.value)
+                            }
                         >
-                        <option value="">-- Ignore --</option>
-                        {formFields.map((field) => (
-                            <option key={field} value={field}>
-                            {field}
-                            </option>
-                        ))}
+                            <option value="">-- Ignore --</option>
+                            {formFields.map((field, index) => (
+                                <option key={field} value={field}>
+                                    {displayLabels[index] || field}
+                                </option>
+                            ))}
                         </select>
                     </td>
                     </tr>
@@ -163,15 +164,17 @@ const CsvUpload = ({ formFields }: { formFields: string[] }) => {
                     <tr key={rowIndex}>
                     {headers.map((header) => (
                             <td key={header}>
+                                <label>
                                 <input
                                     type="text"
                                     name={mappedFields[header] || `field_${header}`}  // Use a fallback name if mapping is empty
-                                    id={mappedFields[header] || `field_${header}`}    // Same for id
+                                    // id={mappedFields[header] || `field_${header}`}    // Same for id
                                     value={row[header as keyof typeof row] as string || ""}
                                     onChange={(e) =>
                                         handleInputChange(rowIndex, header, e.target.value)
                                     }
                                 />
+                                </label>
                             </td>
                         ))}
                     </tr>

@@ -5,6 +5,7 @@ import { useUserContext } from "../context/UserContext";
 import Login from "./Login";
 import useRecords from "../hooks/UseRecords";
 import useLabels from "../hooks/UseLabels";
+import Label from "../labels/UILabel.json";
 import FormInput from "../util/FormInput";
 import LoginReminder from "../UI/LoginReminder";
 import "../styles/CreateRecord.css";
@@ -82,41 +83,41 @@ export default function Record() {
     {
       title: "Performer/Band",
       fields: [
-        { label: serverLabel.record.name, name: serverLabel.record.name, type: "text", placeholder: "Enter your name", required: true },
-        { label: serverLabel.record.email, name: serverLabel.record.email, type: "email", placeholder: "Enter your email", required: true },
-        { label: serverLabel.record.level, name: serverLabel.record.level, type: "radio", options: ["Low", "Medium", "High"] },
-        { label: serverLabel.record.committeNotes, name: serverLabel.record.committeNotes, type: "textarea", placeholder: "Committee Notes" },
-        { label: serverLabel.record.members, name: serverLabel.record.members, type: "number", placeholder: "Number of members", required: true },
-        { label: serverLabel.record.hudsonValley, name: serverLabel.record.hudsonValley, type: "checkbox" },
+        { label: Label.record.name, name: serverLabel.record.name, type: "text", placeholder: "Enter your name", required: true },
+        { label: Label.record.email, name: serverLabel.record.email, type: "email", placeholder: "Enter your email", required: true },
+        { label: Label.record.level, name: serverLabel.record.level, type: "radio", options: ["Low", "Medium", "High"] },
+        { label: Label.record.committeNotes, name: serverLabel.record.committeNotes, type: "textarea", placeholder: "Committee Notes" },
+        { label: Label.record.members, name: serverLabel.record.members, type: "number", placeholder: "Number of members", required: true },
+        { label: Label.record.hudsonValley, name: serverLabel.record.hudsonValley, type: "checkbox" },
       ],
     },
     {
       title: "T-shirt Sizes",
       fields: [
-        { label: serverLabel.record.shirtSizeXS, name: serverLabel.record.shirtSizeXS, type: "number" },
-        { label: serverLabel.record.shirtSizeS, name: serverLabel.record.shirtSizeS, type: "number" },
-        { label: serverLabel.record.shirtSizeM, name: serverLabel.record.shirtSizeM, type: "number" },
-        { label: serverLabel.record.shirtSizeL, name: serverLabel.record.shirtSizeL, type: "number" },
-        { label: serverLabel.record.shirtSizeXL, name: serverLabel.record.shirtSizeXL, type: "number" },
-        { label: serverLabel.record.shirtSizeXXL, name: serverLabel.record.shirtSizeXXL, type: "number" },
+        { label: Label.record.shirtSizeXS, name: serverLabel.record.shirtSizeXS, type: "number" },
+        { label: Label.record.shirtSizeS, name: serverLabel.record.shirtSizeS, type: "number" },
+        { label: Label.record.shirtSizeM, name: serverLabel.record.shirtSizeM, type: "number" },
+        { label: Label.record.shirtSizeL, name: serverLabel.record.shirtSizeL, type: "number" },
+        { label: Label.record.shirtSizeXL, name: serverLabel.record.shirtSizeXL, type: "number" },
+        { label: Label.record.shirtSizeXXL, name: serverLabel.record.shirtSizeXXL, type: "number" },
       ],
     },
     {
       title: "Contact Information",
       fields: [
-        { label: serverLabel.record.primaryContact, name: serverLabel.record.primaryContact, type: "text", required: true },
-        { label: serverLabel.record.primaryEmail, name: serverLabel.record.primaryEmail, type: "email", required: true },
-        { label: serverLabel.record.primaryPhone, name: serverLabel.record.primaryPhone, type: "tel", required: true },
-        { label: serverLabel.record.primaryAddress, name: serverLabel.record.primaryAddress, type: "text", required: true },
-        { label: serverLabel.record.secondaryContact, name: serverLabel.record.secondaryContact, type: "text" },
-        { label: serverLabel.record.secondaryEmail, name: serverLabel.record.secondaryEmail, type: "email" },
-        { label: serverLabel.record.secondaryPhone, name: serverLabel.record.secondaryPhone, type: "tel" },
+        { label: Label.record.primaryContact, name: serverLabel.record.primaryContact, type: "text", required: true },
+        { label: Label.record.primaryEmail, name: serverLabel.record.primaryEmail, type: "email", required: true },
+        { label: Label.record.primaryPhone, name: serverLabel.record.primaryPhone, type: "tel", required: true },
+        { label: Label.record.primaryAddress, name: serverLabel.record.primaryAddress, type: "text", required: true },
+        { label: Label.record.secondaryContact, name: serverLabel.record.secondaryContact, type: "text" },
+        { label: Label.record.secondaryEmail, name: serverLabel.record.secondaryEmail, type: "email" },
+        { label: Label.record.secondaryPhone, name: serverLabel.record.secondaryPhone, type: "tel" },
       ],
     },
     {
       title: "Approval",
       fields: [
-        { label: serverLabel.record.approval, name: serverLabel.record.approval, type: "checkbox" },
+        { label: Label.record.approval, name: serverLabel.record.approval, type: "checkbox" },
       ],
     },
   ];

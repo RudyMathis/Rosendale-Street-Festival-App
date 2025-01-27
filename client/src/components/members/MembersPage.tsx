@@ -113,7 +113,6 @@ const MembersPage = () => {
     }
 };
 
-
   if (loading) return <p>Loading members...</p>; // update
   if (error) return <p>Error: {error}</p>; // update
 

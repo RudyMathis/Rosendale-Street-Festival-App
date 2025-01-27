@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { useRoleContext } from "../context/RoleContext";
 import { RecordType } from "../types/RecordType";
 import LabelDetail from "../UI/LabelDetail";
-import useLabels from "../hooks/UseLabels";
 import useRecords from "../hooks/UseRecords";
 import Button from "../util/Button"
 import SystemMessage from "../util/SystemMessage";
@@ -14,7 +13,6 @@ import "../styles/RecordDetail.css";
 export default function RecordDetail() {
     const { id } = useParams<{ id: string }>();
     const { canViewContent, canViewEditedDetail } = useRoleContext();
-    const serverLabel = useLabels();
     const { fetchRecordById } = useRecords();
     const [record, setRecord] = useState<RecordType | null>(null);
     const [loading, setLoading] = useState(true); // Add loading state
@@ -64,32 +62,35 @@ export default function RecordDetail() {
     const createEmailBody = () => {
         const emailContent = Object.entries(record)
             .filter(([key]) => !["_id", "nameOfUser", "editedTime"].includes(key)) // Exclude specific keys
-            .map(([key, value]) => `${serverLabel.record[key] || key}: ${value || "N/A"}`)
+            .map(([key, value]) => {
+                const label = Label.record[key as keyof typeof Label.record] || key;
+                return `${label}: ${value || "N/A"}`;
+            })
             .join("\n");
     
         return encodeURIComponent(emailContent); // Encode email body
     };
     
-
     const handleSendEmail = () => {
         const subject = encodeURIComponent("Record Details");
         const emailBody = createEmailBody();
         window.location.href = `mailto:?subject=${subject} - ${record.name}&body=${emailBody}`;
     };
-
-
+    
     const createDownloadContent = () => {
-        // Generate content similar to email body
         return Object.entries(record)
             .filter(([key]) => !["_id", "nameOfUser", "editedTime"].includes(key)) // Exclude specific keys
-            .map(([key, value]) => `${serverLabel.record[key] || key}: ${value || "N/A"}`)
+            .map(([key, value]) => {
+                const label = Label.record[key as keyof typeof Label.record] || key;
+                return `${label}: ${value || "N/A"}`;
+            })
             .join("\n");
     };
-
+    
     const handleDownload = () => {
         const subject = "Record Details"; // Subject for file name
         const downloadContent = createDownloadContent(); // Create the content for download
-
+    
         // Create a Blob object and trigger the download
         const blob = new Blob([downloadContent], { type: "text/plain" });
         const link = document.createElement("a");
@@ -97,6 +98,7 @@ export default function RecordDetail() {
         link.download = `${subject} - ${record.name}.txt`; // File name with record name
         link.click();
     };
+    
 
     return (
         <>
@@ -104,7 +106,7 @@ export default function RecordDetail() {
                 <>
                     <h3>{record.name}</h3>
                     <div className="record-detail-container container-shadow">
-                        {Object.entries(serverLabel.record).map(([key, label]) => (
+                        {Object.entries(Label.record).map(([key, label]) => (
                             <LabelDetail
                                 key={key}
                                 label={label}
@@ -114,12 +116,12 @@ export default function RecordDetail() {
                         {canViewEditedDetail && (
                             <>
                                 <LabelDetail
-                                    label={serverLabel.record.nameOfUser}
+                                    label={Label.record.nameOfUser}
                                     value={record.nameOfUser || "N/A"}
                                     style={{ color: "hsl(173 58% 39%)" }} 
                                 />
                                 <LabelDetail
-                                    label={serverLabel.record.editedTime}
+                                    label={Label.record.editedTime}
                                     value={record.editedTime || "N/A"}
                                     style={{ color: "hsl(173 58% 39%)" }} 
                                 />

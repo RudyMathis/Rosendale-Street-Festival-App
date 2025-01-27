@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import useLabels from "../../hooks/UseLabels";
+import { useSubmit } from "../../hooks/UseSubmit";
 import Button from "../../util/Button";
 import Label from "../../labels/UILabel.json"
 import "../../styles/members.css";
@@ -13,6 +14,7 @@ type EditMemberProps = {
 const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => {
     const [updatedMember, setUpdatedMember] = useState(member);
     const serverLabel = useLabels();
+    const handleSubmit = useSubmit(onSave);
 
     useEffect(() => {
         setUpdatedMember(member); // Reset to the original member data if the component re-renders
@@ -26,13 +28,8 @@ const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => 
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        onSave(updatedMember);
-    };
-
     return (
-            <form className="edit-member-form" onSubmit={handleSubmit}>
+            <form className="edit-member-form" onSubmit={handleSubmit(updatedMember)}>
                 <label className="member-label">
                     {Label.adminPanel.role}
                     <select

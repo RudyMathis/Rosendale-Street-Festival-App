@@ -1,32 +1,18 @@
 import { NavLink } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import { useRoleContext } from "../context/RoleContext";
-import { useNavigate } from "react-router-dom";
-import { UserRole } from "../types/RoleType";
 import useLabels from "../hooks/UseLabels";
+import useLogOut from "../hooks/UseLogOut";
 import Button from "../util/Button";
 import Label from "../labels/UILabel.json"
 import "../styles/Navbar.css";
 import "../styles/Login.css";
 
 const Navbar: React.FC = () => {
-    const { currentUser, setCurrentUser } = useUserContext(); // Access context state and setter
+    const { currentUser } = useUserContext(); // Access context state and setter
     const { differentDisplay } = useRoleContext();
-    const navigate = useNavigate();
     const serverLabel = useLabels();
-
-    // Logout logic
-    function handleLogOut() {
-        // Reset currentUser state in context
-        setCurrentUser({ name: Label?.displayRole.level1 as UserRole, role: serverLabel?.role.level1 as UserRole, password: "" });
-
-        // Clear currentUser from localStorage and set loggedIn to false
-        localStorage.removeItem("currentUser");
-        localStorage.setItem("loggedIn", "false");
-
-        // Navigate to homepage
-        navigate("/");
-    }
+    const { handleLogOut } = useLogOut();
 
     return (
         <section className="nav-container container-shadow" >
