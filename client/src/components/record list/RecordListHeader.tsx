@@ -28,7 +28,7 @@ export default function RecordListHeader() {
     const [toggleDelete, setToggleDelete] = useState(true);
     const { records, setRecords } = useRecords();
     const navigate = useNavigate();
-    const { canViewContent, canViewActions, canViewEditedDetail } = useRoleContext();
+    const { canViewContent, canViewActions, canEditRecords, canViewEditedDetail } = useRoleContext();
     const [sortConfig, setSortConfig] = useState<{ key: keyof RecordType; direction: "asc" | "desc" }>({
         key: "name",
         direction: "desc",
@@ -172,7 +172,9 @@ export default function RecordListHeader() {
                 <section className="record-list-container container-shadow">
                     <div className="record-list-header">
                         <h3>Band Records</h3>
-                        <DeleteToggle label="Toggle Delete" onClick={handleToggleDelete} />
+                        {canEditRecords &&
+                            <DeleteToggle label="Toggle Delete" onClick={handleToggleDelete} />
+                        }
                         <Button
                             label="All Records"
                             onClick={handleAllRecords} 

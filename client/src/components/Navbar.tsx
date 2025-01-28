@@ -21,14 +21,20 @@ const Navbar: React.FC = () => {
                     <h1 className="link">{Label.navBar.title}</h1>
                 </NavLink>
                 <NavLink className="link" to="/create">{differentDisplay}</NavLink>
-                {currentUser && currentUser.role === serverLabel.role.level4
-                    ? 
-                    <>
-                        <NavLink className="link" to="/members">{Label.navBar.members}</NavLink>
-                        <NavLink className="link" to="/upload">{Label.navBar.upload}</NavLink>
-                    </> 
-                    : "" 
-                }
+                    {currentUser && (
+                        <>
+                            {currentUser.role === serverLabel.role.level3 && (
+                                <NavLink className="link" to="/upload">{Label.navBar.upload}</NavLink>
+                            )}
+                            {currentUser.role === serverLabel.role.level4 && (
+                                <>
+                                    <NavLink className="link" to="/members">{Label.navBar.members}</NavLink>
+                                    <NavLink className="link" to="/upload">{Label.navBar.upload}</NavLink>
+                                </>
+                            )}
+                        </>
+                    )}
+
             </nav>
             {currentUser && currentUser.role !== serverLabel?.role.level1 ? (
                 <div className="nav-login-container">
