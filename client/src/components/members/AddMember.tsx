@@ -8,12 +8,12 @@ type AddMemberProps = {
 };
 
 const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
+    const serverLabel = useLabels();
     const [newMember, setNewMember] = useState<{ name: string; role: string; password: string }>({
         name: "",
-        role: "member",  // Default role
+        role: `${serverLabel.role.level2}`,  // Default role
         password: "",
     });
-    const serverLabel = useLabels();
 
     const resetState = () => {
         setNewMember({ name: "", role: serverLabel.role.level2, password: "" });

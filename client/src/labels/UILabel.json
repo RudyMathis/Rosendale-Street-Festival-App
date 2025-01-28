@@ -44,6 +44,12 @@
         "nameOfUser": "Name Of User",
         "editedTime": "Edited Time"
     },
+    "role": {
+        "level1": "Guest",
+        "level2": "Member",
+        "level3": "Moderator",
+        "level4": "Admin"
+    },
     "download": {
         "downloadAll": "Download All",
         "downloadEmails": "Download Emails",
@@ -72,10 +78,22 @@
         "name": "Name",
         "password": "Password"
     },
+    "navBar": {
+        "title": "Rosendale Street Festival",
+        "members": "Members Page",
+        "upload": "Upload CSV"
+    },
+    "displayRecords": {
+        "all": "All Records",
+        "contacts": "Contacts",
+        "shirts": "Shirts"
+    },
     "otherLabels": {
         "all": "All",
         "contacts": "Contacts",
-        "shirts": "Shirts"
+        "shirts": "Shirts",
+        "nameOfUser": "nameOfUser",
+        "editedTime": "editedTime"
     },
     "displayRole": {
         "level1": "Guest",

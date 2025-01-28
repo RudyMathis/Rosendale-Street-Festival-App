@@ -1,15 +1,8 @@
-// import Login from "./Login";
 import { useState } from "react";
 import CsvUpload from "./CsvUpload";
 import { useUserContext } from "../../context/UserContext";
 import useLabels from "../../hooks/UseLabels";
 import Label from "../../labels/UILabel.json"
-
-// import FormInput from "../util/FormInput";
-// import LoginReminder from "../UI/LoginReminder";
-// import "../styles/CreateRecord.css";
-
-
 export default function UploadRecords() {
     const serverLabel = useLabels();
     const { currentUser } = useUserContext();

@@ -4,19 +4,20 @@ import { useRoleContext } from "../../context/RoleContext";
 import Header from "./RecordsHeader";
 import Login from "../Login";
 import ConfirmationModal from "../ComfirmationModal";
-import useLabels from "../../hooks/UseLabels";
 import useRecords from "../../hooks/UseRecords";
+import useFieldGroups from "../../hooks/UseFieldGroups";
 import useDownloadTextFile  from "../../hooks/UseDownloadTextFile";
 import FilterButton from "../../util/FilterButton";
 import SystemMessage from "../../util/SystemMessage";
 import LabelDetail from "../../UI/LabelDetail";
 import LoginReminder from "../../UI/LoginReminder";
-import FieldGroups from "../../UI/FieldGroups";
 import Label from "../../labels/UILabel.json"
 import "../../styles/Records.css";
 
+
 export default function Records() {
     const { records,  } = useRecords();
+    const fieldGroups = useFieldGroups();
     const [filteredRecords, setFilteredRecords] = useState<RecordType[]>([]);
     const [selectedGroup, setSelectedGroup] = useState<string>("all");
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
@@ -25,8 +26,7 @@ export default function Records() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [groupToDownload, setGroupToDownload] = useState<string | null>(null);
     const { canViewContent } = useRoleContext();
-    const serverLabel = useLabels();
-    const { downloadTextFile } = useDownloadTextFile(FieldGroups, filteredRecords);
+    const { downloadTextFile } = useDownloadTextFile(fieldGroups, filteredRecords, Label);
 
     useEffect(() => {
         if (records) {
@@ -35,7 +35,7 @@ export default function Records() {
     }, [records]);
 
     useEffect(() => {
-        setSelectedFields(FieldGroups["all"]);
+        setSelectedFields(fieldGroups["all"]);
     }, []);
 
     if (!records) {
@@ -53,10 +53,10 @@ export default function Records() {
 
     const groupLabels = {
         all: Label.otherLabels.all,
-        levels: serverLabel.record.level,
-        emails: serverLabel.record.email,
+        levels: Label.record.level,
+        emails: Label.record.email,
         contacts: Label.otherLabels.contacts,
-        isAccepted: serverLabel.record.isAccepted,
+        isAccepted: Label.record.isAccepted,
         shirts: Label.otherLabels.shirts,
     };
 
@@ -70,7 +70,7 @@ export default function Records() {
     };
 
     function handleFieldGroup(group: string) {
-        setSelectedFields(FieldGroups[group]);
+        setSelectedFields(fieldGroups[group]);
         setSelectedGroup(group);
         
         if (!records) {
@@ -167,9 +167,9 @@ export default function Records() {
         <>
             {canViewContent ? 
                 <section className="records-container">
-                    <h3>{serverLabel.record.allRecords}</h3>
+                    <h3>{Label.displayRecords.all}</h3>
                     <Header
-                        labels={serverLabel}
+                        labels={Label}
                         selectedGroup={selectedGroup}
                         onFieldGroupChange={handleFieldGroup}
                         onDownloadButtonClick={handleDownloadButtonClick}
@@ -215,6 +215,7 @@ export default function Records() {
                             />
                         </div>
                     )}
+                    {/* Bugged when downloading specific shirt sizes all shirt sizes for the record show up */}
                     {selectedGroup === "shirts" && (
                         <div className="filter-buttons-container">
                             {["XS", "S", "M", "L", "XL", "XXL"].map((size) => (
@@ -235,7 +236,7 @@ export default function Records() {
                             {selectedFields.map((field) => (
                                 <LabelDetail
                                     key={field}
-                                    label={serverLabel.record[field]} 
+                                    label={Label.record[field as keyof typeof Label.record]} 
                                     value={String(record[field as keyof RecordType]) || "N/A"} 
                                 />
                             ))}

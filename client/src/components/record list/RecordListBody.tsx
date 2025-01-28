@@ -86,7 +86,7 @@ const RecordListBody = ({ record, deleteRecord, comfirmation }: RecordProps) => 
     return (
         <>
             <tr>
-                <td className="record-td-container">
+                <td className="record-td-container sticky-name">
                     <div className="hidden-desktop">{Label.record.name}</div>
                     <Link to={`/record/${record._id}`}>{record.name}</Link>
                     {record && countNameRepetitions(record.name) > 1 
@@ -163,8 +163,7 @@ const RecordListBody = ({ record, deleteRecord, comfirmation }: RecordProps) => 
                                 }}
                                 >
                                 {Label.actions.delete}
-                                </button>
-
+                            </button>
                         </div>
                     </td>
                 )}

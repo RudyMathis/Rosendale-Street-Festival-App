@@ -103,8 +103,8 @@ export default function RecordListHeader() {
             }
     
             if (typeof aValue === "string" && typeof bValue === "string") {
-                const aLower = aValue.toLowerCase();
-                const bLower = bValue.toLowerCase();
+                const aLower = aValue.toLowerCase().trimStart();
+                const bLower = bValue.toLowerCase().trimStart();
     
                 return sortConfig.direction === "asc"
                     ? aLower.localeCompare(bLower)
@@ -120,10 +120,11 @@ export default function RecordListHeader() {
     })();  
     
     const requestSort = (key: keyof RecordType) => {
-        const direction = sortConfig?.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
+        const direction =
+            sortConfig.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
+    
         setSortConfig({ key, direction });
     };
-
     
     function handleAllRecords() {
         navigate("/record/all");
@@ -181,36 +182,36 @@ export default function RecordListHeader() {
                     </div>
                     <table>
                         <thead>
-                            <tr className="record-tr-container">
+                            <tr className="record-tr-container sticky-header-name">
                                 <TableButton
                                     label={Label.record.name}
                                     onClick={() => requestSort("name")}
                                     sortConfig={sortConfig}
-                                    columnKey={Label.record.name}
+                                    columnKey="name"
                                 />                            
                                 <TableButton
                                     label={Label.record.email}
                                     onClick={() => requestSort("email")}
                                     sortConfig={sortConfig}
-                                    columnKey={Label.record.email}
+                                    columnKey="email"
                                 />
                                 <TableButton
                                     label={Label.record.level}
                                     onClick={() => requestSort("level")}
                                     sortConfig={sortConfig}
-                                    columnKey={Label.record.level}
+                                    columnKey="level"
                                 />
                                 <TableButton
                                     label={Label.record.hudsonValley}
                                     onClick={() => requestSort("hudsonValley")}
                                     sortConfig={sortConfig}
-                                    columnKey={Label.record.hudsonValley}
+                                    columnKey="hudsonValley"
                                 />
                                 <TableButton
                                     label={Label.record.isAccepted}
                                     onClick={() => requestSort("isAccepted")}
                                     sortConfig={sortConfig}
-                                    columnKey={Label.record.isAccepted}
+                                    columnKey="isAccepted"
                                 />
                                 <th className="more-button" onClick={handleMore}>{Label.actions.more}</th>
                                 <TableButton
@@ -218,14 +219,14 @@ export default function RecordListHeader() {
                                     label={Label.record.members}
                                     onClick={() => requestSort("members")}
                                     sortConfig={sortConfig}
-                                    columnKey={Label.record.members}
+                                    columnKey="members"
                                 />
                                 <TableButton
                                     className="more-selection hidden-button"
                                     label={Label.record.link}
                                     onClick={() => requestSort("link")}
                                     sortConfig={sortConfig}
-                                    columnKey={Label.record.link}
+                                    columnKey="link"
                                 />
                                 {canViewEditedDetail && 
                                     <>

@@ -61,7 +61,7 @@ export default function RecordDetail() {
 
     const createEmailBody = () => {
         const emailContent = Object.entries(record)
-            .filter(([key]) => !["_id", "nameOfUser", "editedTime"].includes(key)) // Exclude specific keys
+            .filter(([key]) => !["_id", `${Label.otherLabels.nameOfUser}`, `${Label.otherLabels.editedTime}`].includes(key)) // Exclude specific keys
             .map(([key, value]) => {
                 const label = Label.record[key as keyof typeof Label.record] || key;
                 return `${label}: ${value || "N/A"}`;
@@ -79,7 +79,7 @@ export default function RecordDetail() {
     
     const createDownloadContent = () => {
         return Object.entries(record)
-            .filter(([key]) => !["_id", "nameOfUser", "editedTime"].includes(key)) // Exclude specific keys
+            .filter(([key]) => !["_id", `${Label.otherLabels.nameOfUser}`, `${Label.otherLabels.editedTime}`].includes(key)) // Exclude specific keys
             .map(([key, value]) => {
                 const label = Label.record[key as keyof typeof Label.record] || key;
                 return `${label}: ${value || "N/A"}`;
@@ -99,20 +99,23 @@ export default function RecordDetail() {
         link.click();
     };
     
-
     return (
         <>
             {canViewContent && 
                 <>
                     <h3>{record.name}</h3>
                     <div className="record-detail-container container-shadow">
-                        {Object.entries(Label.record).map(([key, label]) => (
-                            <LabelDetail
-                                key={key}
-                                label={label}
-                                value={record[key] ? record[key].toString() : "N/A"} 
-                            />
-                        ))}
+                    {Object.entries(Label.record)
+                            .filter(
+                                ([key]) => ![`${Label.otherLabels.nameOfUser}`, `${Label.otherLabels.editedTime}`].includes(key)
+                            )
+                            .map(([key, label]) => (
+                                <LabelDetail
+                                    key={key}
+                                    label={label}
+                                    value={record[key] ? record[key].toString() : "N/A"}
+                                />
+                            ))}
                         {canViewEditedDetail && (
                             <>
                                 <LabelDetail

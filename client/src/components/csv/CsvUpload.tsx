@@ -168,7 +168,6 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
                                 <input
                                     type="text"
                                     name={mappedFields[header] || `field_${header}`}  // Use a fallback name if mapping is empty
-                                    // id={mappedFields[header] || `field_${header}`}    // Same for id
                                     value={row[header as keyof typeof row] as string || ""}
                                     onChange={(e) =>
                                         handleInputChange(rowIndex, header, e.target.value)

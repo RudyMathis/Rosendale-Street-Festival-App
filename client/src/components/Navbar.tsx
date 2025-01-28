@@ -18,14 +18,14 @@ const Navbar: React.FC = () => {
         <section className="nav-container container-shadow" >
             <nav className="nav-links">
                 <NavLink to="/">
-                    <h1 className="link">Rosendale Street Festival</h1>
+                    <h1 className="link">{Label.navBar.title}</h1>
                 </NavLink>
                 <NavLink className="link" to="/create">{differentDisplay}</NavLink>
                 {currentUser && currentUser.role === serverLabel.role.level4
                     ? 
                     <>
-                        <NavLink className="link" to="/members">Members Page</NavLink>
-                        <NavLink className="link" to="/upload">Upload CSV</NavLink>
+                        <NavLink className="link" to="/members">{Label.navBar.members}</NavLink>
+                        <NavLink className="link" to="/upload">{Label.navBar.upload}</NavLink>
                     </> 
                     : "" 
                 }
