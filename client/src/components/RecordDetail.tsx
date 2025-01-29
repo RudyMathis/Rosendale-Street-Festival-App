@@ -4,6 +4,7 @@ import { useRoleContext } from "../context/RoleContext";
 import { RecordType } from "../types/RecordType";
 import LabelDetail from "../UI/LabelDetail";
 import useRecords from "../hooks/UseRecords";
+import useLabels from "../hooks/UseLabels";
 import Button from "../util/Button"
 import SystemMessage from "../util/SystemMessage";
 import LoadingMessage from "../UI/LoadingMessage";
@@ -14,6 +15,7 @@ export default function RecordDetail() {
     const { id } = useParams<{ id: string }>();
     const { canViewContent, canViewEditedDetail } = useRoleContext();
     const { fetchRecordById } = useRecords();
+    const serverLabel = useLabels();
     const [record, setRecord] = useState<RecordType | null>(null);
     const [loading, setLoading] = useState(true); // Add loading state
     const [error, setError] = useState(false); // Add error state
@@ -63,7 +65,7 @@ export default function RecordDetail() {
         const emailContent = Object.entries(record)
             .filter(([key]) => !["_id", `${Label.otherLabels.nameOfUser}`, `${Label.otherLabels.editedTime}`].includes(key)) // Exclude specific keys
             .map(([key, value]) => {
-                const label = Label.record[key as keyof typeof Label.record] || key;
+                const label = serverLabel.record[key as keyof typeof serverLabel.record][1] || key;
                 return `${label}: ${value || "N/A"}`;
             })
             .join("\n");
@@ -81,7 +83,7 @@ export default function RecordDetail() {
         return Object.entries(record)
             .filter(([key]) => !["_id", `${Label.otherLabels.nameOfUser}`, `${Label.otherLabels.editedTime}`].includes(key)) // Exclude specific keys
             .map(([key, value]) => {
-                const label = Label.record[key as keyof typeof Label.record] || key;
+                const label = serverLabel.record[key as keyof typeof serverLabel.record][1] || key;
                 return `${label}: ${value || "N/A"}`;
             })
             .join("\n");
@@ -105,26 +107,26 @@ export default function RecordDetail() {
                 <>
                     <h3>{record.name}</h3>
                     <div className="record-detail-container container-shadow">
-                    {Object.entries(Label.record)
+                    {Object.entries(serverLabel.record)
                             .filter(
                                 ([key]) => ![`${Label.otherLabels.nameOfUser}`, `${Label.otherLabels.editedTime}`].includes(key)
                             )
                             .map(([key, label]) => (
                                 <LabelDetail
                                     key={key}
-                                    label={label}
+                                    label={label[1]}
                                     value={record[key] ? record[key].toString() : "N/A"}
                                 />
                             ))}
                         {canViewEditedDetail && (
                             <>
                                 <LabelDetail
-                                    label={Label.record.nameOfUser}
+                                    label={serverLabel.record.nameOfUser[1]}
                                     value={record.nameOfUser || "N/A"}
                                     style={{ color: "hsl(173 58% 39%)" }} 
                                 />
                                 <LabelDetail
-                                    label={Label.record.editedTime}
+                                    label={serverLabel.record.editedTime[1]}
                                     value={record.editedTime || "N/A"}
                                     style={{ color: "hsl(173 58% 39%)" }} 
                                 />

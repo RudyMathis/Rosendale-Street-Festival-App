@@ -19,7 +19,7 @@ export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ childre
   const serverLabel = useLabels();
   
   const roleHierarchy = {
-    [serverLabel.role.level1]: {
+    [serverLabel.role.level1[0]]: {
       differentDisplay: "",
       canViewContent: false,
       canViewActions: false,
@@ -27,7 +27,7 @@ export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ childre
       canViewEditedDetail: false,
       canEditRecords: false,
     },
-    [serverLabel.role.level2]: {
+    [serverLabel.role.level2[0]]: {
       differentDisplay: "Suggest Performer/Band",
       canViewContent: true,
       canViewActions: false,
@@ -35,7 +35,7 @@ export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ childre
       canViewEditedDetail: false,
       canEditRecords: false,
     },
-    [serverLabel.role.level3]: {
+    [serverLabel.role.level3[0]]: {
       differentDisplay: "Add Performer/Band",
       canViewContent: true,
       canViewActions: true,
@@ -43,7 +43,7 @@ export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ childre
       canViewEditedDetail: true,
       canEditRecords: false,
     },
-    [serverLabel.role.level4]: {
+    [serverLabel.role.level4[0]]: {
       differentDisplay: "Add Performer/Band",
       canViewContent: true,
       canViewActions: true,
@@ -54,7 +54,7 @@ export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ childre
   };
 
   // Resolve permissions based on currentUser's role, default to "guest" if no user
-  const permissions = roleHierarchy[currentUser?.role ?? serverLabel.role.level1];
+  const permissions = roleHierarchy[currentUser?.role ?? serverLabel.role.level1[0]];
 
   return (
     <RoleContext.Provider value={permissions}>

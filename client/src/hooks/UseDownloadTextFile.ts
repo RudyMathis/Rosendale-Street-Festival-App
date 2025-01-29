@@ -17,7 +17,7 @@ const useDownloadTextFile = (
             const downloadBody = filteredRecords
                 .map((record) => {
                     const recordLines = fieldsToDownload.map((field) => {
-                        const label = Labels.record[field] || field; // Get label or fallback to field name
+                        const label = Labels.record[field]?.[1] || field; // Get second value from label array
                         const value = record[field as keyof typeof record];
 
                         return `${label}: ${
@@ -44,5 +44,6 @@ const useDownloadTextFile = (
 
     return { downloadTextFile };
 };
+
 
 export default useDownloadTextFile;

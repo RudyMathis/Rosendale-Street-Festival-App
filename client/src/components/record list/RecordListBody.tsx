@@ -5,7 +5,10 @@ import { useRoleContext } from "../../context/RoleContext";
 import ConfirmationModal from "../ComfirmationModal";
 import Label from "../../labels/UILabel.json"
 import useRecords from "../../hooks/UseRecords";
+import useLabels from "../../hooks/UseLabels";
 import "../../styles/RecordList.css";
+import "../../styles/Table.css";
+
 type RecordType = {
     _id: string;
     name: string;
@@ -32,6 +35,7 @@ const RecordListBody = ({ record, deleteRecord, comfirmation }: RecordProps) => 
     const [ , setRecords] = useState<RecordType[]>([]);
     const [updateIsAccepted, setUpdateIsAccepted] = useState(record.isAccepted);
     const currentRecords = useRecords();
+    const serverLabel = useLabels();
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
 
@@ -87,24 +91,24 @@ const RecordListBody = ({ record, deleteRecord, comfirmation }: RecordProps) => 
         <>
             <tr>
                 <td className="record-td-container sticky-name">
-                    <div className="hidden-desktop">{Label.record.name}</div>
+                    <div className="hidden-desktop">{serverLabel.record.name[1]}</div>
                     <Link to={`/record/${record._id}`}>{record.name}</Link>
                     {record && countNameRepetitions(record.name) > 1 
                     ? <div>Repeated: {countNameRepetitions(record.name)}</div>
                     : undefined}
                 </td>
                 <td className="record-td-container">
-                    <div className="hidden-desktop">{Label.record.email}</div>
+                    <div className="hidden-desktop">{serverLabel.record.email[1]}</div>
                     <a className="link" href={`mailto:${record.email}`} target="_blank" rel="noopener noreferrer">
                         {record.email}
                     </a>
                 </td>
                 <td className={`record-td-container level-${record.level}`}>
-                    <div className="hidden-desktop">{Label.record.level}</div>
+                    <div className="hidden-desktop">{serverLabel.record.level[1]}</div>
                     {record.level}
                 </td>
                 <td className="record-td-container">
-                    <div className="hidden-desktop">{Label.record.hudsonValley}</div>
+                    <div className="hidden-desktop">{serverLabel.record.hudsonValley[1]}</div>
                     <input
                         type="checkbox"
                         name="Hudson Valley"
@@ -114,7 +118,7 @@ const RecordListBody = ({ record, deleteRecord, comfirmation }: RecordProps) => 
                     />
                 </td>
                 <td className="record-td-container">
-                    <div className="hidden-desktop">{Label.record.isAccepted}</div>
+                    <div className="hidden-desktop">{serverLabel.record.isAccepted[1]}</div>
                     <input
                         type="checkbox"
                         name="Accpepted"
@@ -124,11 +128,11 @@ const RecordListBody = ({ record, deleteRecord, comfirmation }: RecordProps) => 
                     />
                 </td> 
                 <td className="record-td-container">
-                    <div className="hidden-desktop">{Label.record.members}</div>
+                    <div className="hidden-desktop">{serverLabel.record.members[1]}</div>
                     {record.members}
                 </td>
                 <td className="record-td-container">
-                    <div className="hidden-desktop">{Label.record.link}</div>
+                    <div className="hidden-desktop">{serverLabel.record.link[1]}</div>
                     <a className="link" ref={record.link} target="_blank" rel="noopener noreferrer">
                         {record.link}
                     </a>
@@ -136,11 +140,11 @@ const RecordListBody = ({ record, deleteRecord, comfirmation }: RecordProps) => 
                 {canViewEditedDetail && (
                     <>
                         <td className="record-td-container">
-                            <div className="hidden-desktop">{Label.record.nameOfUser}</div>
+                            <div className="hidden-desktop">{serverLabel.record.nameOfUser[1]}</div>
                             {record.nameOfUser}
                         </td>
                         <td className="record-td-container">
-                            <div className="hidden-desktop">{Label.record.editedTime}</div>
+                            <div className="hidden-desktop">{serverLabel.record.editedTime[1]}</div>
                             {record.editedTime}
                         </td>
                     </>

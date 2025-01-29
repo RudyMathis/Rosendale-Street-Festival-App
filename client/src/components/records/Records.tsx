@@ -7,6 +7,7 @@ import ConfirmationModal from "../ComfirmationModal";
 import useRecords from "../../hooks/UseRecords";
 import useFieldGroups from "../../hooks/UseFieldGroups";
 import useDownloadTextFile  from "../../hooks/UseDownloadTextFile";
+import useLabels from "../../hooks/UseLabels";
 import FilterButton from "../../util/FilterButton";
 import SystemMessage from "../../util/SystemMessage";
 import LabelDetail from "../../UI/LabelDetail";
@@ -18,6 +19,7 @@ import "../../styles/Records.css";
 export default function Records() {
     const { records,  } = useRecords();
     const fieldGroups = useFieldGroups();
+    const serverLabel = useLabels();
     const [filteredRecords, setFilteredRecords] = useState<RecordType[]>([]);
     const [selectedGroup, setSelectedGroup] = useState<string>("all");
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
@@ -26,7 +28,8 @@ export default function Records() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [groupToDownload, setGroupToDownload] = useState<string | null>(null);
     const { canViewContent } = useRoleContext();
-    const { downloadTextFile } = useDownloadTextFile(fieldGroups, filteredRecords, Label);
+    const { downloadTextFile } = useDownloadTextFile(fieldGroups, filteredRecords, serverLabel);
+    
 
     useEffect(() => {
         if (records) {
@@ -53,10 +56,10 @@ export default function Records() {
 
     const groupLabels = {
         all: Label.otherLabels.all,
-        levels: Label.record.level,
-        emails: Label.record.email,
+        levels: serverLabel.record.level[1],
+        emails: serverLabel.record.email[1],
         contacts: Label.otherLabels.contacts,
-        isAccepted: Label.record.isAccepted,
+        isAccepted: serverLabel.record.isAccepted[1],
         shirts: Label.otherLabels.shirts,
     };
 
@@ -169,7 +172,7 @@ export default function Records() {
                 <section className="records-container">
                     <h3>{Label.displayRecords.all}</h3>
                     <Header
-                        labels={Label}
+                        labels={serverLabel}
                         selectedGroup={selectedGroup}
                         onFieldGroupChange={handleFieldGroup}
                         onDownloadButtonClick={handleDownloadButtonClick}
@@ -236,7 +239,7 @@ export default function Records() {
                             {selectedFields.map((field) => (
                                 <LabelDetail
                                     key={field}
-                                    label={Label.record[field as keyof typeof Label.record]} 
+                                    label={serverLabel.record[field][1]}
                                     value={String(record[field as keyof RecordType]) || "N/A"} 
                                 />
                             ))}

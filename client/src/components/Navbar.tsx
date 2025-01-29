@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
     const { handleLogOut } = useLogOut();
 
     return (
-        <section className="nav-container container-shadow" >
+        <section className="nav-container card" >
             <nav className="nav-links">
                 <NavLink to="/">
                     <h1 className="link">{Label.navBar.title}</h1>
@@ -23,10 +23,10 @@ const Navbar: React.FC = () => {
                 <NavLink className="link" to="/create">{differentDisplay}</NavLink>
                     {currentUser && (
                         <>
-                            {currentUser.role === serverLabel.role.level3 && (
+                            {currentUser.role === serverLabel.role.level3[0] && (
                                 <NavLink className="link" to="/upload">{Label.navBar.upload}</NavLink>
                             )}
-                            {currentUser.role === serverLabel.role.level4 && (
+                            {currentUser.role === serverLabel.role.level4[0] && (
                                 <>
                                     <NavLink className="link" to="/members">{Label.navBar.members}</NavLink>
                                     <NavLink className="link" to="/upload">{Label.navBar.upload}</NavLink>
@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
                     )}
 
             </nav>
-            {currentUser && currentUser.role !== serverLabel?.role.level1 ? (
+            {currentUser && currentUser.role !== serverLabel?.role.level1[0] ? (
                 <div className="nav-login-container">
                     <div className="nav-login-role-text">
                         <div className={`current-user-name ${currentUser.role}`}>

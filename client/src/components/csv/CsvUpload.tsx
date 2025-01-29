@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Papa from "papaparse";
 import { useNavigate } from "react-router-dom";
 import useRecords from "../../hooks/UseRecords";
+import "../../styles/Table.css";
 
 const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displayLabels: string[] }) => {
     const [csvData, setCsvData] = useState<Record<string, unknown>[]>([]);

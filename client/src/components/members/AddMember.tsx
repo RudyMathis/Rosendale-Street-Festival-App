@@ -11,12 +11,12 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
     const serverLabel = useLabels();
     const [newMember, setNewMember] = useState<{ name: string; role: string; password: string }>({
         name: "",
-        role: `${serverLabel.role.level2}`,  // Default role
+        role: `${serverLabel.role.level2[0]}`,  // Default role
         password: "",
     });
 
     const resetState = () => {
-        setNewMember({ name: "", role: serverLabel.role.level2, password: "" });
+        setNewMember({ name: "", role: serverLabel.role.level2[0], password: "" });
     };
     
     const handleSubmit = useSubmit(onAdd, resetState);
@@ -52,9 +52,9 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
                         onChange={handleInputChange}
                         required
                     >
-                        <option value={serverLabel.role.level2}>{Label.displayRole.level2}</option>
-                        <option value={serverLabel.role.level3}>{Label.displayRole.level3}</option>
-                        <option value={serverLabel.role.level4}>{Label.displayRole.level4}</option>
+                        <option value={serverLabel.role.level2[0]}>{serverLabel.role.level2[1]}</option>
+                        <option value={serverLabel.role.level3[0]}>{serverLabel.role.level3[1]}</option>
+                        <option value={serverLabel.role.level4[0]}>{serverLabel.role.level4[1]}</option>
                     </select>
                 </label>
                 <label className="member-label">
@@ -69,7 +69,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
                 </label>
                 <Button 
                     label={Label.actions.add}
-                    secondaryLabel={Label.displayRole.level2}
+                    secondaryLabel={serverLabel.role.level2[1]}
                     className="add-member-button"
                     type="submit"
                 />

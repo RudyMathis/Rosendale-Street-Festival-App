@@ -38,9 +38,9 @@ const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => 
                         onChange={handleInputChange}
                         required
                     >
-                        <option value={serverLabel.role.level2}>{Label.displayRole.level2}</option>
-                        <option value={serverLabel.role.level3}>{Label.displayRole.level3}</option>
-                        <option value={serverLabel.role.level4}>{Label.displayRole.level4}</option>
+                        <option value={serverLabel.role.level2[0]}>{serverLabel.role.level2[1]}</option>
+                        <option value={serverLabel.role.level3[0]}>{serverLabel.role.level3[1]}</option>
+                        <option value={serverLabel.role.level4[0]}>{serverLabel.role.level4[1]}</option>
                     </select>
                 </label>
                 <label className="member-label">

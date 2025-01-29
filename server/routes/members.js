@@ -46,7 +46,7 @@ router.post("/", async (req, res) => {
             return res.status(400).send({ error: "Name, role, and password are required" });
         }
 
-        const validRoles = [labels.role.level2, labels.role.level3, labels.role.level4];
+        const validRoles = [labels.role.level2[0], labels.role.level3[0], labels.role.level4[0]];
         if (!validRoles.includes(newMember.role)) {
             return res.status(400).send({ error: "Invalid role" });
         }

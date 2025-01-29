@@ -5,7 +5,6 @@ import { useUserContext } from "../context/UserContext";
 import Login from "./Login";
 import useRecords from "../hooks/UseRecords";
 import useLabels from "../hooks/UseLabels";
-import Label from "../labels/UILabel.json";
 import FormInput from "../util/FormInput";
 import LoginReminder from "../UI/LoginReminder";
 import "../styles/CreateRecord.css";
@@ -54,28 +53,28 @@ export default function Record() {
   const serverLabel = useLabels();
 
   const [form, setForm] = useState({
-    [serverLabel.record.name]: "", 
-    [serverLabel.record.email]: "", 
-    [serverLabel.record.level]: "", 
-    [serverLabel.record.committeNotes]: "", 
-    [serverLabel.record.members]: 1,
-    [serverLabel.record.hudsonValley]: false, 
-    [serverLabel.record.shirtSizeXS]: 0, 
-    [serverLabel.record.shirtSizeS]: 0, 
-    [serverLabel.record.shirtSizeM]: 0,
-    [serverLabel.record.shirtSizeL]: 0,
-    [serverLabel.record.shirtSizeXL]: 0, 
-    [serverLabel.record.shirtSizeXXL]: 0, 
-    [serverLabel.record.primaryContact]: "",
-    [serverLabel.record.primaryEmail]: "", 
-    [serverLabel.record.primaryPhone]: "", 
-    [serverLabel.record.primaryAddress]: "",
-    [serverLabel.record.secondaryContact]: "", 
-    [serverLabel.record.secondaryEmail]: "", 
-    [serverLabel.record.secondaryPhone]: "", 
-    [serverLabel.record.approval]: false,
-    [serverLabel.record.nameOfUser]: currentUser?.name,
-    [serverLabel.record.editedTime]: new Date().toLocaleDateString(),
+    [serverLabel.record.name[0]]: "", 
+    [serverLabel.record.email[0]]: "", 
+    [serverLabel.record.level[0]]: "", 
+    [serverLabel.record.committeNotes[0]]: "", 
+    [serverLabel.record.members[0]]: 1,
+    [serverLabel.record.hudsonValley[0]]: false, 
+    [serverLabel.record.shirtSizeXS[0]]: 0, 
+    [serverLabel.record.shirtSizeS[0]]: 0, 
+    [serverLabel.record.shirtSizeM[0]]: 0,
+    [serverLabel.record.shirtSizeL[0]]: 0,
+    [serverLabel.record.shirtSizeXL[0]]: 0, 
+    [serverLabel.record.shirtSizeXXL[0]]: 0, 
+    [serverLabel.record.primaryContact[0]]: "",
+    [serverLabel.record.primaryEmail[0]]: "", 
+    [serverLabel.record.primaryPhone[0]]: "", 
+    [serverLabel.record.primaryAddress[0]]: "",
+    [serverLabel.record.secondaryContact[0]]: "", 
+    [serverLabel.record.secondaryEmail[0]]: "", 
+    [serverLabel.record.secondaryPhone[0]]: "", 
+    [serverLabel.record.approval[0]]: false,
+    [serverLabel.record.nameOfUser[0]]: currentUser?.name,
+    [serverLabel.record.editedTime[0]]: new Date().toLocaleDateString(),
   });
 
 
@@ -83,41 +82,41 @@ export default function Record() {
     {
       title: "Performer/Band",
       fields: [
-        { label: Label.record.name, name: serverLabel.record.name, type: "text", placeholder: "Enter your name", required: true },
-        { label: Label.record.email, name: serverLabel.record.email, type: "email", placeholder: "Enter your email", required: true },
-        { label: Label.record.level, name: serverLabel.record.level, type: "radio", options: ["Low", "Medium", "High"] },
-        { label: Label.record.committeNotes, name: serverLabel.record.committeNotes, type: "textarea", placeholder: "Committee Notes" },
-        { label: Label.record.members, name: serverLabel.record.members, type: "number", placeholder: "Number of members", required: true },
-        { label: Label.record.hudsonValley, name: serverLabel.record.hudsonValley, type: "checkbox" },
+        { label: serverLabel.record.name[1], name: serverLabel.record.name[0], type: "text", placeholder: "Enter your name", required: true },
+        { label: serverLabel.record.email[1], name: serverLabel.record.email[0], type: "email", placeholder: "Enter your email", required: true },
+        { label: serverLabel.record.level[1], name: serverLabel.record.level[0], type: "radio", options: [serverLabel.record.low[1], serverLabel.record.medium[1], serverLabel.record.high[1]] },
+        { label: serverLabel.record.committeNotes[1], name: serverLabel.record.committeNotes[0], type: "textarea", placeholder: "Committee Notes" },
+        { label: serverLabel.record.members[1], name: serverLabel.record.members[0], type: "number", placeholder: "Number of members", required: true },
+        { label: serverLabel.record.hudsonValley[1], name: serverLabel.record.hudsonValley[0], type: "checkbox" },
       ],
     },
     {
       title: "T-shirt Sizes",
       fields: [
-        { label: Label.record.shirtSizeXS, name: serverLabel.record.shirtSizeXS, type: "number" },
-        { label: Label.record.shirtSizeS, name: serverLabel.record.shirtSizeS, type: "number" },
-        { label: Label.record.shirtSizeM, name: serverLabel.record.shirtSizeM, type: "number" },
-        { label: Label.record.shirtSizeL, name: serverLabel.record.shirtSizeL, type: "number" },
-        { label: Label.record.shirtSizeXL, name: serverLabel.record.shirtSizeXL, type: "number" },
-        { label: Label.record.shirtSizeXXL, name: serverLabel.record.shirtSizeXXL, type: "number" },
+        { label: serverLabel.record.shirtSizeXS[1], name: serverLabel.record.shirtSizeXS[0], type: "number" },
+        { label: serverLabel.record.shirtSizeS[1], name: serverLabel.record.shirtSizeS[0], type: "number" },
+        { label: serverLabel.record.shirtSizeM[1], name: serverLabel.record.shirtSizeM[0], type: "number" },
+        { label: serverLabel.record.shirtSizeL[1], name: serverLabel.record.shirtSizeL[0], type: "number" },
+        { label: serverLabel.record.shirtSizeXL[1], name: serverLabel.record.shirtSizeXL[0], type: "number" },
+        { label: serverLabel.record.shirtSizeXXL[1], name: serverLabel.record.shirtSizeXXL[0], type: "number" },
       ],
     },
     {
       title: "Contact Information",
       fields: [
-        { label: Label.record.primaryContact, name: serverLabel.record.primaryContact, type: "text", required: true },
-        { label: Label.record.primaryEmail, name: serverLabel.record.primaryEmail, type: "email", required: true },
-        { label: Label.record.primaryPhone, name: serverLabel.record.primaryPhone, type: "tel", required: true },
-        { label: Label.record.primaryAddress, name: serverLabel.record.primaryAddress, type: "text", required: true },
-        { label: Label.record.secondaryContact, name: serverLabel.record.secondaryContact, type: "text" },
-        { label: Label.record.secondaryEmail, name: serverLabel.record.secondaryEmail, type: "email" },
-        { label: Label.record.secondaryPhone, name: serverLabel.record.secondaryPhone, type: "tel" },
+        { label: serverLabel.record.primaryContact[1], name: serverLabel.record.primaryContact[0], type: "text", required: true },
+        { label: serverLabel.record.primaryEmail[1], name: serverLabel.record.primaryEmail[0], type: "email", required: true },
+        { label: serverLabel.record.primaryPhone[1], name: serverLabel.record.primaryPhone[0], type: "tel", required: true },
+        { label: serverLabel.record.primaryAddress[1], name: serverLabel.record.primaryAddress[0], type: "text", required: true },
+        { label: serverLabel.record.secondaryContact[1], name: serverLabel.record.secondaryContact[0], type: "text" },
+        { label: serverLabel.record.secondaryEmail[1], name: serverLabel.record.secondaryEmail[0], type: "email" },
+        { label: serverLabel.record.secondaryPhone[1], name: serverLabel.record.secondaryPhone[0], type: "tel" },
       ],
     },
     {
       title: "Approval",
       fields: [
-        { label: Label.record.approval, name: serverLabel.record.approval, type: "checkbox" },
+        { label: serverLabel.record.approval[1], name: serverLabel.record.approval, type: "checkbox" },
       ],
     },
   ];
@@ -155,7 +154,7 @@ export default function Record() {
           <h3>{isNew ? "Create" : "Update"} Performer/Band</h3>
           <form className="record-form" onSubmit={onSubmit}>
             {formSections.map(({ title, fields }) => (
-              title === serverLabel.record.approval ? (
+              title === serverLabel.record.approval[0] ? (
                 canViewActions && (
                   <fieldset key={title} className="create-record-form-section">
                     <legend className="create-record-form-section-title">{title}</legend>
