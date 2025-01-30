@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 // import { useState } from "react";
 // import Papa from "papaparse";
 import PapaParse from "papaparse";
-import { useNavigate } from "react-router-dom";
-import useRecords from "../../hooks/UseRecords";
+// import { useNavigate } from "react-router-dom";
+// import useRecords from "../../hooks/UseRecords";
 import "../../styles/Table.css";
 
 const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displayLabels: string[] }) => {
@@ -13,9 +13,10 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
     // const [headers, setHeaders] = useState<string[]>([]);
     const [headers] = useState<string[]>([]);
     const [mappedFields, setMappedFields] = useState<Record<string, string>>({});
-    const [error, setError] = useState("");
-    const navigate = useNavigate();
-    const { refreshRecords } = useRecords(); // Import from context
+    // const [error, setError] = useState("");
+    const [error,] = useState("");
+    // const navigate = useNavigate();
+    // const { refreshRecords } = useRecords(); // Import from context
 
     useEffect(() => {
         import("papaparse").then((module) => {
@@ -65,53 +66,53 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
         });
     };
 
-    const preprocessData = () => {
-        return csvData.map((row) => {
-            const newRow: Record<string, unknown> = {};
-            Object.entries(mappedFields).forEach(([csvHeader, mappedField]) => {
-                if (mappedField && row[csvHeader]) {  // Ensure there is data in the row
-                    newRow[mappedField] = row[csvHeader as keyof typeof row];
-                } else {
-                    console.warn(`Missing value for ${csvHeader}`);
-                }
-            });
-                return newRow;
-            });
-        };
+    // const preprocessData = () => {
+    //     return csvData.map((row) => {
+    //         const newRow: Record<string, unknown> = {};
+    //         Object.entries(mappedFields).forEach(([csvHeader, mappedField]) => {
+    //             if (mappedField && row[csvHeader]) {  // Ensure there is data in the row
+    //                 newRow[mappedField] = row[csvHeader as keyof typeof row];
+    //             } else {
+    //                 console.warn(`Missing value for ${csvHeader}`);
+    //             }
+    //         });
+    //             return newRow;
+    //         });
+    //     };
 
-    const handleSubmit = async () => {
-        const chunkSize = 10;
-        const processedData = preprocessData();
-        console.log("Processed Data:", processedData);  // Check final structure
+    // const handleSubmit = async () => {
+    //     const chunkSize = 10;
+    //     const processedData = preprocessData();
+    //     console.log("Processed Data:", processedData);  // Check final structure
     
-        for (let i = 0; i < processedData.length; i += chunkSize) {
-            const chunk = processedData.slice(i, i + chunkSize);
+    //     for (let i = 0; i < processedData.length; i += chunkSize) {
+    //         const chunk = processedData.slice(i, i + chunkSize);
             
-            try {
-                const response = await fetch(
-                    `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record`,
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(chunk),
-                    }
-                );
+    //         try {
+    //             const response = await fetch(
+    //                 `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record`,
+    //                 {
+    //                     method: "POST",
+    //                     headers: { "Content-Type": "application/json" },
+    //                     body: JSON.stringify(chunk),
+    //                 }
+    //             );
                 
-                if (!response.ok) {
-                    const responseBody = await response.text();
-                    console.error(`Error: ${response.status}, ${responseBody}`);
-                    throw new Error(`Error submitting chunk starting at record ${i}`);
-                }
-                refreshRecords();
+    //             if (!response.ok) {
+    //                 const responseBody = await response.text();
+    //                 console.error(`Error: ${response.status}, ${responseBody}`);
+    //                 throw new Error(`Error submitting chunk starting at record ${i}`);
+    //             }
+    //             refreshRecords();
 
-                } catch (err) {
-                    console.error(err);
-                    setError("Failed to submit some records. Check the console for details.");
-                    return;
-                }
-            }
-        navigate("/");
-    };
+    //             } catch (err) {
+    //                 console.error(err);
+    //                 setError("Failed to submit some records. Check the console for details.");
+    //                 return;
+    //             }
+    //         }
+    //     navigate("/");
+    // };
     
 
     return (
@@ -196,9 +197,9 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
                 ))}
                 </tbody>
             </table>
-                <button onClick={handleSubmit} className="submit-button">
+                {/* <button onClick={handleSubmit} className="submit-button">
                     Submit to Database
-                </button>
+                </button> */}
             </div>
         )}
         </section>
