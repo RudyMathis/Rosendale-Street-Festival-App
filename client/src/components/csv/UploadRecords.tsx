@@ -60,7 +60,6 @@ export default function UploadRecords() {
     })
     return (
         <>
-            {/* <CsvUpload formFields={Object.keys(form)} displayLabels={Object.keys(labels)} /> */}
             <CsvUpload formFields={Object.keys(form)} displayLabels={Object.keys(labels)} />
         </>
     )

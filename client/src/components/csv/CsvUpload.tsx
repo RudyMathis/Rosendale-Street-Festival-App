@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PapaParse from "papaparse";
 import { useNavigate } from "react-router-dom";
 import useRecords from "../../hooks/UseRecords";
 import "../../styles/Table.css";
 
 const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displayLabels: string[] }) => {
-    const [Papa, setPapa] = useState<typeof PapaParse | null>(null);
+    const [Papa] = useState<typeof PapaParse | null>(null);
     const [csvData, setCsvData] = useState<Record<string, unknown>[]>([]);
     const [headers, setHeaders] = useState<string[]>([]);
     const [mappedFields, setMappedFields] = useState<Record<string, string>>({});
@@ -13,11 +13,6 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
     const navigate = useNavigate();
     const { refreshRecords } = useRecords(); // Import from context
 
-    useEffect(() => {
-        import("papaparse").then((module) => {
-            setPapa(module.default);
-        });
-    }, []);
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
