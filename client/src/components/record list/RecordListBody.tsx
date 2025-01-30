@@ -3,24 +3,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useRoleContext } from "../../context/RoleContext";
 import ConfirmationModal from "../ComfirmationModal";
+import { RecordType } from "../../types/RecordType";
 import Label from "../../labels/UILabel.json"
 import useRecords from "../../hooks/UseRecords";
 import useLabels from "../../hooks/UseLabels";
+import TableData from "../../util/TableData";
 import "../../styles/RecordList.css";
 import "../../styles/Table.css";
-
-type RecordType = {
-    _id: string;
-    name: string;
-    email: string;
-    level: string;
-    members: number;
-    link: string | null;
-    hudsonValley: boolean;
-    isAccepted: boolean;
-    nameOfUser: string;
-    editedTime: string;
-};
 
 type RecordProps = {
     record: RecordType;
@@ -90,63 +79,20 @@ const RecordListBody = ({ record, deleteRecord, comfirmation }: RecordProps) => 
     return (
         <>
             <tr>
-                <td className="record-td-container sticky-name">
-                    <div className="hidden-desktop">{serverLabel.record.name[1]}</div>
-                    <Link to={`/record/${record._id}`}>{record.name}</Link>
-                    {record && countNameRepetitions(record.name) > 1 
-                    ? <div>Repeated: {countNameRepetitions(record.name)}</div>
-                    : undefined}
-                </td>
-                <td className="record-td-container">
-                    <div className="hidden-desktop">{serverLabel.record.email[1]}</div>
-                    <a className="link" href={`mailto:${record.email}`} target="_blank" rel="noopener noreferrer">
-                        {record.email}
-                    </a>
-                </td>
-                <td className={`record-td-container level-${record.level}`}>
-                    <div className="hidden-desktop">{serverLabel.record.level[1]}</div>
-                    {record.level}
-                </td>
-                <td className="record-td-container">
-                    <div className="hidden-desktop">{serverLabel.record.hudsonValley[1]}</div>
-                    <input
-                        type="checkbox"
-                        name="Hudson Valley"
-                        disabled
-                        checked={record.hudsonValley}
-                        onChange={() => {}}
-                    />
-                </td>
-                <td className="record-td-container">
-                    <div className="hidden-desktop">{serverLabel.record.isAccepted[1]}</div>
-                    <input
-                        type="checkbox"
-                        name="Accpepted"
-                        disabled={!canAccept}
-                        checked={updateIsAccepted}
-                        onChange={() => updateAccepted(record._id)}
-                    />
-                </td> 
-                <td className="record-td-container">
-                    <div className="hidden-desktop">{serverLabel.record.members[1]}</div>
-                    {record.members}
-                </td>
-                <td className="record-td-container">
-                    <div className="hidden-desktop">{serverLabel.record.link[1]}</div>
-                    <a className="link" ref={record.link} target="_blank" rel="noopener noreferrer">
-                        {record.link}
-                    </a>
-                </td>
+                <TableData label={serverLabel.record.name[1]} value={record.name} type="name" recordId={record._id} countNameRepetitions={countNameRepetitions} />
+                <TableData label={serverLabel.record.email[1]} value={record.email} type="email" />
+                <TableData label={serverLabel.record.level[1]} value={record.level} type="level" />
+                <TableData label={serverLabel.record.hudsonValley[1]} value={record.hudsonValley} type="checkbox" recordId={record._id} isDisabled={true} />
+                <TableData label={serverLabel.record.isAccepted[1]} value={updateIsAccepted} type="checkbox" recordId={record._id} isDisabled={canAccept} updateAccepted={updateAccepted} />
+                <TableData label={serverLabel.record.members[1]} value={record.members} type="text" />
+                <TableData label={serverLabel.record.link[1]} value={record.link} type="link" />
+                <TableData label={serverLabel.record.anotherGig[1]} value={record.anotherGig} type="checkbox" recordId={record._id} isDisabled={true} />
+                <TableData label={serverLabel.record.primaryAddress[1]} value={record.primaryAddress} type="text" />
+                <TableData label={serverLabel.record.primaryPhone[1]} value={record.primaryPhone} type="text" />
                 {canViewEditedDetail && (
                     <>
-                        <td className="record-td-container">
-                            <div className="hidden-desktop">{serverLabel.record.nameOfUser[1]}</div>
-                            {record.nameOfUser}
-                        </td>
-                        <td className="record-td-container">
-                            <div className="hidden-desktop">{serverLabel.record.editedTime[1]}</div>
-                            {record.editedTime}
-                        </td>
+                        <TableData label={serverLabel.record.nameOfUser[1]} value={record.nameOfUser} type="text" />
+                        <TableData label={serverLabel.record.editedTime[1]} value={record.editedTime} type="text" />
                     </>
                 )}
                 {canViewActions && ( // Only show the "Action" column if the user has permission
