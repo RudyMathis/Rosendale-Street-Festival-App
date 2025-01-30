@@ -15,88 +15,23 @@ import MembersPage from "./components/members/MembersPage";
 import "./index.css";
 
 // Define the routes array with type annotations for better TypeScript support.
-const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <App />, // Wrap everything inside App
     children: [
-      {
-        path: "/",
-        element: <RecordListHeader />,
-      },
-    ],
-  },
-  {
-    path: "/edit/:id",
-    element: <App />,
-    children: [
-      {
-        path: "/edit/:id",
-        element: <CreateRecord />,
-      },
-    ],
-  },
-  {
-    path: "/record/:id",
-    element: <App />,
-    children: [
-      {
-        path: "/record/:id",
-        element: <RecordDetail />,
-      },
-    ],
-  },
-  {
-    path: "/record/all",
-    element: <App />,
-    children: [
-      {
-        path: "/record/all",
-        element: <Records />,
-      },
-    ],
-  },
-  {
-    path: "/create",
-    element: <App />,
-    children: [
-      {
-        path: "/create",
-        element: <CreateRecord />,
-      },
-    ],
-  },
-  {
-    path: "/upload",
-    element: <App />,
-    children: [
-      {
-        path: "/upload",
-        element: <UploadRecords />,
-      },
-    ],
-  },
-  {
-    path: "/login",
-    element: <App />,
-    children: [
-      {
-        path: "/login",
-        element: <Login />,
-      },
-    ],
-  },
-  {
-    path: "/members",
-    element: <App />,
-    children: [
-      {
-        path: "/members",
-        element: <MembersPage />,
-      },
+      { path: "/", element: <RecordListHeader /> },
+      { path: "/edit/:id", element: <CreateRecord /> },
+      { path: "/record/:id", element: <RecordDetail /> },
+      { path: "/record/all", element: <Records /> },
+      { path: "/create", element: <CreateRecord /> },
+      { path: "/upload", element: <UploadRecords /> },
+      { path: "/login", element: <Login /> },
+      { path: "/members", element: <MembersPage /> },
     ],
   },
 ]);
+
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

@@ -28,8 +28,8 @@ const App: React.FC = () => {
     <Providers>
       <Suspense fallback={<Loading message="Loading Page..." />}>
         <main>
-          <Outlet />
           <Navbar />
+          <Outlet />
         </main>
       </Suspense>
     </Providers>
