@@ -17,6 +17,8 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
     useEffect(() => {
         import("papaparse").then((module) => {
             setPapa(module.default);
+        }).catch((error) => {
+            console.error("Failed to load PapaParse:", error);
         });
     }, []);
 
