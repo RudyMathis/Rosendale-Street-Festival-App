@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+// import { useState } from "react";
 // import Papa from "papaparse";
 import PapaParse from "papaparse";
 import { useNavigate } from "react-router-dom";
@@ -6,9 +7,11 @@ import useRecords from "../../hooks/UseRecords";
 import "../../styles/Table.css";
 
 const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displayLabels: string[] }) => {
-    const [Papa, setPapa] = useState<typeof PapaParse | null>(null);
+    // const [Papa, setPapa] = useState<typeof PapaParse | null>(null);
+    const [, setPapa] = useState<typeof PapaParse | null>(null);
     const [csvData, setCsvData] = useState<Record<string, unknown>[]>([]);
-    const [headers, setHeaders] = useState<string[]>([]);
+    // const [headers, setHeaders] = useState<string[]>([]);
+    const [headers] = useState<string[]>([]);
     const [mappedFields, setMappedFields] = useState<Record<string, string>>({});
     const [error, setError] = useState("");
     const navigate = useNavigate();
@@ -22,33 +25,33 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
         });
     }, []);
 
-    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
+    // const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const file = e.target.files?.[0];
+    //     if (!file) return;
 
-        if (Papa) {
-            Papa.parse(file, {
-                header: true,
-                skipEmptyLines: true,
-                complete: (result) => {
-                    if (result.errors.length) {
-                        setError("Error parsing CSV file.");
-                        console.error(result.errors);
-                    } else {
-                        setHeaders(Object.keys(result.data[0] as object));
-                        setCsvData(result.data as Record<string, unknown>[]);
-                        setError("");
-                        setMappedFields(
-                            Object.keys(result.data[0] as object).reduce((acc, header) => {
-                                acc[header] = ""; // Initialize mapping as empty
-                                return acc;
-                            }, {} as Record<string, string>)
-                        );
-                    }
-                },
-            });
-        }
-    };
+    //     if (Papa) {
+    //         Papa.parse(file, {
+    //             header: true,
+    //             skipEmptyLines: true,
+    //             complete: (result) => {
+    //                 if (result.errors.length) {
+    //                     setError("Error parsing CSV file.");
+    //                     console.error(result.errors);
+    //                 } else {
+    //                     setHeaders(Object.keys(result.data[0] as object));
+    //                     setCsvData(result.data as Record<string, unknown>[]);
+    //                     setError("");
+    //                     setMappedFields(
+    //                         Object.keys(result.data[0] as object).reduce((acc, header) => {
+    //                             acc[header] = ""; // Initialize mapping as empty
+    //                             return acc;
+    //                         }, {} as Record<string, string>)
+    //                     );
+    //                 }
+    //             },
+    //         });
+    //     }
+    // };
 
     const handleFieldMappingChange = (csvHeader: string, mappedField: string) => {
         setMappedFields((prevMappings) => ({ ...prevMappings, [csvHeader]: mappedField }));
@@ -115,12 +118,12 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
         <section className="csv-upload-container container-shadow">
         <h3>Upload and Process CSV File</h3>
 
-        <input
+        {/* <input
             type="file"
             accept=".csv"
             onChange={handleFileUpload}
             className="csv-upload-input"
-        />
+        /> */}
 
         {error && <p className="error-message">{error}</p>}
 
