@@ -6,13 +6,16 @@ import PapaParse from "papaparse";
 // import useRecords from "../../hooks/UseRecords";
 import "../../styles/Table.css";
 
-const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displayLabels: string[] }) => {
+// const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displayLabels: string[] }) => {
+const CsvUpload = () => {
     // const [Papa, setPapa] = useState<typeof PapaParse | null>(null);
     const [, setPapa] = useState<typeof PapaParse | null>(null);
-    const [csvData, setCsvData] = useState<Record<string, unknown>[]>([]);
+    // const [csvData, setCsvData] = useState<Record<string, unknown>[]>([]);
+    const [csvData,] = useState<Record<string, unknown>[]>([]);
     // const [headers, setHeaders] = useState<string[]>([]);
     const [headers] = useState<string[]>([]);
-    const [mappedFields, setMappedFields] = useState<Record<string, string>>({});
+    // const [mappedFields, setMappedFields] = useState<Record<string, string>>({});
+    // const [mappedFields,] = useState<Record<string, string>>({});
     // const [error, setError] = useState("");
     const [error,] = useState("");
     // const navigate = useNavigate();
@@ -54,17 +57,17 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
     //     }
     // };
 
-    const handleFieldMappingChange = (csvHeader: string, mappedField: string) => {
-        setMappedFields((prevMappings) => ({ ...prevMappings, [csvHeader]: mappedField }));
-    };
+    // const handleFieldMappingChange = (csvHeader: string, mappedField: string) => {
+    //     setMappedFields((prevMappings) => ({ ...prevMappings, [csvHeader]: mappedField }));
+    // };
 
-    const handleInputChange = (rowIndex: number, columnName: string, value: string) => {
-        setCsvData((prevData) => {
-            const updatedData: Record<string, unknown>[] = [...prevData];
-            updatedData[rowIndex][columnName as keyof typeof updatedData[0]] = value;  // Ensure correct value type
-            return updatedData;
-        });
-    };
+    // const handleInputChange = (rowIndex: number, columnName: string, value: string) => {
+    //     setCsvData((prevData) => {
+    //         const updatedData: Record<string, unknown>[] = [...prevData];
+    //         updatedData[rowIndex][columnName as keyof typeof updatedData[0]] = value;  // Ensure correct value type
+    //         return updatedData;
+    //     });
+    // };
 
     // const preprocessData = () => {
     //     return csvData.map((row) => {
@@ -143,7 +146,7 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
                     <tr key={header}>
                     <td>{header}</td>
                     <td>
-                        <select
+                        {/* <select
                             value={mappedFields[header] || ""}
                             name={mappedFields[header] || "Ignore"}
                             onChange={(e) =>
@@ -156,7 +159,7 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
                                     {displayLabels[index] || field}
                                 </option>
                             ))}
-                        </select>
+                        </select> */}
                     </td>
                     </tr>
                 ))}
@@ -182,14 +185,14 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
                     {headers.map((header) => (
                             <td key={header}>
                                 <label>
-                                <input
+                                {/* <input
                                     type="text"
                                     name={mappedFields[header] || `field_${header}`}  // Use a fallback name if mapping is empty
                                     value={row[header as keyof typeof row] as string || ""}
                                     onChange={(e) =>
                                         handleInputChange(rowIndex, header, e.target.value)
                                     }
-                                />
+                                /> */}
                                 </label>
                             </td>
                         ))}
