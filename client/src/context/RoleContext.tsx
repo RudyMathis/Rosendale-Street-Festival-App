@@ -1,5 +1,6 @@
 import { createContext, useContext, ReactNode } from "react";
 import { useUserContext } from "./UserContext";
+import Loading from "../UI/LoadingMessage";
 import useLabels from "../hooks/UseLabels";
 
 // Define all possible permissions
@@ -17,9 +18,15 @@ const RoleContext = createContext<RoleContextType | undefined>(undefined);
 export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { currentUser } = useUserContext();
   const serverLabel = useLabels();
-  
+
+  // Ensure roles exist before setting up the context
+  if (!serverLabel?.role) {
+    console.log("RoleContextProvider waiting for serverLabel.role...");
+    return <Loading message="Loading roles..." />; // Or return null;
+  }
+
   const roleHierarchy = {
-    [serverLabel.role.level1[0]]: {
+    [serverLabel.role.level1?.[0]]: {
       differentDisplay: "",
       canViewContent: false,
       canViewActions: false,
@@ -27,7 +34,7 @@ export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ childre
       canViewEditedDetail: false,
       canEditRecords: false,
     },
-    [serverLabel.role.level2[0]]: {
+    [serverLabel.role.level2?.[0]]: {
       differentDisplay: "Suggest Performer/Band",
       canViewContent: true,
       canViewActions: false,
@@ -35,7 +42,7 @@ export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ childre
       canViewEditedDetail: false,
       canEditRecords: false,
     },
-    [serverLabel.role.level3[0]]: {
+    [serverLabel.role.level3?.[0]]: {
       differentDisplay: "Add Performer/Band",
       canViewContent: true,
       canViewActions: true,
@@ -43,7 +50,7 @@ export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ childre
       canViewEditedDetail: true,
       canEditRecords: false,
     },
-    [serverLabel.role.level4[0]]: {
+    [serverLabel.role.level4?.[0]]: {
       differentDisplay: "Add Performer/Band",
       canViewContent: true,
       canViewActions: true,
@@ -53,8 +60,7 @@ export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ childre
     },
   };
 
-  // Resolve permissions based on currentUser's role, default to "guest" if no user
-  const permissions = roleHierarchy[currentUser?.role ?? serverLabel.role.level1[0]];
+  const permissions = roleHierarchy[currentUser?.role ?? serverLabel.role.level1?.[0]];
 
   return (
     <RoleContext.Provider value={permissions}>
@@ -62,6 +68,7 @@ export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ childre
     </RoleContext.Provider>
   );
 };
+
 
 export const useRoleContext = () => {
   const context = useContext(RoleContext);
