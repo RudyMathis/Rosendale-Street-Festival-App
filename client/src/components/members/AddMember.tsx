@@ -3,6 +3,7 @@ import useLabels from "../../hooks/UseLabels";
 import { useSubmit } from "../../hooks/UseSubmit";
 import Button from "../../util/Button";
 import Label from "../../labels/UILabel.json"
+import "../../styles/members.css";
 type AddMemberProps = {
     onAdd: (newMember: { name: string; role: string; password: string }) => void;
 };
@@ -30,51 +31,53 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
     };
 
     return (
-        <div className="add-member">
-        <h2>{Label.adminPanel.add} </h2>
-            <form className="container-shadow" onSubmit={handleSubmit(newMember)}>
-                <label className="member-label">
-                    {Label.adminPanel.name} 
-                    <input
-                        type="text"
-                        name="name"
-                        value={newMember.name}
-                        onChange={handleInputChange}
-                        autoComplete="off"
-                        required
+        <>
+            <h2>{Label.adminPanel.add}</h2>
+            <div className="add-member card">
+                <form className="add-member-form" onSubmit={handleSubmit(newMember)}>
+                    <label className="member-label">
+                        {Label.adminPanel.name} 
+                        <input
+                            type="text"
+                            name="name"
+                            value={newMember.name}
+                            onChange={handleInputChange}
+                            autoComplete="off"
+                            required
+                        />
+                    </label>
+                    <label className="member-label">
+                    {Label.adminPanel.role}  
+                        <select
+                            name="role"
+                            value={newMember.role}
+                            onChange={handleInputChange}
+                            required
+                        >
+                            <option value={serverLabel.role.level2[0]}>{serverLabel.role.level2[1]}</option>
+                            <option value={serverLabel.role.level3[0]}>{serverLabel.role.level3[1]}</option>
+                            <option value={serverLabel.role.level4[0]}>{serverLabel.role.level4[1]}</option>
+                        </select>
+                    </label>
+                    <label className="member-label">
+                        {Label.adminPanel.password}  
+                        <input
+                            type="password"
+                            name="password"
+                            value={newMember.password}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </label>
+                    <Button 
+                        label={Label.actions.add}
+                        secondaryLabel={serverLabel.role.level2[1]}
+                        className="add-member-button"
+                        type="submit"
                     />
-                </label>
-                <label className="member-label">
-                {Label.adminPanel.role}  
-                    <select
-                        name="role"
-                        value={newMember.role}
-                        onChange={handleInputChange}
-                        required
-                    >
-                        <option value={serverLabel.role.level2[0]}>{serverLabel.role.level2[1]}</option>
-                        <option value={serverLabel.role.level3[0]}>{serverLabel.role.level3[1]}</option>
-                        <option value={serverLabel.role.level4[0]}>{serverLabel.role.level4[1]}</option>
-                    </select>
-                </label>
-                <label className="member-label">
-                    {Label.adminPanel.password}  
-                    <input
-                        type="password"
-                        name="password"
-                        value={newMember.password}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </label>
-                <Button 
-                    label={Label.actions.add}
-                    secondaryLabel={serverLabel.role.level2[1]}
-                    className="add-member-button"
-                    type="submit"
-                />
-            </form>
-        </div>
+                </form>
+            </div>
+        </>
     );
 };
 

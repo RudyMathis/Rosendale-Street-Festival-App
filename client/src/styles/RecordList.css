@@ -65,6 +65,10 @@ caption {
 
 @media only screen and (max-width: 720px) {
 
+    .record-list-header {
+        flex-direction: column;
+    }
+
     table {
         border-spacing: var(--primary-padding);
     }
@@ -88,7 +92,7 @@ caption {
     }
 
     th {
-        width: 48.9%;
+        width: 48%;
     }
 
     .table-header-button {
@@ -154,8 +158,8 @@ caption {
         justify-content: space-between;
     }
 
-    h3 {
+    /* h3 {
         font-size: 2rem;
-    }
+    } */
     
 }

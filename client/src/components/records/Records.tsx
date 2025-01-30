@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { RecordType } from "../../types/RecordType";
 import { useRoleContext } from "../../context/RoleContext";
 import Header from "./RecordsHeader";
@@ -29,7 +30,6 @@ export default function Records() {
     const [groupToDownload, setGroupToDownload] = useState<string | null>(null);
     const { canViewContent } = useRoleContext();
     const { downloadTextFile } = useDownloadTextFile(fieldGroups, filteredRecords, serverLabel);
-    
 
     useEffect(() => {
         if (records) {
@@ -89,7 +89,6 @@ export default function Records() {
         setFilteredRecords(records); 
     }
     
-
     function handleLevelFilter(level: string) {
         if (!records) {
             return <SystemMessage
@@ -100,7 +99,7 @@ export default function Records() {
                     />
         }
 
-        const filtered = records.filter((record) => record.level.toLowerCase() === level.toLowerCase());
+        const filtered = records.filter((record) => record.level === level);
         setFilteredRecords(filtered);
         setSelected(level);
     }
@@ -183,22 +182,22 @@ export default function Records() {
                     {selectedGroup === "levels" && (
                         <div className="filter-buttons-container">
                             <FilterButton
-                                selected={selected === "low" ? "selected" : ""}
+                                selected={selected === "Low" ? "selected" : ""}
                                 name="Low"
                                 field="low"
-                                onClick={() => handleLevelFilter("low")}
+                                onClick={() => handleLevelFilter("Low")}
                             />
                             <FilterButton
-                                selected={selected === "medium" ? "selected" : ""}
+                                selected={selected === "Medium" ? "selected" : ""}
                                 name="Medium"
                                 field="medium"
-                                onClick={() => handleLevelFilter("medium")}
+                                onClick={() => handleLevelFilter("Medium")}
                             />
                             <FilterButton
-                                selected={selected === "high" ? "selected" : ""}
+                                selected={selected === "High" ? "selected" : ""}
                                 name="High"
                                 field="high"
-                                onClick={() => handleLevelFilter("high")}
+                                onClick={() => handleLevelFilter("High")}
                             />
                         </div>
                     )}
@@ -234,8 +233,8 @@ export default function Records() {
                     )}
 
                     {filteredRecords.map((record) => (
-                        <div key={record._id} className="record-detail-container container-shadow all-record-container">
-                            <h4>{record.name}</h4>
+                        <div key={record._id} className="record-detail-container card all-record-container">
+                            <Link to={`/record/${record._id}`}><h4>{record.name}</h4></Link>
                             {selectedFields.map((field) => (
                                 <LabelDetail
                                     key={field}

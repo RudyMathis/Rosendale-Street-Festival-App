@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: .25rem;
+    gap: .5rem;
     margin: 1em 0;
     width: 100%;
 }
@@ -19,28 +19,17 @@
 
 .record-header-button-container {
     display: flex;
-    flex-direction: column;
-    border: 1px solid var(--border);
     width: 25%;
-    align-items: center;
-    justify-content: center;
 }
 
 .record-header-button-container .records-show-button {
-    border: none;
-    background-color: transparent;
-    border-radius: 0;
     width: 100%;
 }
 
 .records-data-button {
     position: fixed;
-    bottom: 0;
+    bottom: 1em;
     right: 0;
-    color: var(--secondary);
-    background-color: var(--chart-5);
-    border-radius: 0;
-    border: none;
 }
 
 .records-data-button.hidden-download-button {
@@ -73,7 +62,7 @@
 
 .filter-buttons-container {
     display: flex;
-    gap: .1rem;
+    gap: .5rem;
     margin-bottom: .5em;
 }
 

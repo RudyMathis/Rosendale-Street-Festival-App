@@ -38,7 +38,7 @@
 
 .current-user-name {
     position: relative;
-    cursor: pointer;
+    font-size: 1.25rem;
     padding: .5em;
 }
 
@@ -83,6 +83,7 @@
     
     .nav-links {
         align-items: center;
+        width: 100%;
     }
 
     .nav-links h1{

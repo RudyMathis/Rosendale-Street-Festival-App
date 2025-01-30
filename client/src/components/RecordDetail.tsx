@@ -106,8 +106,8 @@ export default function RecordDetail() {
             {canViewContent && 
                 <>
                     <h3>{record.name}</h3>
-                    <div className="record-detail-container container-shadow">
-                    {Object.entries(serverLabel.record)
+                    <div className="record-detail-container card">
+                        {Object.entries(serverLabel.record)
                             .filter(
                                 ([key]) => ![`${Label.otherLabels.nameOfUser}`, `${Label.otherLabels.editedTime}`].includes(key)
                             )
@@ -117,7 +117,8 @@ export default function RecordDetail() {
                                     label={label[1]}
                                     value={record[key] ? record[key].toString() : "N/A"}
                                 />
-                            ))}
+                            )
+                        )}
                         {canViewEditedDetail && (
                             <>
                                 <LabelDetail
@@ -133,18 +134,20 @@ export default function RecordDetail() {
                             </>
                         )}
                     </div>
-                    <Button 
-                        label={Label.actions.sendEmail} 
-                        onClick={handleSendEmail} 
-                        className="button"
-                        type="button"
-                    />
-                    <Button 
-                        label={Label.actions.download} 
-                        onClick={handleDownload} 
-                        className="button"
-                        type="button"
-                    />
+                    <div className="record-detail-button-container">
+                        <Button 
+                            label={Label.actions.sendEmail} 
+                            onClick={handleSendEmail} 
+                            className="button"
+                            type="button"
+                            />
+                        <Button 
+                            label={Label.actions.download} 
+                            onClick={handleDownload} 
+                            className="button"
+                            type="button"
+                            />
+                    </div>
                 </>
             }
         </>

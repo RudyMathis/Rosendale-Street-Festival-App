@@ -124,7 +124,7 @@ const MembersPage = () => {
           <h2>{Label.adminPanel.title}</h2>
           <ul>
             {members.map((member) => (
-              <li className="container-shadow member-list-container" key={member._id}>
+              <li className="member-list-container card" key={member._id}>
                 <div className="member-container">
                   <div className="member-details">
                     <div className="member-label">
@@ -141,14 +141,18 @@ const MembersPage = () => {
                     <Button 
                           label={Label.actions.edit} 
                           onClick={() => setEditingMemberId(member._id)}
-                          className="button"
+                          className="button edit-button"
                           type="button"
+                          role={member.role} // remove to edit 
                       />
                       <DeleteMember 
                         memberId={member._id} 
                         deleteMemeber={handleDeleteMember} 
                         role={member.role} 
                       />
+                      {member.role === `admin` && (
+                        <span className="admin-label">Change in Code</span>
+                      )}
                   </div>
                 </div>
                 {editingMemberId === member._id && (

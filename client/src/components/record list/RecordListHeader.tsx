@@ -73,10 +73,10 @@ export default function RecordListHeader() {
             let aValue = a[sortConfig.key];
             let bValue = b[sortConfig.key];
     
-            if (sortConfig.key === `${serverLabel.record.level[1]}`.toLocaleLowerCase()) {
+            if (sortConfig.key === `${serverLabel.record.level[0]}`) {
                 aValue = rankingMap[a.level];
                 bValue = rankingMap[b.level];
-            } else if (sortConfig.key === `${serverLabel.record.members[1]}`.toLocaleLowerCase()) {
+            } else if (sortConfig.key === `${serverLabel.record.members[0]}`) {
                 aValue = Number(aValue);
                 bValue = Number(bValue);
             } else if (sortConfig.key === "editedTime") {

@@ -96,6 +96,7 @@ a:hover {
 
 h3 {
   font-size: 1.5rem;
+  margin-top: 0;
   margin-bottom: 1rem;
 }
 
@@ -122,7 +123,6 @@ label {
   font-size: 1rem;
 }
 
-
 input, textarea {
   margin: .25rem;
   cursor: pointer;
@@ -136,6 +136,29 @@ input[type="submit"] {
   color: var(--accent-foreground);
   border: 1px solid var(--primary-border-color);
   cursor: pointer;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    appearance: none; /* Resets browser styles */
+    -webkit-appearance: none; /* For WebKit browsers */
+    padding: 0;
+    width: 28.25px;
+    height: 28.25px;
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+    padding: 0;
+    width: 28.25px;
+    height: 28.25px;
+}
+input[type="checkbox"]:checked:before,
+input[type="radio"]:checked:before {
+    position: relative;
+    left: 2px;
+    font-size: 28.25px;
+    content: '\2718';
 }
 
 button {
@@ -154,6 +177,11 @@ button:hover {
   transform: translate(-2px, 2px);
 }
 
+button a{
+  width: 100%;
+}
+
+
 .action-delete:disabled {
   background-color: var(--muted);
   color: var(--muted-foreground);
@@ -166,8 +194,9 @@ button:hover {
 }
 
 .action-delete:hover {
-  background-color: var(--destructive);
-  color: var(--destructive-foreground);
+  transform: none;
+  box-shadow: var(--button-box-shadow);
+  transition: none;
 }
 
 .action-edit:hover {
@@ -196,9 +225,11 @@ li {
 }
 
 select {
-  padding: .5rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border: var(--primary-border);
+  background-color: var(--primary-background);
+  padding: 0.6em 1.2em;
+  cursor: pointer;
+  text-wrap: nowrap;
 }
 
 .member {
@@ -230,6 +261,7 @@ select {
   #root {
     width: 100%;
   }
+
   main {
     padding: 1rem;
   }
