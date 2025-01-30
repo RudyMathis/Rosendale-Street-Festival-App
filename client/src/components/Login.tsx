@@ -14,7 +14,7 @@ const Login: React.FC = () => {
     } = useLogin();
 
     return (
-        <section className="login-container container-shadow">
+        <section className="login-container card">
             <h2>{Label.login.login}</h2>
             <form
                 className="login-form"

@@ -9,7 +9,6 @@ type FormInputProps = {
     placeholder?: string;
     onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     options?: string[];
-    required?: boolean;
     error?: string;
 };
 
@@ -22,7 +21,6 @@ const FormInput = ({
     placeholder = "",
     onChange,
     options = [],
-    required = false,
     error = "",
 }: FormInputProps) => {
 
@@ -52,12 +50,9 @@ const FormInput = ({
 
     return (
         <div className="form-input-container">
-            <div>
-                <label {...(type !== "radio" && { htmlFor: id })}>                    
-                    {label}
-                </label>
-                {required && <span className="required">required *</span>}
-            </div>
+            <label {...(type !== "radio" && { htmlFor: id })}>                    
+                {label}
+            </label>
             {type === "textarea" ? (
                 <textarea
                     name={name}
@@ -65,7 +60,6 @@ const FormInput = ({
                     value={value as string}
                     placeholder={placeholder}
                     onChange={handleChange}
-                    required={required}
                     rows={5} 
                     cols={33}
                 />
@@ -79,7 +73,7 @@ const FormInput = ({
                             value={option}
                             checked={value === option}
                             onChange={handleChange}
-                            required={required}
+
                         />
                         <label htmlFor={`${id}-${option}`}>{option}</label>
                     </div>
@@ -91,7 +85,6 @@ const FormInput = ({
                     id={id}
                     checked={typeof value === "boolean" ? value : false}
                     onChange={handleChange}
-                    required={required}
                 />
             ) : (
                 <input
@@ -102,7 +95,6 @@ const FormInput = ({
                     placeholder={placeholder}
                     onChange={handleChange}
                     autoComplete="off"
-                    required={required}
                 />
             )}
             {error && <span className="error-message">{error}</span>}

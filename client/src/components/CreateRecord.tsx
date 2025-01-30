@@ -82,16 +82,16 @@ export default function Record() {
     {
       title: "Performer/Band",
       fields: [
-        { label: serverLabel.record.name[1], name: serverLabel.record.name[0], type: "text", placeholder: "Enter your name", required: true },
-        { label: serverLabel.record.email[1], name: serverLabel.record.email[0], type: "email", placeholder: "Enter your email", required: true },
+        { label: serverLabel.record.name[1], name: serverLabel.record.name[0], type: "text", placeholder: "Enter your name" },
+        { label: serverLabel.record.email[1], name: serverLabel.record.email[0], type: "email", placeholder: "Enter your email" },
         { label: serverLabel.record.level[1], name: serverLabel.record.level[0], type: "radio", options: [serverLabel.record.low[1], serverLabel.record.medium[1], serverLabel.record.high[1]] },
         { label: serverLabel.record.committeNotes[1], name: serverLabel.record.committeNotes[0], type: "textarea", placeholder: "Committee Notes" },
-        { label: serverLabel.record.members[1], name: serverLabel.record.members[0], type: "number", placeholder: "Number of members", required: true },
+        { label: serverLabel.record.members[1], name: serverLabel.record.members[0], type: "number", placeholder: "Number of members" },
         { label: serverLabel.record.hudsonValley[1], name: serverLabel.record.hudsonValley[0], type: "checkbox" },
       ],
     },
     {
-      title: "T-shirt Sizes",
+      title: "T-Shirt Sizes",
       fields: [
         { label: serverLabel.record.shirtSizeXS[1], name: serverLabel.record.shirtSizeXS[0], type: "number" },
         { label: serverLabel.record.shirtSizeS[1], name: serverLabel.record.shirtSizeS[0], type: "number" },
@@ -104,10 +104,10 @@ export default function Record() {
     {
       title: "Contact Information",
       fields: [
-        { label: serverLabel.record.primaryContact[1], name: serverLabel.record.primaryContact[0], type: "text", required: true },
-        { label: serverLabel.record.primaryEmail[1], name: serverLabel.record.primaryEmail[0], type: "email", required: true },
-        { label: serverLabel.record.primaryPhone[1], name: serverLabel.record.primaryPhone[0], type: "tel", required: true },
-        { label: serverLabel.record.primaryAddress[1], name: serverLabel.record.primaryAddress[0], type: "text", required: true },
+        { label: serverLabel.record.primaryContact[1], name: serverLabel.record.primaryContact[0], type: "text" },
+        { label: serverLabel.record.primaryEmail[1], name: serverLabel.record.primaryEmail[0], type: "email" },
+        { label: serverLabel.record.primaryPhone[1], name: serverLabel.record.primaryPhone[0], type: "tel" },
+        { label: serverLabel.record.primaryAddress[1], name: serverLabel.record.primaryAddress[0], type: "text" },
         { label: serverLabel.record.secondaryContact[1], name: serverLabel.record.secondaryContact[0], type: "text" },
         { label: serverLabel.record.secondaryEmail[1], name: serverLabel.record.secondaryEmail[0], type: "email" },
         { label: serverLabel.record.secondaryPhone[1], name: serverLabel.record.secondaryPhone[0], type: "tel" },
@@ -150,7 +150,7 @@ export default function Record() {
   return (
     <>
       {canViewContent ? 
-        <section className="create-record-container container-shadow">
+        <section className="create-record-container card">
           <h3>{isNew ? "Create" : "Update"} Performer/Band</h3>
           <form className="record-form" onSubmit={onSubmit}>
             {formSections.map(({ title, fields }) => (

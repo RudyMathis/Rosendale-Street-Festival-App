@@ -85,19 +85,18 @@
   border: 1px solid var(--border);
 }
 
-.required {
-  /* color: var(--destructive); */
-  font-size: .75rem;
-  vertical-align: text-top;
-  margin-left: 3px;
-}
-
 a {
   color: var(--primary-link);
   text-decoration: inherit;
 }
+
 a:hover {
   color: var(--primary-link-hover);
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .hidden {
@@ -112,21 +111,31 @@ body {
   min-height: 100vh;
 }
 
-input {
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background-color: var(--card);
-  padding: 0.5rem;
+fieldset {
+  padding: var(--primary-padding);
+  margin: 0;
+  margin-bottom: var(--secondary-padding)
 }
 
-input[type="submit"], input[type="checkbox"] {
+label {
+  margin: .25rem;
+  font-size: 1rem;
+}
+
+
+input, textarea {
+  margin: .25rem;
   cursor: pointer;
+  line-height: 1.5rem;
+  border: 1px solid var(--primary-border-color);
+  background-color: var(--primary-background);
+  padding: .25rem;
 }
 
 input[type="submit"] {
-  background-color: var(--accent);
   color: var(--accent-foreground);
-  border: 1px solid var(--accent);
+  border: 1px solid var(--primary-border-color);
+  cursor: pointer;
 }
 
 button {
@@ -172,12 +181,8 @@ button:hover {
   align-items: center;
 }
 
-h3 {
-  margin: 0;
-}
-
 legend {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
 }
 
 li {
@@ -214,7 +219,6 @@ select {
   box-shadow: var(--primary-box-shadow);
   padding: var(--primary-padding);
 }
-
 
 @media only screen and (max-width: 1400px) {
   main {

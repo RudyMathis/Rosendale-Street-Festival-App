@@ -10,6 +10,14 @@
     margin: 1rem;
 }
 
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+}
+
 .login-label {
     display: flex;
     gap: 1rem;
