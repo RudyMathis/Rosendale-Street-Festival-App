@@ -1,23 +1,23 @@
 // import { useState, useEffect } from "react";
-import { useState } from "react";
+// import { useState } from "react";
 // import Papa from "papaparse";
 // import PapaParse from "papaparse";
 // import { useNavigate } from "react-router-dom";
 // import useRecords from "../../hooks/UseRecords";
-import "../../styles/Table.css";
+// import "../../styles/Table.css";
 
 // const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displayLabels: string[] }) => {
 const CsvUpload = () => {
     // const [Papa, setPapa] = useState<typeof PapaParse | null>(null);
     // const [, setPapa] = useState<typeof PapaParse | null>(null);
     // const [csvData, setCsvData] = useState<Record<string, unknown>[]>([]);
-    const [csvData,] = useState<Record<string, unknown>[]>([]);
+    // const [csvData,] = useState<Record<string, unknown>[]>([]);
     // const [headers, setHeaders] = useState<string[]>([]);
-    const [headers] = useState<string[]>([]);
+    // const [headers] = useState<string[]>([]);
     // const [mappedFields, setMappedFields] = useState<Record<string, string>>({});
     // const [mappedFields,] = useState<Record<string, string>>({});
     // const [error, setError] = useState("");
-    const [error,] = useState("");
+    // const [error,] = useState("");
     // const navigate = useNavigate();
     // const { refreshRecords } = useRecords(); // Import from context
 
@@ -119,93 +119,94 @@ const CsvUpload = () => {
     
 
     return (
-        <section className="csv-upload-container container-shadow">
-        <h3>Upload and Process CSV File</h3>
+        <><h1>CSV Upload</h1></>
+        // <section className="csv-upload-container container-shadow">
+        // <h3>Upload and Process CSV File</h3>
 
-        {/* <input
-            type="file"
-            accept=".csv"
-            onChange={handleFileUpload}
-            className="csv-upload-input"
-        /> */}
+        // {/* <input
+        //     type="file"
+        //     accept=".csv"
+        //     onChange={handleFileUpload}
+        //     className="csv-upload-input"
+        // /> */}
 
-        {error && <p className="error-message">{error}</p>}
+        // {error && <p className="error-message">{error}</p>}
 
-        {headers.length > 0 && (
-            <div className="field-mapping">
-            <h4>Map CSV Columns to Form Fields</h4>
-            <table>
-                <thead>
-                <tr>
-                    <th>CSV Header</th>
-                    <th>Map to Form Field</th>
-                </tr>
-                </thead>
-                <tbody>
-                {headers.map((header) => (
-                    <tr key={header}>
-                    <td>{header}</td>
-                    <td>
-                        {/* <select
-                            value={mappedFields[header] || ""}
-                            name={mappedFields[header] || "Ignore"}
-                            onChange={(e) =>
-                                handleFieldMappingChange(header, e.target.value)
-                            }
-                        >
-                            <option value="">-- Ignore --</option>
-                            {formFields.map((field, index) => (
-                                <option key={field} value={field}>
-                                    {displayLabels[index] || field}
-                                </option>
-                            ))}
-                        </select> */}
-                    </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-            </div>
-        )}
+        // {headers.length > 0 && (
+        //     <div className="field-mapping">
+        //     <h4>Map CSV Columns to Form Fields</h4>
+        //     <table>
+        //         <thead>
+        //         <tr>
+        //             <th>CSV Header</th>
+        //             <th>Map to Form Field</th>
+        //         </tr>
+        //         </thead>
+        //         <tbody>
+        //         {headers.map((header) => (
+        //             <tr key={header}>
+        //             <td>{header}</td>
+        //             <td>
+        //                 {/* <select
+        //                     value={mappedFields[header] || ""}
+        //                     name={mappedFields[header] || "Ignore"}
+        //                     onChange={(e) =>
+        //                         handleFieldMappingChange(header, e.target.value)
+        //                     }
+        //                 >
+        //                     <option value="">-- Ignore --</option>
+        //                     {formFields.map((field, index) => (
+        //                         <option key={field} value={field}>
+        //                             {displayLabels[index] || field}
+        //                         </option>
+        //                     ))}
+        //                 </select> */}
+        //             </td>
+        //             </tr>
+        //         ))}
+        //         </tbody>
+        //     </table>
+        //     </div>
+        // )}
 
-        {csvData.length > 0 && (
-            <div className="csv-preview">
-            <h4>Preview and Edit Data</h4>
-            <table>
-                <thead>
-                <tr>
-                    {headers.map((header) => (
-                    <th key={header}>{header}</th>
-                    ))}
-                </tr>
-                </thead>
-                <tbody>
-                {csvData.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
-                    {headers.map((header) => (
-                            <td key={header}>
-                                <label>
-                                {/* <input
-                                    type="text"
-                                    name={mappedFields[header] || `field_${header}`}  // Use a fallback name if mapping is empty
-                                    value={row[header as keyof typeof row] as string || ""}
-                                    onChange={(e) =>
-                                        handleInputChange(rowIndex, header, e.target.value)
-                                    }
-                                /> */}
-                                </label>
-                            </td>
-                        ))}
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-                {/* <button onClick={handleSubmit} className="submit-button">
-                    Submit to Database
-                </button> */}
-            </div>
-        )}
-        </section>
+        // {csvData.length > 0 && (
+        //     <div className="csv-preview">
+        //     <h4>Preview and Edit Data</h4>
+        //     <table>
+        //         <thead>
+        //         <tr>
+        //             {headers.map((header) => (
+        //             <th key={header}>{header}</th>
+        //             ))}
+        //         </tr>
+        //         </thead>
+        //         <tbody>
+        //         {csvData.map((row, rowIndex) => (
+        //             <tr key={rowIndex}>
+        //             {headers.map((header) => (
+        //                     <td key={header}>
+        //                         <label>
+        //                         {/* <input
+        //                             type="text"
+        //                             name={mappedFields[header] || `field_${header}`}  // Use a fallback name if mapping is empty
+        //                             value={row[header as keyof typeof row] as string || ""}
+        //                             onChange={(e) =>
+        //                                 handleInputChange(rowIndex, header, e.target.value)
+        //                             }
+        //                         /> */}
+        //                         </label>
+        //                     </td>
+        //                 ))}
+        //             </tr>
+        //         ))}
+        //         </tbody>
+        //     </table>
+        //         {/* <button onClick={handleSubmit} className="submit-button">
+        //             Submit to Database
+        //         </button> */}
+        //     </div>
+        // )}
+        // </section>
     );
 };
 
