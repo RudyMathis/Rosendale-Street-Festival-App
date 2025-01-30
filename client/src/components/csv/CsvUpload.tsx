@@ -16,6 +16,7 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
 
     useEffect(() => {
         import("papaparse").then((module) => {
+            console.log("PapaParse loaded:", module);
             setPapa(module.default);
         });
     }, []);
@@ -29,6 +30,7 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
                 header: true,
                 skipEmptyLines: true,
                 complete: (result) => {
+                    console.log(result);
                     if (result.errors.length) {
                         setError("Error parsing CSV file.");
                         console.error(result.errors);
@@ -45,6 +47,9 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
                     }
                 },
             });
+        } else {
+            console.error("Papa is not initialized yet");
+            console.log(file);
         }
     };
 
