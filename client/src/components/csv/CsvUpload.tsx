@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-// import { useState } from "react";
+// import { useState, useEffect } from "react";
+import { useState } from "react";
 // import Papa from "papaparse";
-import PapaParse from "papaparse";
+// import PapaParse from "papaparse";
 // import { useNavigate } from "react-router-dom";
 // import useRecords from "../../hooks/UseRecords";
 import "../../styles/Table.css";
@@ -9,7 +9,7 @@ import "../../styles/Table.css";
 // const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displayLabels: string[] }) => {
 const CsvUpload = () => {
     // const [Papa, setPapa] = useState<typeof PapaParse | null>(null);
-    const [, setPapa] = useState<typeof PapaParse | null>(null);
+    // const [, setPapa] = useState<typeof PapaParse | null>(null);
     // const [csvData, setCsvData] = useState<Record<string, unknown>[]>([]);
     const [csvData,] = useState<Record<string, unknown>[]>([]);
     // const [headers, setHeaders] = useState<string[]>([]);
@@ -21,13 +21,13 @@ const CsvUpload = () => {
     // const navigate = useNavigate();
     // const { refreshRecords } = useRecords(); // Import from context
 
-    useEffect(() => {
-        import("papaparse").then((module) => {
-            setPapa(module.default);
-        }).catch((error) => {
-            console.error("Failed to load PapaParse:", error);
-        });
-    }, []);
+    // useEffect(() => {
+    //     import("papaparse").then((module) => {
+    //         setPapa(module.default);
+    //     }).catch((error) => {
+    //         console.error("Failed to load PapaParse:", error);
+    //     });
+    // }, []);
 
     // const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     //     const file = e.target.files?.[0];
