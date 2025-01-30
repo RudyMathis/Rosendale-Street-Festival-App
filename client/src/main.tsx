@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import App from "./App";
 import CreateRecord from "./components/CreateRecord";
-// import UploadRecords from "./components/csv/UploadRecords";
+import UploadRecords from "./components/csv/UploadRecords";
 import RecordDetail from "./components/RecordDetail";
 import Records from "./components/records/Records";
 import RecordListHeader from "./components/record list/RecordListHeader";
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       { path: "/record/:id", element: <RecordDetail /> },
       { path: "/record/all", element: <Records /> },
       { path: "/create", element: <CreateRecord /> },
-      // { path: "/upload", element: <UploadRecords /> },
+      { path: "/upload", element: <UploadRecords /> },
       { path: "/login", element: <Login /> },
       { path: "/members", element: <MembersPage /> },
     ],
