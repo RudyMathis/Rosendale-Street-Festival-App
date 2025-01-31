@@ -25,7 +25,7 @@ export default function Records() {
     const [selectedGroup, setSelectedGroup] = useState<string>("all");
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
     const [selected, setSelected] = useState('');
-    const [selectedBoolean, setSelectedBoolean] = useState<boolean | null>(null);
+    const [, setSelectedBoolean] = useState<boolean | null | undefined>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [groupToDownload, setGroupToDownload] = useState<string | null>(null);
     const { canViewContent } = useRoleContext();
@@ -55,21 +55,20 @@ export default function Records() {
     }
 
     const groupLabels = {
-        all: Label.otherLabels.all,
-        levels: serverLabel.record.level[1],
-        emails: serverLabel.record.email[1],
-        contacts: Label.otherLabels.contacts,
-        isAccepted: serverLabel.record.isAccepted[1],
-        shirts: Label.otherLabels.shirts,
+        all: Label.group.all,
+        levels: Label.group.levels,
+        emails: Label.group.emails,
+        contacts: Label.group.contacts,
+        isAccepted: Label.group.accpeted,
+        shirts: Label.group.shirtSizes,
     };
-
     const downloadLabels = {
-        all: Label.download.downloadAll,
-        levels: Label.download.downloadLevels,
-        emails: Label.download.downloadEmails,
-        contacts: Label.download.downloadContacts,
-        isAccepted: Label.download.downloadAccpeted,
-        shirts: Label.download.downloadShirtSizes,
+        all: Label.download.all,
+        levels: Label.download.levels,
+        emails: Label.download.emails,
+        contacts: Label.download.contacts,
+        isAccepted: Label.download.accpeted,
+        shirts: Label.download.shirtSizes,
     };
 
     function handleFieldGroup(group: string) {
@@ -100,24 +99,89 @@ export default function Records() {
         }
 
         const filtered = records.filter((record) => record.level === level);
+
         setFilteredRecords(filtered);
         setSelected(level);
     }
-
-    function handleIsAcceptedFilter(isAccepted: boolean) {
+    function handleEmailFilter(email: string) {
         if (!records) {
             return <SystemMessage
                         title="Error"
-                        message="Missing Accepted Filter"
+                        message="Missing Email Filter"
                         type="Error"
                         parentElement="div"
                     />
         }
 
-        const filtered = records.filter((record) => record.isAccepted === isAccepted);
+        const filtered = records.filter((record) => record[`${email}Email`]);
+
+        setSelectedFields([`${email}Email`]);
+        setFilteredRecords(filtered);
+        setSelected(email);
+    }
+
+    function handleContactFilter(contact: string) {
+        if (!records) {
+            return (
+                <SystemMessage
+                    title="Error"
+                    message="Missing Contact Filter"
+                    type="Error"
+                    parentElement="div"
+                />
+            );
+        }
+    
+        // Filter the records where both the contact and phone fields exist
+        const filtered = records.filter((record) => {
+            const contactField = record[`${contact}Contact`];
+            const phoneField = record[`${contact}Phone`];
+            
+            // Check if both contact and phone fields exist and are non-empty
+            return contactField && phoneField;
+        });
+    
+        setSelectedFields([`${contact}Contact`, `${contact}Phone`]); 
+        setFilteredRecords(filtered);
+        setSelected(contact);
+    }
+    
+
+    function handleIsAcceptedFilter(accept: string) {
+        if (!records) {
+            return (
+                <SystemMessage
+                    title="Error"
+                    message="Missing Accepted Filter"
+                    type="Error"
+                    parentElement="div"
+                />
+            );
+        }
+    
+        let isAccepted: boolean | null = null;
+    
+        // Map the accept string to its corresponding value
+        if (accept === "Accepted") {
+            isAccepted = true;
+        } else if (accept === "Not Accepted") {
+            isAccepted = false;
+        } else if (accept === "Pending") {
+            isAccepted = null;
+        }
+    
+        let filtered;
+        if (isAccepted === null) {
+            // Filter for records where isAccepted is either false or null
+            filtered = records.filter((record) => record.isAccepted === null);
+        } else {
+            filtered = records.filter((record) => record.isAccepted === isAccepted);
+        }
+    
         setFilteredRecords(filtered);
         setSelectedBoolean(isAccepted);
     }
+    
 
     function handleShirtFilter(size: string) {
         if (!records) {
@@ -129,8 +193,8 @@ export default function Records() {
                     />
         }
 
-        const filtered = records.filter((record) => record[`shirtSize${size}` as keyof RecordType]);
-    
+        const filtered = records.filter((record) => record[`shirtSize${size}`]);
+
         // Update the selected fields to only include the selected shirt size
         setSelectedFields([`shirtSize${size}`]);
         setFilteredRecords(filtered);
@@ -159,7 +223,7 @@ export default function Records() {
     
     function handleFilterReset() {
         setSelected('');
-        setSelectedBoolean(null);
+        setSelectedBoolean(undefined);
         if (records) {
             setFilteredRecords(records); // Reset to all records
         }
@@ -181,43 +245,55 @@ export default function Records() {
                     />
                     {selectedGroup === "levels" && (
                         <div className="filter-buttons-container">
-                            <FilterButton
-                                selected={selected === "Low" ? "selected" : ""}
-                                name="Low"
-                                field="low"
-                                onClick={() => handleLevelFilter("Low")}
-                            />
-                            <FilterButton
-                                selected={selected === "Medium" ? "selected" : ""}
-                                name="Medium"
-                                field="medium"
-                                onClick={() => handleLevelFilter("Medium")}
-                            />
-                            <FilterButton
-                                selected={selected === "High" ? "selected" : ""}
-                                name="High"
-                                field="high"
-                                onClick={() => handleLevelFilter("High")}
-                            />
+                            {["Low", "Medium", "High"].map((level) => (
+                                <FilterButton
+                                    selected={selected === level ? "selected" : ""}
+                                    key={level}
+                                    name={level}
+                                    onClick={() => handleLevelFilter(level)}
+                                />
+                            ))}
                         </div>
                     )}
-                    {selectedGroup === "isAccepted" && (
+                    {selectedGroup === "emails" && (
                         <div className="filter-buttons-container">
-                            <FilterButton
-                                selected={selectedBoolean === true ? "selected" : ""}
-                                name="Accepted"
-                                field="isAccepted"
-                                onClick={() => handleIsAcceptedFilter(true)}
-                            />
-                            <FilterButton
-                                selected={selectedBoolean === false ? "selected" : ""}
-                                name="Not Accepted"
-                                field="isAccepted"
-                                onClick={() => handleIsAcceptedFilter(false)}
-                            />
+                            {["primary", "secondary"].map((email) => (
+                                <FilterButton
+                                    selected={selected === email ? "selected" : ""}
+                                    key={email}
+                                    name={email}
+                                    field={`${email}Email`}
+                                    onClick={() => handleEmailFilter(email)}
+                                />
+                            ))}
+                        </div>
+                    )}
+                    {selectedGroup === "contacts" && (
+                        <div className="filter-buttons-container">
+                            {["primary", "secondary"].map((contact) => (
+                                <FilterButton
+                                    selected={selected === contact ? "selected" : ""}
+                                    key={contact}
+                                    name={contact}
+                                    field={`${contact}Contact`}
+                                    onClick={() => handleContactFilter(contact)}
+                                />
+                            ))}
                         </div>
                     )}
                     {/* Bugged when downloading specific shirt sizes all shirt sizes for the record show up */}
+                    {selectedGroup === "isAccepted" && (
+                        <div className="filter-buttons-container">
+                            {["Accepted", "Not Accepted", "Pending"].map((accept) => (
+                                <FilterButton
+                                    selected={selected === accept ? "selected" : ""}
+                                    key={accept}
+                                    name={accept}
+                                    onClick={() => handleIsAcceptedFilter(accept)}
+                                />
+                            ))}
+                        </div>
+                    )}
                     {selectedGroup === "shirts" && (
                         <div className="filter-buttons-container">
                             {["XS", "S", "M", "L", "XL", "XXL"].map((size) => (

@@ -58,7 +58,9 @@ const useFieldGroups = () => {
       `${serverLabel.record.shirtSizeL[0]}`,
       `${serverLabel.record.shirtSizeXL[0]}`,
       `${serverLabel.record.shirtSizeXXL[0]}`
-    ]
+    ],
+    primaryPhone: [`${serverLabel.record.primaryPhone[0]}`],
+
   };
 
   return fieldGroups;

@@ -29,7 +29,7 @@
 .records-data-button {
     position: fixed;
     bottom: 1em;
-    right: 0;
+    right: 1em;
 }
 
 .records-data-button.hidden-download-button {
@@ -48,6 +48,10 @@
 .records-show-button.selected {
     background-color: var(--chart-3);
     color: var(--secondary); 
+}
+
+.filter-button {
+    text-transform: capitalize;
 }
 
 .filter-button.selected {

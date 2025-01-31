@@ -1,6 +1,6 @@
 type FilterButtonProps = {
     name: string;
-    field: string;
+    field?: string;
     onClick: () => void;
     selected: string;
 };

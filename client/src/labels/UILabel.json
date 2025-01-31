@@ -1,11 +1,19 @@
 {
     "download": {
-        "downloadAll": "Download All",
-        "downloadEmails": "Download Emails",
-        "downloadLevels": "Download Levels",
-        "downloadAccpeted": "Download Accepted",
-        "downloadContacts": "Download Contacts",
-        "downloadShirtSizes": "Download Shirt Sizes"
+        "all": "Download All",
+        "emails": "Download Emails",
+        "levels": "Download Levels",
+        "accpeted": "Download Accepted",
+        "contacts": "Download Contacts",
+        "shirtSizes": "Download Shirt Sizes"
+    },
+    "group": {
+        "all": "All",
+        "emails": "Emails",
+        "levels": "Levels",
+        "accpeted": "Acceptance",
+        "contacts": "Contacts",
+        "shirtSizes": "Shirts"
     },
     "actions": {
         "action": "Action",
@@ -36,7 +44,8 @@
     "displayRecords": {
         "all": "All Records",
         "contacts": "Contacts",
-        "shirts": "Shirts"
+        "shirts": "Shirts",
+        "accepted": "Accepted"
     },
     "otherLabels": {
         "all": "All",

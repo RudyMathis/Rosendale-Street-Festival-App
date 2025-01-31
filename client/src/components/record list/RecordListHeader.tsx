@@ -128,13 +128,13 @@ export default function RecordListHeader() {
             return 0;
         });
     })();  
-    
     const requestSort = (key: keyof RecordType) => {
-        const direction =
-            sortConfig.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
-    
-        setSortConfig({ key, direction });
+        setSortConfig((prevSortConfig) => ({
+            key,
+            direction: prevSortConfig.key === key && prevSortConfig.direction === "asc" ? "desc" : "asc",
+        }));
     };
+    
     
     function handleAllRecords() {
         navigate("/record/all");
@@ -183,14 +183,14 @@ export default function RecordListHeader() {
                     <div className="record-list-header">
                         <h3>Band Records</h3>
                         <div className="record-list-header-button-container">
-                        {canEditRecords &&
-                            <DeleteToggle label={Label.actions.toggleDelete} onClick={handleToggleDelete} />
-                        }
-                        <Button
-                            label="All Records"
-                            onClick={handleAllRecords} 
-                            className="button"
-                            type="button"
+                            {canEditRecords &&
+                                <DeleteToggle label={Label.actions.toggleDelete} onClick={handleToggleDelete} />
+                            }
+                            <Button
+                                label="All Records"
+                                onClick={handleAllRecords} 
+                                className="button"
+                                type="button"
                             />
                         </div>
                     </div>
@@ -213,9 +213,9 @@ export default function RecordListHeader() {
                                         key={key}
                                         label={serverLabel.record[key][1]}
                                         onClick={() => requestSort(key as keyof RecordType)}
-                                        sortConfig={{ key: key.toString(), direction: sortConfig.direction }}
-                                        columnKey={serverLabel.record[key][0]}
-                                    />
+                                        sortConfig={sortConfig.key === key ? { key, direction: sortConfig.direction } : undefined}
+                                        columnKey={key}
+                                />
                                 ))}
 
                                 {canViewEditedDetail && 
@@ -224,9 +224,9 @@ export default function RecordListHeader() {
                                             key={key}
                                             label={serverLabel.record[key][1]}
                                             onClick={() => requestSort(key as keyof RecordType)}
-                                            sortConfig={{ key: key.toString(), direction: sortConfig.direction }}
-                                            columnKey={serverLabel.record[key][0]}
-                                        />
+                                            sortConfig={sortConfig.key === key ? { key, direction: sortConfig.direction } : undefined}
+                                            columnKey={key}
+                                    />
                                     ))
                                 }
 
