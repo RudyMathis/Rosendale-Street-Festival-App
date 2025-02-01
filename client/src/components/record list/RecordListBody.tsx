@@ -14,10 +14,10 @@ import "../../styles/Table.css";
 type RecordProps = {
     record: RecordType;
     deleteRecord: (id: string) => void;
-    comfirmation: boolean
+    confirmation: boolean
 };
 
-const RecordListBody = ({ record, deleteRecord, comfirmation }: RecordProps) => {
+const RecordListBody = ({ record, deleteRecord, confirmation }: RecordProps) => {
     
     const { canViewActions, canAccept, canViewEditedDetail } = useRoleContext();
     const [modalOpen, setModalOpen] = useState(false);
@@ -105,7 +105,7 @@ const RecordListBody = ({ record, deleteRecord, comfirmation }: RecordProps) => 
                                 className="action-delete"
                                 type="button"
                                 onClick={() => {
-                                    if (comfirmation) {
+                                    if (confirmation) {
                                         openModal(); // Show confirmation modal
                                     } else {
                                         deleteRecord(record._id); // Delete the record directly
