@@ -47,6 +47,7 @@
     },
     "displayRecords": {
         "all": "All Records",
+        "bandRecords": "Band Records",
         "contacts": "Contacts",
         "shirts": "Shirts",
         "accepted": "Accepted"

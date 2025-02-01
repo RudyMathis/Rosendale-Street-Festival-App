@@ -4,7 +4,9 @@ import "../styles/ConfirmationModal.css";
 
 type ConfirmationModalProps = {
     isOpen: boolean;
-    message: string;
+    message: string | React.ReactNode;
+    optionalMessage?: string;
+    secondOptionalMessage?: string;
     onConfirm: () => void;
     onCancel: () => void;
 };
@@ -12,6 +14,8 @@ type ConfirmationModalProps = {
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     isOpen,
     message,
+    optionalMessage,
+    secondOptionalMessage,
     onConfirm,
     onCancel,
 }) => {
@@ -21,7 +25,9 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     return (
         <div className="confirmation-modal-overlay" onClick={onCancel}>
             <div className="confirmation-modal" onClick={(e) => e.stopPropagation()}>
+                <p className="confirmation-message">{optionalMessage}</p>
                 <p className="confirmation-message">{message}</p>
+                <p className="confirmation-message">{secondOptionalMessage}</p>
                 <div className="confirmation-buttons">
                     <Button 
                         label={Label.actions.confirm}

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useRoleContext } from "../context/RoleContext";
 import { useUserContext } from "../context/UserContext";
 import Login from "./Login";
+import ConfirmationModal from "./ConfirmationModal";
 import useRecords from "../hooks/UseRecords";
 import useLabels from "../hooks/UseLabels";
 import FormInput from "../util/FormInput";
@@ -10,11 +11,12 @@ import LoginReminder from "../UI/LoginReminder";
 import "../styles/CreateRecord.css";
 
 export default function Record() {
-
   const [isNew, setIsNew] = useState(true);
   const params = useParams();
   const navigate = useNavigate();
   const { refreshRecords } = useRecords(); // Import from context
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [missingFields, setMissingFields] = useState<string[]>([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -77,7 +79,6 @@ export default function Record() {
     [serverLabel.record.editedTime[0]]: new Date().toLocaleDateString(),
   });
 
-
   const formSections = [
     {
       title: "Performer/Band",
@@ -121,30 +122,56 @@ export default function Record() {
     },
   ];
 
-
   const updateForm = (value: Partial<typeof form>) => {
     setForm((prev) => ({ ...prev, ...value }));
   };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record${isNew ? "" : `/${params.id}`}`,
-        {
-          method: isNew ? "POST" : "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        }
-      );
 
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      refreshRecords();
-    } catch (error) {
-      console.error("A problem occurred with your fetch operation: ", error);
-    } finally {
-      navigate("/");
+    const missing = Object.keys(form).filter((key) => {
+        const value = form[key as keyof typeof form];
+        console.log(value)
+        return value === "" || value === null || value === undefined;
+    });
+
+    if (missing.length > 0) {
+        setMissingFields(missing);
+        setIsModalOpen(true);
+        return; // Prevent submission before confirmation
     }
+
+    await submitForm(); // Directly submit if no missing fields
+  };
+
+  const submitForm = async () => {
+      try {
+          const response = await fetch(
+              `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record${isNew ? "" : `/${params.id}`}`,
+              {
+                  method: isNew ? "POST" : "PATCH",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(form),
+              }
+          );
+
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+          refreshRecords();
+          navigate("/"); // Navigate after successful submission
+      } catch (error) {
+          console.error("A problem occurred with your fetch operation: ", error);
+      }
+  };
+
+  const handleConfirmAction = () => {
+      setIsModalOpen(false);
+      submitForm(); // Perform submission only after confirmation
+  };
+
+  const handleCancelDownload = () => {
+      // setGroupToDownload(null); // Reset download state
+      setIsModalOpen(false);
   };
 
   return (
@@ -190,6 +217,20 @@ export default function Record() {
             ))}
             <input type="submit" value="Save Performer/Band Record" />
           </form>
+          <ConfirmationModal
+            isOpen={isModalOpen}
+            optionalMessage="You may be missing the following fields:"
+            message={
+              <>
+                {missingFields.map((field) => (
+                  <li key={field}>{serverLabel.record[field]?.[1] || field}</li>
+                ))}
+              </>
+            }
+            secondOptionalMessage="Are you sure you want to proceed?"
+            onConfirm={handleConfirmAction}
+            onCancel={handleCancelDownload}
+            />
         </section>
       : 
         <>

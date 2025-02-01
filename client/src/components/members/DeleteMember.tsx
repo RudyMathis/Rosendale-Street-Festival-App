@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ConfirmationModal from "../ComfirmationModal"
+import ConfirmationModal from "../ConfirmationModal"
 import useLabels from "../../hooks/UseLabels";
 import Label from "../../labels/UILabel.json"
 

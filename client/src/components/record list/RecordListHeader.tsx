@@ -178,82 +178,92 @@ export default function RecordListHeader() {
     
     return (
         <>
-            {canViewContent ? 
-                <section className="record-list-container card">
-                    <div className="record-list-header">
-                        <h3>Band Records</h3>
+            {canViewContent ? (
+                <>
+                    <header className="record-list-header">
+                        <h3>{Label.displayRecords.bandRecords}</h3>
                         <div className="record-list-header-button-container">
-                            {canEditRecords &&
-                                <DeleteToggle label={Label.actions.toggleDelete} onClick={handleToggleDelete} />
-                            }
+                            {canEditRecords && (
+                                <DeleteToggle
+                                    label={Label.actions.toggleDelete}
+                                    onClick={handleToggleDelete}
+                                />
+                            )}
                             <Button
-                                label="All Records"
-                                onClick={handleAllRecords} 
+                                label={Label.displayRecords.all}
+                                onClick={handleAllRecords}
                                 className="button"
                                 type="button"
                             />
                         </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr className="record-tr-container sticky-header-name">
-                                {[
-                                    "name",
-                                    "email",
-                                    "level",
-                                    "hudsonValley",
-                                    "isAccepted",
-                                    "members",
-                                    "link",
-                                    "anotherGig",
-                                    "primaryAddress",
-                                    "primaryPhone",
-                                ].map((key) => (
-                                    <TableButton
-                                        key={key}
-                                        label={serverLabel.record[key][1]}
-                                        onClick={() => requestSort(key as keyof RecordType)}
-                                        sortConfig={sortConfig.key === key ? { key, direction: sortConfig.direction } : undefined}
-                                        columnKey={key}
-                                />
-                                ))}
-
-                                {canViewEditedDetail && 
-                                    ["nameOfUser", "editedTime"].map((key) => (
+                    </header>
+                    <section className="record-list-container card">
+                        <table>
+                            <thead>
+                                <tr className="record-tr-container sticky-header-name">
+                                    {[
+                                        "name",
+                                        "email",
+                                        "level",
+                                        "hudsonValley",
+                                        "isAccepted",
+                                        "members",
+                                        "link",
+                                        "anotherGig",
+                                        "primaryAddress",
+                                        "primaryPhone",
+                                    ].map((key) => (
                                         <TableButton
                                             key={key}
                                             label={serverLabel.record[key][1]}
                                             onClick={() => requestSort(key as keyof RecordType)}
                                             sortConfig={sortConfig.key === key ? { key, direction: sortConfig.direction } : undefined}
                                             columnKey={key}
-                                    />
-                                    ))
-                                }
-
-                                {canViewActions && (
-                                    <th>
-                                        <Button
-                                            label={Label.actions.action}
-                                            className="action-header"
-                                            type="button"
                                         />
-                                    </th>
-                                )}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {sortedRecords.map((record) => (
-                                <RecordListBody record={record} deleteRecord={() => deleteRecord(record._id)} key={record._id} comfirmation={toggleDelete} />
-                            ))}
-                        </tbody>
-                    </table>
-                </section>
-                : 
+                                    ))}
+
+                                    {canViewEditedDetail && (
+                                        ["nameOfUser", "editedTime"].map((key) => (
+                                            <TableButton
+                                                key={key}
+                                                label={serverLabel.record[key][1]}
+                                                onClick={() => requestSort(key as keyof RecordType)}
+                                                sortConfig={sortConfig.key === key ? { key, direction: sortConfig.direction } : undefined}
+                                                columnKey={key}
+                                            />
+                                        ))
+                                    )}
+
+                                    {canViewActions && (
+                                        <th>
+                                            <Button
+                                                label={Label.actions.action}
+                                                className="action-header"
+                                                type="button"
+                                            />
+                                        </th>
+                                    )}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {sortedRecords.map((record) => (
+                                    <RecordListBody
+                                        record={record}
+                                        deleteRecord={() => deleteRecord(record._id)}
+                                        key={record._id}
+                                        confirmation={toggleDelete}
+                                    />
+                                ))}
+                            </tbody>
+                        </table>
+                    </section>
+                </>
+            ) : (
                 <>
                     <LoginReminder />
                     <Login />
                 </>
-            }
+            )}
         </>
     );
 }

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useRoleContext } from "../../context/RoleContext";
-import ConfirmationModal from "../ComfirmationModal";
+import ConfirmationModal from "../ConfirmationModal";
 import { RecordType } from "../../types/RecordType";
 import Label from "../../labels/UILabel.json"
 import useRecords from "../../hooks/UseRecords";

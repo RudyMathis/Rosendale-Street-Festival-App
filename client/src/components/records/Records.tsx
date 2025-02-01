@@ -4,7 +4,7 @@ import { RecordType } from "../../types/RecordType";
 import { useRoleContext } from "../../context/RoleContext";
 import Header from "./RecordsHeader";
 import Login from "../Login";
-import ConfirmationModal from "../ComfirmationModal";
+import ConfirmationModal from "../ConfirmationModal";
 import useRecords from "../../hooks/UseRecords";
 import useFieldGroups from "../../hooks/UseFieldGroups";
 import useDownloadTextFile  from "../../hooks/UseDownloadTextFile";
