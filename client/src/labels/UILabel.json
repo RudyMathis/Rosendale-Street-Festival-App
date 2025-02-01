@@ -3,17 +3,21 @@
         "all": "Download All",
         "emails": "Download Emails",
         "levels": "Download Levels",
-        "accpeted": "Download Accepted",
+        "accepted": "Download Accepted",
         "contacts": "Download Contacts",
-        "shirtSizes": "Download Shirt Sizes"
+        "shirtSizes": "Download Shirt Sizes",
+        "members": "Download Members",
+        "committeeNotes": "Download Committee Notes"
     },
     "group": {
         "all": "All",
         "emails": "Emails",
         "levels": "Levels",
-        "accpeted": "Acceptance",
+        "accepted": "Acceptance",
         "contacts": "Contacts",
-        "shirtSizes": "Shirts"
+        "shirtSizes": "Shirts",
+        "members": "Members",
+        "committeeNotes": "Committee Notes"
     },
     "actions": {
         "action": "Action",

@@ -13,7 +13,7 @@ const useFieldGroups = () => {
       `${serverLabel.record.name[0]}`,
       `${serverLabel.record.email[0]}`,
       `${serverLabel.record.level[0]}`,
-      `${serverLabel.record.committeNotes[0]}`,
+      `${serverLabel.record.committeeNotes[0]}`,
       `${serverLabel.record.members[0]}`,
       `${serverLabel.record.hudsonValley[0]}`,
       `${serverLabel.record.summary[0]}`,
@@ -60,7 +60,8 @@ const useFieldGroups = () => {
       `${serverLabel.record.shirtSizeXXL[0]}`
     ],
     primaryPhone: [`${serverLabel.record.primaryPhone[0]}`],
-
+    members: [`${serverLabel.record.members[0]}`],
+    committeeNotes: [`${serverLabel.record.committeeNotes[0]}`]
   };
 
   return fieldGroups;

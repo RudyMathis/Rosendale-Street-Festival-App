@@ -29,9 +29,7 @@ export default function Records() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [groupToDownload, setGroupToDownload] = useState<string | null>(null);
     const { canViewContent } = useRoleContext();
-    // const { downloadTextFile } = useDownloadTextFile(fieldGroups, filteredRecords, serverLabel);
-// Inside Records component:
-const { downloadTextFile } = useDownloadTextFile(fieldGroups, selectedFields, filteredRecords, serverLabel);
+    const { downloadTextFile } = useDownloadTextFile(fieldGroups, selectedFields, filteredRecords, serverLabel);
 
     useEffect(() => {
         if (records) {
@@ -61,34 +59,29 @@ const { downloadTextFile } = useDownloadTextFile(fieldGroups, selectedFields, fi
         levels: Label.group.levels,
         emails: Label.group.emails,
         contacts: Label.group.contacts,
-        isAccepted: Label.group.accpeted,
+        isAccepted: Label.group.accepted,
         shirts: Label.group.shirtSizes,
+        members: Label.group.members,
+        committeeNotes: Label.group.committeeNotes,
     };
+
     const downloadLabels = {
         all: Label.download.all,
         levels: Label.download.levels,
         emails: Label.download.emails,
         contacts: Label.download.contacts,
-        isAccepted: Label.download.accpeted,
+        isAccepted: Label.download.accepted,
         shirts: Label.download.shirtSizes,
+        members: Label.download.members,
+        committeeNotes: Label.download.committeeNotes,
     };
 
-    function handleFieldGroup(group: string) {
-        setSelectedFields(fieldGroups[group]);
-        setSelectedGroup(group);
-        
-        if (!records) {
-            return <SystemMessage
-                        title="Error"
-                        message="Missing Field Group"
-                        type="Error"
-                        parentElement="div"
-                    />
-        }
-        
-        // reset the filtered records
-        setFilteredRecords(records); 
-    }
+
+
+    /*******************************************************************/
+    /***************************HEADER FILTERS**************************/
+    /*******************************************************************/
+
     
     function handleLevelFilter(level: string) {
         if (!records) {
@@ -201,11 +194,34 @@ const { downloadTextFile } = useDownloadTextFile(fieldGroups, selectedFields, fi
         setSelectedFields([`shirtSize${size}`]);
         setFilteredRecords(filtered);
         setSelected(size);
+        console.log(records, filtered, size)
+
     }
+
+    /*******************************************************************/
+    /*******************************************************************/
+    /*******************************************************************/
 
     function handleDownloadButtonClick(group: string) {
         setGroupToDownload(group);
         setIsModalOpen(true);
+    }
+
+    function handleFieldGroup(group: string) {
+        setSelectedFields(fieldGroups[group]);
+        setSelectedGroup(group);
+        
+        if (!records) {
+            return <SystemMessage
+                        title="Error"
+                        message="Missing Field Group"
+                        type="Error"
+                        parentElement="div"
+                    />
+        }
+        
+        // reset the filtered records
+        setFilteredRecords(records); 
     }
 
     const handleConfirmAction = () => {
@@ -283,7 +299,6 @@ const { downloadTextFile } = useDownloadTextFile(fieldGroups, selectedFields, fi
                             ))}
                         </div>
                     )}
-                    {/* Bugged when downloading specific shirt sizes all shirt sizes for the record show up */}
                     {selectedGroup === "isAccepted" && (
                         <div className="filter-buttons-container">
                             {["Accepted", "Not Accepted", "Pending"].map((accept) => (
@@ -309,19 +324,23 @@ const { downloadTextFile } = useDownloadTextFile(fieldGroups, selectedFields, fi
                             ))}
                         </div>
                     )}
+                    {Array.isArray(filteredRecords) &&
+                        filteredRecords.map((record) => (
+                            <div key={record._id} className="record-detail-container card all-record-container">
+                                <Link to={`/record/${record._id}`}>
+                                    <h4>{record.name}</h4>
+                                </Link>
+                                {Array.isArray(selectedFields) &&
+                                    selectedFields.map((field) => (
+                                        <LabelDetail
+                                            key={field}
+                                            label={serverLabel.record[field]?.[1] || field}
+                                            value={String(record[field as keyof RecordType]) || "N/A"}
+                                        />
+                                    ))}
+                            </div>
+                        ))}
 
-                    {filteredRecords.map((record) => (
-                        <div key={record._id} className="record-detail-container card all-record-container">
-                            <Link to={`/record/${record._id}`}><h4>{record.name}</h4></Link>
-                            {selectedFields.map((field) => (
-                                <LabelDetail
-                                    key={field}
-                                    label={serverLabel.record[field][1]}
-                                    value={String(record[field as keyof RecordType]) || "N/A"} 
-                                />
-                            ))}
-                        </div>
-                    ))}
                     <div className="confirmation-modal-container">
                         <ConfirmationModal
                             isOpen={isModalOpen}

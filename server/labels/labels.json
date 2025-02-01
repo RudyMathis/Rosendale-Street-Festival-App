@@ -6,7 +6,7 @@
         "low": ["low", "Low"],
         "medium": ["medium", "Medium"],
         "high": ["high", "High"],
-        "committeNotes": ["committeNotes", "Committe Notes"],
+        "committeeNotes": ["committeeNotes", "Committee Notes"],
         "members": ["members", "Members"],
         "hudsonValley": ["hudsonValley", "Hudson Valley"],
         "summary": ["summary", "Summary"],
@@ -33,7 +33,6 @@
         "anythingElse": ["anythingElse", "Anything Else"],
         "isAccepted": ["isAccepted", "Is Accepted"],
         "nameOfUser": ["nameOfUser", "Name Of User"],
-        "approval": ["approval", "Approval"],
         "editedTime": ["editedTime", "Edited Time"]
     },
     "role": {

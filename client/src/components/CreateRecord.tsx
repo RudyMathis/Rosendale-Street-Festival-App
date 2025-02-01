@@ -56,7 +56,7 @@ export default function Record() {
     [serverLabel.record.name[0]]: "", 
     [serverLabel.record.email[0]]: "", 
     [serverLabel.record.level[0]]: "", 
-    [serverLabel.record.committeNotes[0]]: "", 
+    [serverLabel.record.committeeNotes[0]]: "", 
     [serverLabel.record.members[0]]: 1,
     [serverLabel.record.hudsonValley[0]]: false, 
     [serverLabel.record.shirtSizeXS[0]]: 0, 
@@ -72,7 +72,7 @@ export default function Record() {
     [serverLabel.record.secondaryContact[0]]: "", 
     [serverLabel.record.secondaryEmail[0]]: "", 
     [serverLabel.record.secondaryPhone[0]]: "", 
-    [serverLabel.record.approval[0]]: false,
+    [serverLabel.record.isAccepted[0]]: false,
     [serverLabel.record.nameOfUser[0]]: currentUser?.name,
     [serverLabel.record.editedTime[0]]: new Date().toLocaleDateString(),
   });
@@ -85,7 +85,7 @@ export default function Record() {
         { label: serverLabel.record.name[1], name: serverLabel.record.name[0], type: "text", placeholder: "Enter your name" },
         { label: serverLabel.record.email[1], name: serverLabel.record.email[0], type: "email", placeholder: "Enter your email" },
         { label: serverLabel.record.level[1], name: serverLabel.record.level[0], type: "radio", options: [serverLabel.record.low[1], serverLabel.record.medium[1], serverLabel.record.high[1]] },
-        { label: serverLabel.record.committeNotes[1], name: serverLabel.record.committeNotes[0], type: "textarea", placeholder: "Committee Notes" },
+        { label: serverLabel.record.committeeNotes[1], name: serverLabel.record.committeeNotes[0], type: "textarea", placeholder: "Committee Notes" },
         { label: serverLabel.record.members[1], name: serverLabel.record.members[0], type: "number", placeholder: "Number of members" },
         { label: serverLabel.record.hudsonValley[1], name: serverLabel.record.hudsonValley[0], type: "checkbox" },
       ],
@@ -116,7 +116,7 @@ export default function Record() {
     {
       title: "Approval",
       fields: [
-        { label: serverLabel.record.approval[1], name: serverLabel.record.approval, type: "checkbox" },
+        { label: serverLabel.record.isAccepted[1], name: serverLabel.record.isAccepted[0], type: "checkbox" },
       ],
     },
   ];
@@ -154,7 +154,7 @@ export default function Record() {
           <h3>{isNew ? "Create" : "Update"} Performer/Band</h3>
           <form className="record-form" onSubmit={onSubmit}>
             {formSections.map(({ title, fields }) => (
-              title === serverLabel.record.approval[0] ? (
+              title === serverLabel.record.isAccepted[0] ? (
                 canViewActions && (
                   <fieldset key={title} className="create-record-form-section">
                     <legend className="create-record-form-section-title">{title}</legend>

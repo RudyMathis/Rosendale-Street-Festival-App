@@ -12,7 +12,7 @@ export type RecordType = {
     name: string;
     email: string;
     level: string;
-    committeNotes: string;
+    committeeNotes: string;
     members: number;
     hudsonValley: boolean;
     summary: string;

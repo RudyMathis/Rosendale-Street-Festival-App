@@ -10,7 +10,7 @@ const getFormBodyData = (body) => ({
   name: body.name,
   email: body.email,
   level: body.level,
-  committeNotes: body.committeNotes,
+  committeeNotes: body.committeeNotes,
   members: body.members,
   hudsonValley: body.hudsonValley,
   summary: body.summary,
