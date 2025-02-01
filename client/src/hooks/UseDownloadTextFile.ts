@@ -5,19 +5,22 @@ type Labels = {
 }
 
 const useDownloadTextFile = (
+    // Now also receive the selectedFields
     FieldGroups: Record<string, string[]>,
+    selectedFields: string[],
     filteredRecords: Record<string, unknown>[],
     Labels: Labels
 ) => {
     const downloadTextFile = useCallback(
         (group: string) => {
             const subject = `Records - ${group}`;
-            const fieldsToDownload = FieldGroups[group] || []; // Get fields for the group
+            // Use selectedFields instead of FieldGroups[group]
+            const fieldsToDownload = selectedFields.length > 0 ? selectedFields : (FieldGroups[group] || []);
 
             const downloadBody = filteredRecords
                 .map((record) => {
                     const recordLines = fieldsToDownload.map((field) => {
-                        const label = Labels.record[field]?.[1] || field; // Get second value from label array
+                        const label = Labels.record[field]?.[1] || field;
                         const value = record[field as keyof typeof record];
 
                         return `${label}: ${
@@ -39,11 +42,10 @@ const useDownloadTextFile = (
             link.download = `${subject}.txt`;
             link.click();
         },
-        [FieldGroups, filteredRecords, Labels]
+        [FieldGroups, selectedFields, filteredRecords, Labels]
     );
 
     return { downloadTextFile };
 };
-
 
 export default useDownloadTextFile;

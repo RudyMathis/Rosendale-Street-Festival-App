@@ -29,7 +29,9 @@ export default function Records() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [groupToDownload, setGroupToDownload] = useState<string | null>(null);
     const { canViewContent } = useRoleContext();
-    const { downloadTextFile } = useDownloadTextFile(fieldGroups, filteredRecords, serverLabel);
+    // const { downloadTextFile } = useDownloadTextFile(fieldGroups, filteredRecords, serverLabel);
+// Inside Records component:
+const { downloadTextFile } = useDownloadTextFile(fieldGroups, selectedFields, filteredRecords, serverLabel);
 
     useEffect(() => {
         if (records) {
@@ -132,8 +134,8 @@ export default function Records() {
             );
         }
     
-        // Filter the records where both the contact and phone fields exist
-        const filtered = records.filter((record) => {
+             // Filter the records where both the contact and phone fields exist
+            const filtered = records.filter((record) => {
             const contactField = record[`${contact}Contact`];
             const phoneField = record[`${contact}Phone`];
             
