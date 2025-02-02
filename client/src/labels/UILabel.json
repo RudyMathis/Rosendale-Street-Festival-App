@@ -59,6 +59,14 @@
         "nameOfUser": "nameOfUser",
         "editedTime": "editedTime"
     },
+    "csv": {
+        "title": "Upload and Process CSV File",
+        "mapColumn": "Map CSV Columns to Form Fields",
+        "header": "CSV Header",
+        "map": "Map to Form Field",
+        "ignore": "-- Ignore --",
+        "preview": "Preview and Edit Data"
+    },
     "adminPanel": {
         "title": "Members List",
         "add": "Add Member",

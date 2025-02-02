@@ -1,10 +1,13 @@
 table {
     position: relative;
+    width: 100%;
+    max-width: 100em;
     display: block;
     overflow-x: auto;
     overflow-y: auto;
     scrollbar-color: var(--primary-background) var(--primary-border-color);
     scrollbar-width: thin;
+    border: 1px solid var(--primary-border-color);
 }
 
 th {
@@ -47,8 +50,6 @@ td {
 
 @media only screen and (max-width: 1920px) {
     table {
-        width: 100%;
-        max-width: 100em;
         height: 100%;
         max-height: 50em;
     }
@@ -65,5 +66,11 @@ td {
     table {
         max-width: 45em;
         max-height: 50em;
+    }
+}
+
+@media only screen and (max-width: 720px) {
+    table {
+        border: none
     }
 }

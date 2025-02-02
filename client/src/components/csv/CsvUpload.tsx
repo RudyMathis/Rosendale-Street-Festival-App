@@ -4,12 +4,17 @@ import Papa from "papaparse";
 import Login from "../Login";
 import LoginReminder from "../../UI/LoginReminder";
 import useRecords from "../../hooks/UseRecords";
+import Label from "../../labels/UILabel.json";
 import { useRoleContext } from "../../context/RoleContext";
+import "../../styles/Csv.css";
 import "../../styles/Table.css";
 
 const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displayLabels: string[] }) => {
     const [csvData, setCsvData] = useState<Record<string, unknown>[]>([]);
     const [headers, setHeaders] = useState<string[]>([]);
+    const [hoverName, setHoverName] = useState("");
+    const [mappedNameColumn, setMappedNameColumn] = useState<string | null>(null);
+
     const [mappedFields, setMappedFields] = useState<Record<string, string>>({});
     const [error, setError] = useState("");
     const navigate = useNavigate();
@@ -43,13 +48,24 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
     };
 
     const handleFieldMappingChange = (csvHeader: string, mappedField: string) => {
-        setMappedFields((prevMappings) => ({ ...prevMappings, [csvHeader]: mappedField }));
+        setMappedFields((prevMappings) => {
+            const updatedMappings = { ...prevMappings, [csvHeader]: mappedField };
+    
+            // If this CSV column is mapped to "name", store its header
+            if (mappedField === "name") {
+                setMappedNameColumn(csvHeader);
+            }
+    
+            return updatedMappings;
+        });
     };
+    
 
     const handleInputChange = (rowIndex: number, columnName: string, value: string) => {
         setCsvData((prevData) => {
             const updatedData: Record<string, unknown>[] = [...prevData];
             updatedData[rowIndex][columnName as keyof typeof updatedData[0]] = value;  // Ensure correct value type
+            setHoverName(value);
             return updatedData;
         });
     };
@@ -106,95 +122,104 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
     return (
         <>
             {canViewContent ? 
-                <section className="csv-upload-container card">
-                    <h3>Upload and Process CSV File</h3>
+            <>
+                <section className="csv-header-container card">
+                    <h3>{Label.csv.title}</h3>
                     <input
                         type="file"
                         accept=".csv"
                         onChange={handleFileUpload}
                         className="csv-upload-input"
                     />
-                    {error && <p className="error-message">{error}</p>}
-                    {headers.length > 0 && (
-                        <div className="field-mapping">
-                            <h4>Map CSV Columns to Form Fields</h4>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>CSV Header</th>
-                                        <th>Map to Form Field</th>
+                </section>
+                {error && <p className="error-message">{error}</p>}
+                {headers.length > 0 && (
+                    <section className="csv-upload-container card">
+                        <h3>{Label.csv.mapColumn}</h3>
+                        <h3 className="csv-header-mobile">{Label.csv.header}</h3>
+                        <table className="csv-table">
+                            <thead>
+                                <tr>
+                                    <th className="csv-header-desktop">{Label.csv.header}</th>
+                                    <th className="map-field-desktop">{Label.csv.map}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {headers.map((header) => (
+                                    <tr key={header}>
+                                        <td className="header-td">{header}</td>
+                                        <td>
+                                            <span className="map-field-mobile">{Label.csv.map}</span>
+                                            <select
+                                                value={mappedFields[header] || ""}
+                                                name={mappedFields[header] || "Ignore"}
+                                                onChange={(e) =>
+                                                    handleFieldMappingChange(header, e.target.value)
+                                                }
+                                            >
+                                                <option value="">{Label.csv.ignore}</option>
+                                                {formFields.map((field, index) => (
+                                                    <option key={field} value={field}>
+                                                        {displayLabels[index] || field}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {headers.map((header) => (
-                                        <tr key={header}>
-                                        <td>{header}</td>
-                                            <td>
-                                                <select
-                                                    value={mappedFields[header] || ""}
-                                                    name={mappedFields[header] || "Ignore"}
-                                                    onChange={(e) =>
-                                                        handleFieldMappingChange(header, e.target.value)
-                                                    }
-                                                >
-                                                    <option value="">-- Ignore --</option>
-                                                    {formFields.map((field, index) => (
-                                                        <option key={field} value={field}>
-                                                            {displayLabels[index] || field}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </td>
+                                ))}
+                            </tbody>
+                        </table>
+                        {csvData.length > 0 && (
+                            <div className="csv-preview">
+                                <h3>{Label.csv.preview}</h3>
+                                <table className="csv-table bottom">
+                                    <thead>
+                                        <tr>
+                                            {headers.map((header) => (
+                                                <th key={header}>{header}</th>
+                                            ))}
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
-
-                    {csvData.length > 0 && (
-                        <div className="csv-preview">
-                            <h4>Preview and Edit Data</h4>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        {headers.map((header) => (
-                                        <th key={header}>{header}</th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {csvData.map((row, rowIndex) => (
-                                        <tr key={rowIndex}>
+                                    </thead>
+                                    <tbody>
+                                        {csvData.map((row, rowIndex) => (
+                                            <tr 
+                                                key={rowIndex} 
+                                                data-name={mappedNameColumn ? (row[mappedNameColumn] as string || "") : ""}
+                                                onMouseEnter={() => setHoverName(mappedNameColumn ? (row[mappedNameColumn] as string || "") : "")} 
+                                                onMouseLeave={() => setHoverName("")}
+                                                onTouchStart={() => setHoverName(mappedNameColumn ? (row[mappedNameColumn] as string || "") : "")} 
+                                                onTouchEnd={() => setHoverName("")}
+                                            >
                                             {headers.map((header) => (
                                                 <td key={header}>
                                                     <label>
                                                         <input
                                                             type="text"
-                                                            name={mappedFields[header] || `field_${header}`}  // Use a fallback name if mapping is empty
+                                                            name={mappedFields[header] || `field_${header}`}
                                                             value={row[header as keyof typeof row] as string || ""}
-                                                            onChange={(e) =>
-                                                                handleInputChange(rowIndex, header, e.target.value)
-                                                            }
+                                                            onChange={(e) => handleInputChange(rowIndex, header, e.target.value)}
                                                         />
                                                     </label>
                                                 </td>
                                             ))}
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                            <button onClick={handleSubmit} className="submit-button">
-                                Submit to Database
-                            </button>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                                <button onClick={handleSubmit} className="submit-button">{Label.actions.submit}</button>
+                            </div>
+                        )}
+                        <div className={`hover-name-display ${hoverName ? "show" : ""}`}>
+                            {hoverName && <span>{hoverName}</span>}
                         </div>
-                    )}
-                </section>
+                    </section>
+                )}
+            </>
             : 
-                <>
-                    <LoginReminder />
-                    <Login />
-                </>}
+            <>
+                <LoginReminder />
+                <Login />
+            </>}
         </>
     );
 };

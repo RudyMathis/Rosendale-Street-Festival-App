@@ -235,7 +235,7 @@ export default function RecordListHeader() {
                                     )}
 
                                     {canViewActions && (
-                                        <th>
+                                        <th className="action-header-container">
                                             <Button
                                                 label={Label.actions.action}
                                                 className="action-header"

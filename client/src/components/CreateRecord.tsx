@@ -138,7 +138,7 @@ export default function Record() {
     if (missing.length > 0) {
         setMissingFields(missing);
         setIsModalOpen(true);
-        return; // Prevent submission before confirmation
+        return;
     }
 
     await submitForm(); // Directly submit if no missing fields
@@ -158,7 +158,7 @@ export default function Record() {
           if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
           refreshRecords();
-          navigate("/"); // Navigate after successful submission
+          navigate("/");
       } catch (error) {
           console.error("A problem occurred with your fetch operation: ", error);
       }
@@ -166,23 +166,39 @@ export default function Record() {
 
   const handleConfirmAction = () => {
       setIsModalOpen(false);
-      submitForm(); // Perform submission only after confirmation
+      submitForm();
   };
 
   const handleCancelDownload = () => {
-      // setGroupToDownload(null); // Reset download state
       setIsModalOpen(false);
   };
 
   return (
     <>
       {canViewContent ? 
-        <section className="create-record-container card">
+        <>
           <h3>{isNew ? "Create" : "Update"} Performer/Band</h3>
-          <form className="record-form" onSubmit={onSubmit}>
-            {formSections.map(({ title, fields }) => (
-              title === serverLabel.record.isAccepted[0] ? (
-                canViewActions && (
+          <section className="create-record-container card">
+            <form className="record-form" onSubmit={onSubmit}>
+              {formSections.map(({ title, fields }) => (
+                title === serverLabel.record.isAccepted[0] ? (
+                  canViewActions && (
+                    <fieldset key={title} className="create-record-form-section">
+                      <legend className="create-record-form-section-title">{title}</legend>
+                      {fields.map(({ name, ...props }) => (
+                        <FormInput
+                          key={name}
+                          name={name}
+                          value={form[name as keyof typeof form] ?? ""}
+                          onChange={(e) =>
+                            updateForm({ [name]: e.target instanceof HTMLInputElement && e.target.type === "checkbox" ? e.target.checked : e.target.value })
+                          }
+                          {...props}
+                        />
+                      ))}
+                    </fieldset>
+                  )
+                ) : (
                   <fieldset key={title} className="create-record-form-section">
                     <legend className="create-record-form-section-title">{title}</legend>
                     {fields.map(({ name, ...props }) => (
@@ -198,40 +214,25 @@ export default function Record() {
                     ))}
                   </fieldset>
                 )
-              ) : (
-                <fieldset key={title} className="create-record-form-section">
-                  <legend className="create-record-form-section-title">{title}</legend>
-                  {fields.map(({ name, ...props }) => (
-                    <FormInput
-                      key={name}
-                      name={name}
-                      value={form[name as keyof typeof form] ?? ""}
-                      onChange={(e) =>
-                        updateForm({ [name]: e.target instanceof HTMLInputElement && e.target.type === "checkbox" ? e.target.checked : e.target.value })
-                      }
-                      {...props}
-                    />
+              ))}
+              <input type="submit" value="Save Performer/Band Record" />
+            </form>
+            <ConfirmationModal
+              isOpen={isModalOpen}
+              optionalMessage="You may be missing the following fields:"
+              message={
+                <>
+                  {missingFields.map((field) => (
+                    <li key={field}>{serverLabel.record[field]?.[1] || field}</li>
                   ))}
-                </fieldset>
-              )
-            ))}
-            <input type="submit" value="Save Performer/Band Record" />
-          </form>
-          <ConfirmationModal
-            isOpen={isModalOpen}
-            optionalMessage="You may be missing the following fields:"
-            message={
-              <>
-                {missingFields.map((field) => (
-                  <li key={field}>{serverLabel.record[field]?.[1] || field}</li>
-                ))}
-              </>
-            }
-            secondOptionalMessage="Are you sure you want to proceed?"
-            onConfirm={handleConfirmAction}
-            onCancel={handleCancelDownload}
-            />
-        </section>
+                </>
+              }
+              secondOptionalMessage="Are you sure you want to proceed?"
+              onConfirm={handleConfirmAction}
+              onCancel={handleCancelDownload}
+              />
+          </section>
+        </>
       : 
         <>
           <LoginReminder />

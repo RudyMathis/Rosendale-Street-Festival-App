@@ -35,7 +35,7 @@
     --admin: hsl(0, 59%, 51%);
 
 
-
+    --primary-font-color: hsl(203, 100%, 5%);
     --primary-background: hsl(44, 100%, 97%);
     --secondary-background: hsl(44, 100%, 87%);
     --primary-border-color: hsl(203, 100%, 5%);
@@ -130,6 +130,7 @@ input, textarea {
   border: 1px solid var(--primary-border-color);
   background-color: var(--primary-background);
   padding: .25rem;
+  text-overflow: ellipsis;
 }
 
 input[type="submit"] {
@@ -153,6 +154,7 @@ input[type="radio"]:checked {
     width: 28.25px;
     height: 28.25px;
 }
+
 input[type="checkbox"]:checked:before,
 input[type="radio"]:checked:before {
     position: relative;
@@ -160,6 +162,18 @@ input[type="radio"]:checked:before {
     font-size: 28.25px;
     content: '\2718';
 }
+
+input::file-selector-button {
+  font-weight: bold;
+  color: var(--primary-font-color);
+  background-color: var(--primary-background);
+  padding: 0.5em;
+  border: thin solid var(--primary-border-color);
+  cursor: pointer;
+  box-shadow: var(--button-box-shadow);
+  margin: .25rem 1rem .25rem .25rem;
+}
+
 
 button {
   border: var(--primary-border);
@@ -170,14 +184,14 @@ button {
   text-wrap: nowrap;
 }
 
-button:hover {
+button:hover, input::file-selector-button:hover {
   background-color: var(--primary-hover);
   transition: all 0.2s ease-in-out;
   box-shadow: var(--button-hover-box-shadow);
   transform: translate(-2px, 2px);
 }
 
-button a{
+button a {
   width: 100%;
 }
 
@@ -263,6 +277,10 @@ select {
   }
 
   main {
-    padding: 1rem;
+    padding: 0;
+  }
+
+  .card {
+    box-shadow: none;
   }
 }
