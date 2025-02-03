@@ -6,6 +6,7 @@ type TableDataProps = {
     type: string;
     recordId?: string;
     isDisabled?: boolean;
+    checkboxLabel?: string;
     updateAccepted?: (id: string) => void;
     countNameRepetitions?: (name: string) => number;
 };
@@ -16,6 +17,7 @@ const TableData = ({
     type,
     recordId,
     isDisabled = false,
+    checkboxLabel,
     updateAccepted,
     countNameRepetitions,
 }: TableDataProps) => {
@@ -35,12 +37,16 @@ const TableData = ({
                     {value as string}
                 </a>
             ) : type === "checkbox" ? (
-            <input
-                type="checkbox"
-                disabled={!isDisabled}
-                checked={Boolean(value)}
-                onChange={() => recordId && updateAccepted && updateAccepted(recordId)}
-            />
+                <>
+                    <input
+                        type="checkbox"
+                        id={`${checkboxLabel}-${label}`}
+                        disabled={!isDisabled}
+                        checked={Boolean(value)}
+                        onChange={() => recordId && updateAccepted && updateAccepted(recordId)}
+                    />
+                    <label htmlFor={`${checkboxLabel}-${label}`}></label>
+                </>
             ) : type === "link" ? (
                 <a className="link" href={value as string} target="_blank" rel="noopener noreferrer">
                     {value as string}

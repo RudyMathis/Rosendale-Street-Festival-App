@@ -6,6 +6,7 @@ import DeleteMember from "./DeleteMember";
 import Login from "../Login";
 import Button from "../../util/Button";
 import LoginReminder from "../../UI/LoginReminder";
+import LoadingMessage from "../../UI/LoadingMessage";
 import Label from "../../labels/UILabel.json"
 
 type Member = {
@@ -17,7 +18,8 @@ type Member = {
 
 const MembersPage = () => {
   const [members, setMembers] = useState<Member[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  // const [loading, setLoading] = useState<boolean>(true);
+  const [ isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [editingMemberId, setEditingMemberId] = useState<string | null>(null);
   const { canEditRecords } = useRoleContext();
@@ -25,6 +27,7 @@ const MembersPage = () => {
   useEffect(() => {
     const fetchMembers = async () => {
       try {
+        setIsLoading(true);
         const response = await fetch(
           `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/members` // Make into hook
         );
@@ -38,12 +41,16 @@ const MembersPage = () => {
       } catch (err: unknown) {
         setError((err as Error).message);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
     fetchMembers();
   }, []);
+
+  if (isLoading) {
+    return <LoadingMessage message="Loading Members List" />;
+  }
 
   const handleAddMember = async (newMember: { name: string; role: string; password: string }) => {
     try {
@@ -113,7 +120,7 @@ const MembersPage = () => {
     }
 };
 
-  if (loading) return <p>Loading members...</p>; // update
+  // if (loading) return <p>Loading members...</p>; // update
   if (error) return <p>Error: {error}</p>; // update
 
   return (

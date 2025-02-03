@@ -16,7 +16,7 @@ import "../../styles/RecordList.css";
 import "../../styles/Table.css";
 
 export default function RecordListHeader() {
-    const [toggleDelete, setToggleDelete] = useState(true);
+    const [ toggleDelete, setToggleDelete] = useState(true);
     const { records, setRecords } = useRecords();
     const serverLabel = useLabels();
     const navigate = useNavigate();
@@ -30,8 +30,6 @@ export default function RecordListHeader() {
         return <SystemMessage
                     title="Error"
                     message="Missing Records"
-                    type="Error"
-                    parentElement="td"
                 />
     }
 

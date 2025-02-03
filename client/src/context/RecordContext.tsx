@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { RecordType } from "../types/RecordType";
-import Loading from "../UI/LoadingMessage";
 
 export const RecordContext = createContext<{
     records: RecordType[] | null;
@@ -11,7 +10,6 @@ export const RecordContext = createContext<{
 
 export const RecordProvider = ({ children }: { children: ReactNode }) => {
     const [records, setRecords] = useState<RecordType[] | null>(null);
-    const [loading, setLoading] = useState(true);
     const [refreshKey, setRefreshKey] = useState(0); // This will force re-fetching when incremented
 
     useEffect(() => {
@@ -25,8 +23,6 @@ export const RecordProvider = ({ children }: { children: ReactNode }) => {
                 setRecords(data);
             } catch (error) {
                 console.error("Error fetching records:", error);
-            } finally {
-                setLoading(false);
             }
         };
 
@@ -46,14 +42,8 @@ export const RecordProvider = ({ children }: { children: ReactNode }) => {
         } catch (error) {
             console.error(`Error fetching record with id ${id}:`, error);
             return null;
-        } finally {
-            setLoading(false);
         }
     };
-
-    if (loading) {
-        return <Loading message="Loading data from the server..." />;
-    }
 
     return (
         <RecordContext.Provider value={{ records, setRecords, refreshRecords, fetchRecordById }}>

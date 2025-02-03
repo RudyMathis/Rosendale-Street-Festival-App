@@ -25,14 +25,14 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 const App: React.FC = () => {
   return (
-    <Providers>
-      <Suspense fallback={<Loading message="Loading Page..." />}>
-        <main>
-          <Navbar />
-          <Outlet />
-        </main>
+      <Suspense fallback={<Loading />}>
+        <Providers>
+            <main>
+              <Navbar />
+              <Outlet />
+            </main>
+        </Providers>
       </Suspense>
-    </Providers>
   );
 };
 

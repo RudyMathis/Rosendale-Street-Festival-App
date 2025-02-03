@@ -45,8 +45,6 @@ export default function Records() {
         return <SystemMessage
                     title="Error"
                     message="Missing Records"
-                    type="Error"
-                    parentElement="div"
                 />
     }
 
@@ -88,8 +86,6 @@ export default function Records() {
             return <SystemMessage
                         title="Error"
                         message="Missing Level Filter"
-                        type="Error"
-                        parentElement="div"
                     />
         }
 
@@ -103,8 +99,6 @@ export default function Records() {
             return <SystemMessage
                         title="Error"
                         message="Missing Email Filter"
-                        type="Error"
-                        parentElement="div"
                     />
         }
 
@@ -121,8 +115,6 @@ export default function Records() {
                 <SystemMessage
                     title="Error"
                     message="Missing Contact Filter"
-                    type="Error"
-                    parentElement="div"
                 />
             );
         }
@@ -148,8 +140,6 @@ export default function Records() {
                 <SystemMessage
                     title="Error"
                     message="Missing Accepted Filter"
-                    type="Error"
-                    parentElement="div"
                 />
             );
         }
@@ -183,8 +173,6 @@ export default function Records() {
             return <SystemMessage
                         title="Error"
                         message="Missing Shirt Filter"
-                        type="Error"
-                        parentElement="div"
                     />
         }
 
@@ -215,8 +203,6 @@ export default function Records() {
             return <SystemMessage
                         title="Error"
                         message="Missing Field Group"
-                        type="Error"
-                        parentElement="div"
                     />
         }
         

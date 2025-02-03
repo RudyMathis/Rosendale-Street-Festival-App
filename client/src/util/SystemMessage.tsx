@@ -1,18 +1,15 @@
 type SystemMessageProps = {
     title: string;
     message: string;
-    type: string;
-    parentElement: keyof JSX.IntrinsicElements;
 };
 
-const SystemMessage: React.FC<SystemMessageProps> = ({ title, message, type, parentElement }) => {
-    const ParentElement = parentElement;
+const SystemMessage: React.FC<SystemMessageProps> = ({ title, message }) => {
     return (
-        <ParentElement style={styles.container} data-type={type}>
+        <div style={styles.container}>
             <h2 style={styles.heading}>{title}</h2>
             <p style={styles.message}>{message}</p>
             <a href="mailto:admin@example.com" style={styles.email}>admin@example.com</a>
-        </ParentElement>
+        </div>
     );
 };
 

@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import Loading from "../UI/LoadingMessage";
 import { LabelContext } from "./LabelContext";
 
 type User = {
@@ -17,7 +16,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
-    const [isUserLoaded, setIsUserLoaded] = useState(false);
+    const [, setIsUserLoaded] = useState(false);
 
     const serverLabel = useContext(LabelContext); // Access the labels context
 
@@ -37,10 +36,6 @@ export const UserContextProvider: React.FC<{ children: ReactNode }> = ({ childre
         }
     }, [serverLabel]);
 
-    if (!isUserLoaded || !serverLabel) {
-        return <Loading message="Loading user and labels..." />;
-    }
-
     return (
         <UserContext.Provider value={{ currentUser, setCurrentUser }}>
             {children}
@@ -55,5 +50,4 @@ export const useUserContext = () => {
     }
     return context;
 };
-
 // error when loading from this page might not be big deal

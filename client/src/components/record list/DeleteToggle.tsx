@@ -7,8 +7,8 @@ const DeleteToggle: React.FC<ToggleProps> = ({ label, onClick }) => {
 
     return (
         <div className="toggle-container">
-            <label>{label}</label>
-            <input onClick={onClick} type="checkbox" /> 
+            <label htmlFor={label}>{label}</label>
+            <input id={label} onClick={onClick} type="checkbox" /> 
         </div>
     );
 };

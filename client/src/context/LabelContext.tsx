@@ -11,6 +11,7 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         const fetchLabels = async () => {
             try {
+                setLoading(true);
                 const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/labels`);
                 if (!response.ok) {
                     throw new Error("Failed to fetch labels");
@@ -28,9 +29,8 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     if (loading) {
-        return <Loading message="Loading data from the server..." />;
+        return <Loading />;
     }
-
 
     return <LabelContext.Provider value={labels}>{children}</LabelContext.Provider>;
 };

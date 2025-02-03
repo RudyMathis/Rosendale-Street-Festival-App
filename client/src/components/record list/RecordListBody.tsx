@@ -82,11 +82,11 @@ const RecordListBody = ({ record, deleteRecord, confirmation }: RecordProps) => 
                 <TableData label={serverLabel.record.name[1]} value={record.name} type="name" recordId={record._id} countNameRepetitions={countNameRepetitions} />
                 <TableData label={serverLabel.record.email[1]} value={record.email} type="email" />
                 <TableData label={serverLabel.record.level[1]} value={record.level} type="level" />
-                <TableData label={serverLabel.record.hudsonValley[1]} value={record.hudsonValley} type="checkbox" recordId={record._id} isDisabled={true} />
-                <TableData label={serverLabel.record.isAccepted[1]} value={updateIsAccepted} type="checkbox" recordId={record._id} isDisabled={canAccept} updateAccepted={updateAccepted} />
+                <TableData label={serverLabel.record.hudsonValley[1]} value={record.hudsonValley} type="checkbox" recordId={record._id} isDisabled={true} checkboxLabel={record.name}/>
+                <TableData label={serverLabel.record.isAccepted[1]} value={updateIsAccepted} type="checkbox" recordId={record._id} isDisabled={canAccept} checkboxLabel={record.name} updateAccepted={updateAccepted} />
                 <TableData label={serverLabel.record.members[1]} value={record.members} type="text" />
                 <TableData label={serverLabel.record.link[1]} value={record.link} type="link" />
-                <TableData label={serverLabel.record.anotherGig[1]} value={record.anotherGig} type="checkbox" recordId={record._id} isDisabled={true} />
+                <TableData label={serverLabel.record.anotherGig[1]} value={record.anotherGig} type="checkbox" recordId={record._id} isDisabled={true} checkboxLabel={record.name}/>
                 <TableData label={serverLabel.record.primaryAddress[1]} value={record.primaryAddress} type="text" />
                 <TableData label={serverLabel.record.primaryPhone[1]} value={record.primaryPhone} type="text" />
                 {canViewEditedDetail && (

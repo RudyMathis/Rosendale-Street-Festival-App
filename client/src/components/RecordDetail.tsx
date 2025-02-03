@@ -17,14 +17,14 @@ export default function RecordDetail() {
     const { fetchRecordById } = useRecords();
     const serverLabel = useLabels();
     const [record, setRecord] = useState<RecordType | null>(null);
-    const [loading, setLoading] = useState(true); // Add loading state
+    const [isLoading, setIsLoading] = useState(true); // Add loading state
     const [error, setError] = useState(false); // Add error state
 
     useEffect(() => {
         const fetchData = async () => {
             if (!id) return;
             try {
-                setLoading(true); // Start loading
+                setIsLoading(true); // Start loading
                 setError(false); // Reset error state
                 const data = await fetchRecordById(id);
                 setRecord(data);
@@ -32,14 +32,14 @@ export default function RecordDetail() {
                 console.error("Error fetching record:", err);
                 setError(true);
             } finally {
-                setLoading(false); // Stop loading
+                setIsLoading(false); // Stop loading
             }
         };
 
         fetchData();
     }, [id, fetchRecordById]);
 
-    if (loading) {
+    if (isLoading) {
         return <LoadingMessage message="Loading record details..." />; // fix this
     }
 
@@ -47,8 +47,6 @@ export default function RecordDetail() {
         return <SystemMessage
                     title="Error"
                     message="Missing Records"
-                    type="Error"
-                    parentElement="div"
                 />
     }
 
@@ -56,8 +54,6 @@ export default function RecordDetail() {
         return <SystemMessage
                     title="Error"
                     message="System Error"
-                    type="Error"
-                    parentElement="div"
                 />
     }
 
