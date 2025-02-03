@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useRoleContext } from "../context/RoleContext";
 import { RecordType } from "../types/RecordType";
 import LabelDetail from "../UI/LabelDetail";
@@ -115,6 +115,8 @@ export default function RecordDetail() {
                                 <LabelDetail
                                     key={key}
                                     label={label[1]}
+                                    type={label[0]}
+                                    link={record[key] as string}
                                     value={record[key] ? record[key].toString() : "N/A"}
                                 />
                             )
@@ -140,13 +142,16 @@ export default function RecordDetail() {
                             onClick={handleSendEmail} 
                             className="button"
                             type="button"
-                            />
+                        />
                         <Button 
                             label={Label.actions.download} 
                             onClick={handleDownload} 
                             className="button"
                             type="button"
-                            />
+                        />
+                        <Link to={`/edit/${record._id}`}>
+                            <button className="action-edit">{Label.actions.edit}</button>
+                        </Link>
                     </div>
                 </>
             }
