@@ -37,17 +37,17 @@ caption {
     margin: 0 .3rem;
 }
 
-.level-Low {
+.record-td-container.level-Low {
     background-color: var(--chart-2);
     color: var(--accent);
 }
 
-.level-Medium {
+.record-td-container.level-Medium {
     background-color: var(--chart-4);
     color: var(--accent);
 }
 
-.level-High {
+.record-td-container.level-High {
     background-color: var(--chart-1);
     color: var(--accent);
 } 

@@ -26,13 +26,6 @@ export default function RecordListHeader() {
         direction: "desc",
     });
 
-    if (!records) {
-        return <SystemMessage
-                    title="Error"
-                    message="Missing Records"
-                />
-    }
-
     async function deleteRecord(id: string) {
         try {
             const response = await fetch(
@@ -49,6 +42,13 @@ export default function RecordListHeader() {
         } catch (error) {
             console.error("Failed to delete record:", error);
         }
+    }
+
+    if (!records) {
+        return <SystemMessage
+                    title="Error"
+                    message="Missing Records"
+                />
     }
 
     const sortedRecords = (() => {

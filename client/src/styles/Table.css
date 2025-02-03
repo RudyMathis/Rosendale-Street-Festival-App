@@ -41,6 +41,10 @@ thead {
     z-index: 3;
 }
 
+tr:hover td, tr:hover input {
+    background-color: var(--secondary-background);
+}
+
 td {
     text-align: center;
     padding: var(--secondary-padding);

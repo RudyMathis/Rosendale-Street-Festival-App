@@ -61,6 +61,8 @@
     },
     "csv": {
         "title": "Upload and Process CSV File",
+        "hide": "Hide Form Fields",
+        "show": "Show Form Fields",
         "mapColumn": "Map CSV Columns to Form Fields",
         "header": "CSV Header",
         "map": "Map to Form Field",

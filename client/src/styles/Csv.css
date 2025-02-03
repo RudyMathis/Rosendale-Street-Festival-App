@@ -66,6 +66,10 @@ input[type="file"] {
     opacity: 1;
 }
 
+table.csv-table.bottom.extend {
+    max-height: 55vh;
+}
+
 @media screen and (max-width: 720px) {
     .csv-header-container {
         flex-direction: column;
@@ -108,6 +112,10 @@ input[type="file"] {
     table.csv-table td input{
         border: none;
         text-align: center;
+    }
+
+    .form-fields-hide-button {
+        margin-top: var(--secondary-padding)
     }
     
 }
