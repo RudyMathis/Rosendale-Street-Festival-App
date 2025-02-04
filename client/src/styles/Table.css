@@ -1,10 +1,8 @@
 table {
     position: relative;
     width: 100%;
-    max-width: 100em;
     display: block;
-    overflow-x: auto;
-    overflow-y: auto;
+    overflow: auto;
     scrollbar-color: var(--primary-background) var(--primary-border-color);
     scrollbar-width: thin;
     border: 1px solid var(--primary-border-color);
@@ -30,15 +28,7 @@ th button:hover {
 }
 
 .sticky-name {
-    position: sticky;
-    left: 0;
-    z-index: 2;
-}
-
-thead {
-    position: sticky;
-    top: 0;
-    z-index: 3;
+    background-color: var(--secondary-background);
 }
 
 tr:hover td, tr:hover input {
@@ -52,29 +42,11 @@ td {
     background-color: var(--primary-background)
 }
 
-@media only screen and (max-width: 1920px) {
-    table {
-        height: 100%;
-        max-height: 50em;
-    }
-}
-
-@media only screen and (max-width: 1400px) {
-    table {
-        max-width: 80em;
-        max-height: 30em;
-    }
-}
-
-@media only screen and (max-width: 800px) and ( max-height: 1050px) {
-    table {
-        max-width: 45em;
-        max-height: 50em;
-    }
-}
-
 @media only screen and (max-width: 720px) {
     table {
         border: none
+    }
+    .sticky-name {
+        background-color: var(--secondary-background);
     }
 }

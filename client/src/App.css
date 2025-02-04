@@ -79,12 +79,15 @@
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  margin: auto;
   font-size: 14px;
+}
+
+main {
+  min-height: 100vh;
+  padding: var(--primary-padding);
+  max-width: 1440px;
+  margin: auto;
 }
 
 .container-shadow {
@@ -111,14 +114,6 @@ h3 {
 
 .hidden {
   display: none;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 fieldset {
@@ -274,10 +269,25 @@ select {
   padding: var(--primary-padding);
 }
 
-@media only screen and (max-width: 1400px) {
-  main {
-    padding: 1rem;
-  }
+.label-detail-ul {
+  padding: 0;
+  width: 100%;
+}
+
+.label-detail-ul li {
+  width: 100%;
+  text-align: left;
+  padding: .15rem;
+}
+
+.label-detail-ul li:nth-child(even) {
+  background-color: var(--secondary-background);
+}
+
+#create, #members {
+  max-width: 700px;
+  margin: auto;
+  margin-bottom: var(--secondary-padding)
 }
 
 @media only screen and (max-width: 720px) {
@@ -291,5 +301,10 @@ select {
 
   .card {
     box-shadow: none;
+    padding: var(--secondary-padding);
+  }
+
+  .link {
+    overflow-wrap: anywhere;
   }
 }

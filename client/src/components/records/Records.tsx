@@ -28,7 +28,7 @@ export default function Records() {
     const [, setSelectedBoolean] = useState<boolean | null | undefined>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [groupToDownload, setGroupToDownload] = useState<string | null>(null);
-    const { canViewContent } = useRoleContext();
+    const { canViewContent, canViewEditedDetail } = useRoleContext();
     const { downloadTextFile } = useDownloadTextFile(fieldGroups, selectedFields, filteredRecords, serverLabel);
 
     useEffect(() => {
@@ -41,15 +41,11 @@ export default function Records() {
         setSelectedFields(fieldGroups["all"]);
     }, []);
 
-    if (!records) {
+    if (!records || records.length === 0) {
         return <SystemMessage
                     title="Error"
                     message="Missing Records"
                 />
-    }
-
-    if (records.length === 0) {
-        return <p>{Label.actions.loading}</p>; // fix this
     }
 
     const groupLabels = {
@@ -74,13 +70,10 @@ export default function Records() {
         committeeNotes: Label.download.committeeNotes,
     };
 
-
-
     /*******************************************************************/
     /***************************HEADER FILTERS**************************/
     /*******************************************************************/
 
-    
     function handleLevelFilter(level: string) {
         if (!records) {
             return <SystemMessage
@@ -182,8 +175,6 @@ export default function Records() {
         setSelectedFields([`shirtSize${size}`]);
         setFilteredRecords(filtered);
         setSelected(size);
-        console.log(records, filtered, size)
-
     }
 
     /*******************************************************************/
@@ -202,7 +193,7 @@ export default function Records() {
         if (!records) {
             return <SystemMessage
                         title="Error"
-                        message="Missing Field Group"
+                        message="Missing Field Group LOL"
                     />
         }
         
@@ -232,12 +223,14 @@ export default function Records() {
             setFilteredRecords(records); // Reset to all records
         }
     }
-
+    const count = records.length;
+    const allRecord = `${Label.displayRecords.all}`.replace("{count}", String(count))
+    
     return (
         <>
             {canViewContent ? 
                 <section className="records-container">
-                    <h3>{Label.displayRecords.all}</h3>
+                    <h3>{allRecord}</h3>
                     <Header
                         labels={serverLabel}
                         selectedGroup={selectedGroup}
@@ -309,24 +302,52 @@ export default function Records() {
                                 />
                             ))}
                         </div>
-                    )}
+                    )}                    
                     {Array.isArray(filteredRecords) &&
                         filteredRecords.map((record) => (
-                            <div key={record._id} className="record-detail-container card all-record-container">
+                            <section key={record._id}>
                                 <Link to={`/record/${record._id}`}>
-                                    <h4>{record.name}</h4>
+                                    <h2 className="record-title">{record.name}</h2>
                                 </Link>
-                                {Array.isArray(selectedFields) &&
-                                    selectedFields.map((field) => (
-                                        <LabelDetail
-                                            key={field}
-                                            label={serverLabel.record[field]?.[1] || field}
-                                            value={String(record[field as keyof RecordType]) || "N/A"}
-                                        />
-                                    ))}
-                            </div>
-                        ))}
-
+                                <div className="record-detail-button-container card">
+                                    <ul className="label-detail-ul">
+                                        {Array.isArray(selectedFields) &&
+                                            selectedFields
+                                                .filter(
+                                                    (field) =>
+                                                    ![serverLabel.record.nameOfUser[0], serverLabel.record.editedTime[0]].includes(field)
+                                                )
+                                                .map((field) => (
+                                                    <LabelDetail
+                                                        key={field}
+                                                        type={field}
+                                                        label={serverLabel.record[field]?.[1] || field}
+                                                        value={String(record[field as keyof RecordType]) || "N/A"}
+                                                    />
+                                                ))}
+                                            {canViewEditedDetail && selectedGroup === "all" && (
+                                                <>
+                                                    <LabelDetail
+                                                        label={serverLabel.record.nameOfUser[1]}
+                                                        value={record.nameOfUser || "N/A"}
+                                                        type={serverLabel.record.nameOfUser[0]}
+                                                        style={{ color: "hsl(173 58% 39%)" }}
+                                                    />
+                                                    <LabelDetail
+                                                        label={serverLabel.record.editedTime[1]}
+                                                        value={record.editedTime || "N/A"}
+                                                        type={serverLabel.record.editedTime[0]}
+                                                        style={{ color: "hsl(173 58% 39%)" }}
+                                                    />
+                                                </>
+                                            )
+                                        }
+                                    </ul>
+                                </div>
+                            </section>
+                            )   
+                        )
+                    }
                     <div className="confirmation-modal-container">
                         <ConfirmationModal
                             isOpen={isModalOpen}

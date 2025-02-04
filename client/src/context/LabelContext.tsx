@@ -1,6 +1,6 @@
 import  { createContext, useState, useEffect, ReactNode } from "react";
 import { LabelsType } from "../types/LabelsType";
-import Loading from "../UI/LoadingMessage";
+import LoadingMessage from "../UI/LoadingMessage";
 
 export const LabelContext = createContext<LabelsType | null>(null);
 
@@ -29,7 +29,7 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     if (loading) {
-        return <Loading />;
+        return <LoadingMessage />;
     }
 
     return <LabelContext.Provider value={labels}>{children}</LabelContext.Provider>;

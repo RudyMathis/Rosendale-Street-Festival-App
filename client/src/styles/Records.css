@@ -7,6 +7,10 @@
     width: 100%;
 }
 
+.record-title {
+    text-align: left;
+}
+
 .all-record-container {
     margin-bottom: 1em;
 }
@@ -37,17 +41,17 @@
 }
 
 .record-header-button-container:has(.records-show-button.selected) {
-    background-color: var(--chart-3);
-
+    background-color: var(--secondary-background);
+    box-shadow: none;
 }
+
 .record-header-button-container:hover, .records-show-button:hover, .records-data-button:hover  {
-    background-color: var(--chart-3);
-    color: var(--muted);
+    background-color: var(--secondary-background);
 }
 
 .records-show-button.selected {
-    background-color: var(--chart-3);
-    color: var(--secondary); 
+    background-color: var(--secondary-background);
+    box-shadow: none;
 }
 
 .filter-button {
@@ -55,14 +59,13 @@
 }
 
 .filter-button.selected {
-    background-color: var(--chart-3);
-    color: var(--secondary); 
+    background-color: var(--secondary-background);
+    box-shadow: none;
 }
 
 .hidden-button {
     display: flex;
 }
-
 
 .filter-buttons-container {
     display: flex;

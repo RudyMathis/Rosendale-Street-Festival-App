@@ -2,7 +2,10 @@
     display: flex;
     flex-direction: column;
     align-items: start;
-    max-height: calc(100vh - 15em);
+}
+
+.record-list-container table{
+    display: block
 }
 
 .record-list-header {
@@ -75,13 +78,7 @@ caption {
     }
 
     table {
-        border-spacing: var(--primary-padding);
-    }
-
-    .sticky-header-name {
-        position: sticky;
-        top: 0;
-        z-index: 2;
+        border-spacing: var(--secondary-padding);
     }
 
     tr {
@@ -97,7 +94,7 @@ caption {
     }
 
     th {
-        width: 48%;
+        width: 49%;
     }
 
     .table-header-button {

@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
     const { handleLogOut } = useLogOut();
 
     return (
-        <section className="nav-container card" >
+        <section className="nav-container card" id={location.pathname.replace("/", "")} >
             <nav className="nav-links">
                 <NavLink to="/">
                     <h1 className="link">{Label.navBar.title}</h1>

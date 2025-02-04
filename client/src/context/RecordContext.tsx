@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { RecordType } from "../types/RecordType";
+import LoadingMessage from "../UI/LoadingMessage";
 
 export const RecordContext = createContext<{
     records: RecordType[] | null;
@@ -11,10 +12,13 @@ export const RecordContext = createContext<{
 export const RecordProvider = ({ children }: { children: ReactNode }) => {
     const [records, setRecords] = useState<RecordType[] | null>(null);
     const [refreshKey, setRefreshKey] = useState(0); // This will force re-fetching when incremented
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchRecords = async () => {
             try {
+                setLoading(true);
+
                 const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/`);
                 if (!response.ok) {
                     throw new Error("Failed to fetch records");
@@ -23,6 +27,8 @@ export const RecordProvider = ({ children }: { children: ReactNode }) => {
                 setRecords(data);
             } catch (error) {
                 console.error("Error fetching records:", error);
+            }finally {
+                setLoading(false);
             }
         };
 
@@ -44,6 +50,10 @@ export const RecordProvider = ({ children }: { children: ReactNode }) => {
             return null;
         }
     };
+
+    if (loading) {
+        return <LoadingMessage />;
+    }
 
     return (
         <RecordContext.Provider value={{ records, setRecords, refreshRecords, fetchRecordById }}>

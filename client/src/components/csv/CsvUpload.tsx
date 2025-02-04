@@ -183,7 +183,7 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
                                 <div className="csv-preview">
                                     <h3>{Label.csv.preview}</h3>
                                     <table className={`csv-table bottom ${isHidden ? "extend" : ""}`}>
-                                        <thead>
+                                        <thead className="sticky-name">
                                             <tr>
                                                 {headers.map((header) => (
                                                     <th key={header}>{header}</th>

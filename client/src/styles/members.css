@@ -1,3 +1,9 @@
+section {
+    max-width: 700px;
+    margin: auto;
+    padding: var(--secondary-padding);
+}
+
 ul {
     padding: 0;
 }
@@ -32,9 +38,6 @@ h2 {
     display: flex;
     flex-direction: column;
 }
-
-
-
 
 @media only screen and (max-width: 720px) {
     section h2 {
@@ -111,14 +114,23 @@ h2 {
     .edit-icon {
         rotate: 90deg;
     }
+
     .member-list-container {
         flex-direction: column;
         margin: 1rem 0;
     }
+
     .edit-member-form {
         align-items: center;
     }
+
     .edit-member-buttons {
         justify-content: center;
+    }
+
+    .add-member-form {
+        margin: 0;
+        border: none;
+        width: -webkit-fill-available;
     }
 }

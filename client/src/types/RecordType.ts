@@ -17,7 +17,7 @@ export type RecordType = {
     hudsonValley: boolean;
     summary: string;
     genre: string;
-    link: string | null;
+    link: string;
     dates: string;
     anotherGig: boolean;
     gigIfYes: string;
@@ -32,7 +32,7 @@ export type RecordType = {
     primaryPhone: string;
     primaryAddress: string;
     secondaryContact: string;
-    secondaryEmail: string | null;
+    secondaryEmail: string;
     secondaryPhone: string;
     isNewToStreeFest: boolean;
     isWillingToFundraise: boolean;

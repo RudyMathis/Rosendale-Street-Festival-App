@@ -157,10 +157,10 @@ const MembersPage = () => {
                         deleteMemeber={handleDeleteMember} 
                         role={member.role} 
                       />
-                      {member.role === `admin` && (
-                        <span className="admin-label">Change in Code</span>
-                      )}
                   </div>
+                      {member.role === `admin` && (
+                        <code className="admin-label" style={{marginTop: "1rem"}}>Update in Code</code>
+                      )}
                 </div>
                 {editingMemberId === member._id && (
                   <>

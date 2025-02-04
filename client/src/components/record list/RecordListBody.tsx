@@ -87,8 +87,10 @@ const RecordListBody = ({ record, deleteRecord, confirmation }: RecordProps) => 
                 <TableData label={serverLabel.record.members[1]} value={record.members} type="text" />
                 <TableData label={serverLabel.record.link[1]} value={record.link} type="link" />
                 <TableData label={serverLabel.record.anotherGig[1]} value={record.anotherGig} type="checkbox" recordId={record._id} isDisabled={true} checkboxLabel={record.name}/>
-                <TableData label={serverLabel.record.primaryAddress[1]} value={record.primaryAddress} type="text" />
+                <TableData label={serverLabel.record.primaryContact[1]} value={record.primaryContact} type="text" />
+                <TableData label={serverLabel.record.primaryEmail[1]} value={record.primaryEmail} type="email" />
                 <TableData label={serverLabel.record.primaryPhone[1]} value={record.primaryPhone} type="text" />
+                <TableData label={serverLabel.record.primaryAddress[1]} value={record.primaryAddress} type="text" />
                 {canViewEditedDetail && (
                     <>
                         <TableData label={serverLabel.record.nameOfUser[1]} value={record.nameOfUser} type="text" />

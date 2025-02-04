@@ -50,14 +50,13 @@ export default function RecordListHeader() {
                     message="Missing Records"
                 />
     }
-
+    
     const sortedRecords = (() => {
         // If there's no sort configuration or key, return the original records
         if (!sortConfig || !sortConfig.key) return records;
 
         // Define a ranking map for sorting levels
         const rankingMap: Record<string, number> = { Low: 1, Medium: 2, High: 3 };
-
         // Create a sorted copy of the records array
         return [...records].sort((a, b) => {
             // Get the values for the current sort key from the records
@@ -87,7 +86,6 @@ export default function RecordListHeader() {
                     bValue = 0; // Default value for invalid or null dates
                 }
             }
-
 
             /***************************** DEFAULT SORTING *****************************/
 
@@ -173,13 +171,16 @@ export default function RecordListHeader() {
     function handleToggleDelete() {
         setToggleDelete(!toggleDelete);
     }
+
+    const count = records.length;
+    const allRecord = `${Label.displayRecords.all}`.replace("{count}", String(count))
     
     return (
         <>
             {canViewContent ? (
                 <>
                     <header className="record-list-header">
-                        <h3>{Label.displayRecords.bandRecords}</h3>
+                        <h3>{allRecord}</h3>
                         <div className="record-list-header-button-container">
                             {canEditRecords && (
                                 <DeleteToggle
@@ -188,7 +189,7 @@ export default function RecordListHeader() {
                                 />
                             )}
                             <Button
-                                label={Label.displayRecords.all}
+                                label={`View ${allRecord}`}
                                 onClick={handleAllRecords}
                                 className="button"
                                 type="button"
@@ -208,8 +209,10 @@ export default function RecordListHeader() {
                                         "members",
                                         "link",
                                         "anotherGig",
-                                        "primaryAddress",
+                                        "primaryContact",
+                                        "primaryEmail",
                                         "primaryPhone",
+                                        "primaryAddress",
                                     ].map((key) => (
                                         <TableButton
                                             key={key}
@@ -244,14 +247,21 @@ export default function RecordListHeader() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {sortedRecords.map((record) => (
-                                    <RecordListBody
-                                        record={record}
-                                        deleteRecord={() => deleteRecord(record._id)}
-                                        key={record._id}
-                                        confirmation={toggleDelete}
+                                {sortedRecords !== null ? (
+                                    (sortedRecords as RecordType[]).map((record) => (
+                                        <RecordListBody
+                                            record={record}
+                                            deleteRecord={() => deleteRecord(record._id)}
+                                            key={record._id}
+                                            confirmation={toggleDelete}
+                                        />
+                                    ))
+                                ) : (
+                                    <SystemMessage
+                                        title="Error"
+                                        message="Missing Records"
                                     />
-                                ))}
+                                )}
                             </tbody>
                         </table>
                     </section>

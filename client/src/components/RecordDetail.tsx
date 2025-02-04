@@ -59,7 +59,7 @@ export default function RecordDetail() {
 
     const createEmailBody = () => {
         const emailContent = Object.entries(record)
-            .filter(([key]) => !["_id", `${Label.otherLabels.nameOfUser}`, `${Label.otherLabels.editedTime}`].includes(key)) // Exclude specific keys
+            .filter(([key]) => !["_id", `${serverLabel.record.nameOfUser}`, `${serverLabel.record.editedTime}`].includes(key)) // Exclude specific keys
             .map(([key, value]) => {
                 const label = serverLabel.record[key as keyof typeof serverLabel.record][1] || key;
                 return `${label}: ${value || "N/A"}`;
@@ -77,7 +77,7 @@ export default function RecordDetail() {
     
     const createDownloadContent = () => {
         return Object.entries(record)
-            .filter(([key]) => !["_id", `${Label.otherLabels.nameOfUser}`, `${Label.otherLabels.editedTime}`].includes(key)) // Exclude specific keys
+            .filter(([key]) => !["_id", `${serverLabel.record.nameOfUser[0]}`, `${serverLabel.record.editedTime[0]}`].includes(key)) // Exclude specific keys
             .map(([key, value]) => {
                 const label = serverLabel.record[key as keyof typeof serverLabel.record][1] || key;
                 return `${label}: ${value || "N/A"}`;
@@ -103,34 +103,38 @@ export default function RecordDetail() {
                 <>
                     <h3>{record.name}</h3>
                     <div className="record-detail-container card">
-                        {Object.entries(serverLabel.record)
-                            .filter(
-                                ([key]) => ![`${Label.otherLabels.nameOfUser}`, `${Label.otherLabels.editedTime}`].includes(key)
-                            )
-                            .map(([key, label]) => (
-                                <LabelDetail
-                                    key={key}
-                                    label={label[1]}
-                                    type={label[0]}
-                                    link={record[key] as string}
-                                    value={record[key] ? record[key].toString() : "N/A"}
-                                />
-                            )
-                        )}
-                        {canViewEditedDetail && (
-                            <>
-                                <LabelDetail
-                                    label={serverLabel.record.nameOfUser[1]}
-                                    value={record.nameOfUser || "N/A"}
-                                    style={{ color: "hsl(173 58% 39%)" }} 
-                                />
-                                <LabelDetail
-                                    label={serverLabel.record.editedTime[1]}
-                                    value={record.editedTime || "N/A"}
-                                    style={{ color: "hsl(173 58% 39%)" }} 
-                                />
-                            </>
-                        )}
+                        <ul className="label-detail-ul">
+                            {Object.entries(serverLabel.record)
+                                .filter(
+                                    ([key]) => ![`${serverLabel.record.nameOfUser[0]}`, `${serverLabel.record.editedTime[0]}`].includes(key)
+                                )
+                                .map(([key, label]) => (
+                                    <LabelDetail
+                                        key={key}
+                                        label={label[1]}
+                                        type={label[0]}
+                                        link={record[key] as string}
+                                        value={record[key] ? record[key].toString() : "N/A"}
+                                    />
+                                )
+                            )}
+                            {canViewEditedDetail && (
+                                <>
+                                    <LabelDetail
+                                        label={serverLabel.record.nameOfUser[1]}
+                                        value={record.nameOfUser || "N/A"}
+                                        type={record.nameOfUser}
+                                        style={{ color: "hsl(173 58% 39%)" }} 
+                                    />
+                                    <LabelDetail
+                                        label={serverLabel.record.editedTime[1]}
+                                        value={record.editedTime || "N/A"}
+                                        type={record.editedTime}
+                                        style={{ color: "hsl(173 58% 39%)" }} 
+                                    />
+                                </>
+                            )}
+                        </ul>
                     </div>
                     <div className="record-detail-button-container">
                         <Button 

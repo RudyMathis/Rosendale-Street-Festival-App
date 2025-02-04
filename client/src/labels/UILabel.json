@@ -46,7 +46,7 @@
         "upload": "Upload CSV"
     },
     "displayRecords": {
-        "all": "All Records",
+        "all": "All {count} Records",
         "bandRecords": "Band Records",
         "contacts": "Contacts",
         "shirts": "Shirts",
