@@ -137,8 +137,6 @@ export default function RecordListHeader() {
         (currentPage - 1) * RECORDS_PER_PAGE,
         currentPage * RECORDS_PER_PAGE
     );
-    console.log(currentPage, totalPages)
-
 
     const requestSort = (key: keyof RecordType) => {
         setSortConfig((prevSortConfig) => ({

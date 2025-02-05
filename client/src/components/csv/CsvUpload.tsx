@@ -96,7 +96,6 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
     const handleSubmit = async () => {
         const chunkSize = 10;
         const processedData = preprocessData();
-        console.log("Processed Data:", processedData);
 
         for (let i = 0; i < processedData.length; i += chunkSize) {
             const chunk = processedData.slice(i, i + chunkSize);

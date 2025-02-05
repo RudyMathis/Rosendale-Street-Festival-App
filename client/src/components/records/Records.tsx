@@ -18,7 +18,7 @@ import "../../styles/Records.css";
 
 
 export default function Records() {
-    const { records,  } = useRecords();
+    const { records } = useRecords();
     const fieldGroups = useFieldGroups();
     const serverLabel = useLabels();
     const [filteredRecords, setFilteredRecords] = useState<RecordType[]>([]);
@@ -116,7 +116,6 @@ export default function Records() {
             );
         }
     
-             // Filter the records where both the contact and phone fields exist
             const filtered = records.filter((record) => {
             const contactField = record[`${contact}Contact`];
             const phoneField = record[`${contact}Phone`];
@@ -155,7 +154,6 @@ export default function Records() {
     
         let filtered;
         if (isAccepted === null) {
-            // Filter for records where isAccepted is either false or null
             filtered = records.filter((record) => record.isAccepted === null);
         } else {
             filtered = records.filter((record) => record.isAccepted === isAccepted);
@@ -175,13 +173,15 @@ export default function Records() {
                     />
         }
 
-        const filtered = records.filter((record) => record[`shirtSize${size}`]);
+        const filteredRecords = records.filter(record => {
+            const shirtSizeField = record[`shirtSize${size}`];
+            return shirtSizeField !== "0" && shirtSizeField !== "" && shirtSizeField !== 0 && shirtSizeField !== null;
+        });
 
-        // Update the selected fields to only include the selected shirt size
         setSelectedFields([`shirtSize${size}`]);
-        setFilteredRecords(filtered);
+        setFilteredRecords(filteredRecords);
         setSelected(size);
-        setCount(filtered.length);
+        setCount(filteredRecords.length);
     }
 
     /*******************************************************************/
@@ -205,13 +205,11 @@ export default function Records() {
         }
 
         const filtered = records.filter((record) => {
-            // Get the fields associated with this group
             const groupFields = fieldGroups[group];
 
-            // Check if at least one field in the group has a valid value
             return groupFields.some((field) => {
                 const value = record[field];
-                return value !== null && value !== undefined && value !== ""; // Allow only non-empty values
+                return value !== null && value !== undefined && value !== "";
             });
         });
     
@@ -223,14 +221,14 @@ export default function Records() {
     const handleConfirmAction = () => {
         if (groupToDownload) {
             downloadTextFile(groupToDownload);
-            setGroupToDownload(null); // Reset the state after action
+            setGroupToDownload(null);
         }
     
         setIsModalOpen(false);
     };
 
     const handleCancelDownload = () => {
-        setGroupToDownload(null); // Reset download state
+        setGroupToDownload(null);
         setIsModalOpen(false);
     };
     

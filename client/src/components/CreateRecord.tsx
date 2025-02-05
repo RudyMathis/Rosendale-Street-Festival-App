@@ -137,7 +137,6 @@ export default function Record() {
 
     const missing = Object.keys(form).filter((key) => {
         const value = form[key as keyof typeof form];
-        console.log(value)
         return value === "" || value === null || value === undefined;
     });
 
