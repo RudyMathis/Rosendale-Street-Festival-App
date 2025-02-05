@@ -22,7 +22,7 @@ const TableData = ({
     countNameRepetitions,
 }: TableDataProps) => {
     return (
-        <td className={`record-td-container${type === "name" ? " sticky-name" : ""}${type === "level" ? ` level-${value}` : ""}`}>
+        <td className={`record-td-container${type === "level" ? ` level-${value}` : ""}`}>
             <div className="hidden-desktop">{label}</div>
 
             {type === "name" && recordId ? (

@@ -49,23 +49,6 @@ input[type="file"] {
     padding: var(--secondary-padding);
 }
 
-.hover-name-display {
-    position: absolute;
-    bottom: 1em;
-    right: 1em;
-    pointer-events: none;
-    transition: opacity 0.3s ease-in-out;
-    opacity: 0;
-}
-
-.hover-name-display span {
-    display: block;
-}
-
-.hover-name-display.show {
-    opacity: 1;
-}
-
 @media screen and (max-width: 720px) {
     .csv-header-container {
         flex-direction: column;

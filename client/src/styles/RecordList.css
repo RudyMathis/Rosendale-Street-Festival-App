@@ -104,10 +104,6 @@ caption {
     table td {
         display: block;
     }
-    
-    .sticky-name {
-        display: none;
-    }
 
     .sort-icon {
         margin-left: .5rem;

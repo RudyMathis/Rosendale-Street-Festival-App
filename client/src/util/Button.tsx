@@ -4,14 +4,23 @@ type ButtonProps = {
     onClick?: () => void;
     className: string;
     type: "button" | "reset" | "submit";
-    role?: string;
+    role?: string | number;
+    disabled?: boolean;
 };
 
-const Button: React.FC<ButtonProps> = ({ label, secondaryLabel, onClick, className, type, role }) => {
-
+const Button: React.FC<ButtonProps> = ({
+    label,
+    secondaryLabel,
+    onClick,
+    className,
+    type,
+    role,
+    disabled,
+}) => {
+    const isDisabled = disabled || role === "admin";
     return (
-        <button onClick={onClick} type={type} className={className} disabled={role === "admin"}>
-            {label} {secondaryLabel}
+        <button onClick={onClick} type={type} className={className} disabled={isDisabled}>
+        {label} {secondaryLabel}
         </button>
     );
 };

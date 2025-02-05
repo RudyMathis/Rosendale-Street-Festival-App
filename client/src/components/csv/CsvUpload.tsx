@@ -5,6 +5,7 @@ import Login from "../Login";
 import { useRoleContext } from "../../context/RoleContext";
 import LoadingMessage from "../../UI/LoadingMessage";
 import LoginReminder from "../../UI/LoginReminder";
+import PaginationControls from "../../util/PaginationControls";
 import Button from "../../util/Button";
 import useRecords from "../../hooks/UseRecords";
 import Label from "../../labels/UILabel.json";
@@ -15,14 +16,21 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
     const [csvData, setCsvData] = useState<Record<string, unknown>[]>([]);
     const [headers, setHeaders] = useState<string[]>([]);
     const [isParsing, setIsParsing] = useState<boolean>(false); // For file parsing/loading message
-    const [hoverName, setHoverName] = useState("");
     const [isHidden, setIsHidden] = useState(false);
-    const [mappedNameColumn, setMappedNameColumn] = useState<string | null>(null);
     const [mappedFields, setMappedFields] = useState<Record<string, string>>({});
     const [, setError] = useState("");
     const navigate = useNavigate();
     const { refreshRecords } = useRecords(); 
     const { canViewContent } = useRoleContext();
+
+    // Pagination state for CSV preview
+    const CSV_ROWS_PER_PAGE = Label.pagination.count;
+    const [csvCurrentPage, setCsvCurrentPage] = useState(1);
+    const csvTotalPages = Math.ceil(csvData.length / CSV_ROWS_PER_PAGE);
+    const paginatedCsvData = csvData.slice(
+        (csvCurrentPage - 1) * CSV_ROWS_PER_PAGE,
+        csvCurrentPage * CSV_ROWS_PER_PAGE
+    );
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -48,6 +56,8 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
                             return acc;
                         }, {} as Record<string, string>)
                     );
+                    // Reset CSV pagination on new upload
+                    setCsvCurrentPage(1);
                 }
                 setIsParsing(false); // Parsing is done, hide the loading message
             },
@@ -57,9 +67,6 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
     const handleFieldMappingChange = (csvHeader: string, mappedField: string) => {
         setMappedFields((prevMappings) => {
             const updatedMappings = { ...prevMappings, [csvHeader]: mappedField };
-            if (mappedField === "name") {
-                setMappedNameColumn(csvHeader);
-            }
             return updatedMappings;
         });
     };
@@ -68,7 +75,6 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
         setCsvData((prevData) => {
             const updatedData = [...prevData];
             updatedData[rowIndex][columnName] = value;
-            setHoverName(value);
             return updatedData;
         });
     };
@@ -117,9 +123,10 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
         }
         navigate("/");
     };
+
     const handleHideTable = () => {
         setIsHidden(prevHidden => !prevHidden);
-    }
+    };
 
     return (
         <>
@@ -141,7 +148,7 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
                                 <h3>{Label.csv.mapColumn}</h3>
                                 <h3 className="csv-header-mobile">{Label.csv.header}</h3>
                                 <Button
-                                    label={`${isHidden ?  Label.csv.show : Label.csv.hide}`}
+                                    label={`${isHidden ? Label.csv.show : Label.csv.hide}`}
                                     onClick={handleHideTable}
                                     type="button" 
                                     className={"form-fields-hide-button"}                           
@@ -183,7 +190,7 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
                                 <div className="csv-preview">
                                     <h3>{Label.csv.preview}</h3>
                                     <table className={`csv-table bottom ${isHidden ? "extend" : ""}`}>
-                                        <thead className="sticky-name">
+                                        <thead>
                                             <tr>
                                                 {headers.map((header) => (
                                                     <th key={header}>{header}</th>
@@ -191,15 +198,8 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {csvData.map((row, rowIndex) => (
-                                                <tr 
-                                                    key={rowIndex} 
-                                                    data-name={mappedNameColumn ? (row[mappedNameColumn] as string || "") : ""}
-                                                    onMouseEnter={() => setHoverName(mappedNameColumn ? (row[mappedNameColumn] as string || "") : "")} 
-                                                    onMouseLeave={() => setHoverName("")}
-                                                    onTouchStart={() => setHoverName(mappedNameColumn ? (row[mappedNameColumn] as string || "") : "")} 
-                                                    onTouchEnd={() => setHoverName("")}
-                                                >
+                                            {paginatedCsvData.map((row, rowIndex) => (
+                                                <tr key={rowIndex} >
                                                     {headers.map((header) => (
                                                         <td key={header}>
                                                             <label>
@@ -207,7 +207,7 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
                                                                     type="text"
                                                                     name={mappedFields[header] || `field_${header}`}
                                                                     value={(row[header] as string) || ""}
-                                                                    onChange={(e) => handleInputChange(rowIndex, header, e.target.value)}
+                                                                    onChange={(e) => handleInputChange((csvCurrentPage - 1) * CSV_ROWS_PER_PAGE + rowIndex, header, e.target.value)}
                                                                 />
                                                             </label>
                                                         </td>
@@ -216,12 +216,16 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
                                             ))}
                                         </tbody>
                                     </table>
-                                    <button onClick={handleSubmit} className="submit-button">{Label.actions.submit}</button>
+                                    <PaginationControls
+                                        currentPage={csvCurrentPage}
+                                        totalPages={csvTotalPages}
+                                        setCurrentPage={setCsvCurrentPage}
+                                    />
+                                    <button onClick={handleSubmit} className="submit-button">
+                                        {Label.actions.submit}
+                                    </button>
                                 </div>
                             )}
-                            <div className={`hover-name-display ${hoverName ? "show" : ""}`}>
-                                {hoverName && <span>{hoverName}</span>}
-                            </div>
                         </section>
                     )}
                 </>

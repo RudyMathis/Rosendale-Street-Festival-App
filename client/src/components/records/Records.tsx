@@ -25,6 +25,7 @@ export default function Records() {
     const [selectedGroup, setSelectedGroup] = useState<string>("all");
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
     const [selected, setSelected] = useState('');
+    const [count, setCount] = useState(0);
     const [, setSelectedBoolean] = useState<boolean | null | undefined>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [groupToDownload, setGroupToDownload] = useState<string | null>(null);
@@ -34,6 +35,7 @@ export default function Records() {
     useEffect(() => {
         if (records) {
             setFilteredRecords(records);
+            setCount(records.length);
         }
     }, [records]);
 
@@ -86,6 +88,7 @@ export default function Records() {
 
         setFilteredRecords(filtered);
         setSelected(level);
+        setCount(filtered.length);
     }
     function handleEmailFilter(email: string) {
         if (!records) {
@@ -100,6 +103,7 @@ export default function Records() {
         setSelectedFields([`${email}Email`]);
         setFilteredRecords(filtered);
         setSelected(email);
+        setCount(filtered.length);
     }
 
     function handleContactFilter(contact: string) {
@@ -124,6 +128,7 @@ export default function Records() {
         setSelectedFields([`${contact}Contact`, `${contact}Phone`]); 
         setFilteredRecords(filtered);
         setSelected(contact);
+        setCount(filtered.length);
     }
     
 
@@ -158,6 +163,7 @@ export default function Records() {
     
         setFilteredRecords(filtered);
         setSelectedBoolean(isAccepted);
+        setCount(filtered.length);
     }
     
 
@@ -175,6 +181,7 @@ export default function Records() {
         setSelectedFields([`shirtSize${size}`]);
         setFilteredRecords(filtered);
         setSelected(size);
+        setCount(filtered.length);
     }
 
     /*******************************************************************/
@@ -189,17 +196,29 @@ export default function Records() {
     function handleFieldGroup(group: string) {
         setSelectedFields(fieldGroups[group]);
         setSelectedGroup(group);
-        
+    
         if (!records) {
             return <SystemMessage
                         title="Error"
-                        message="Missing Field Group LOL"
+                        message="Missing Shirt Filter"
                     />
         }
-        
-        // reset the filtered records
-        setFilteredRecords(records); 
+
+        const filtered = records.filter((record) => {
+            // Get the fields associated with this group
+            const groupFields = fieldGroups[group];
+
+            // Check if at least one field in the group has a valid value
+            return groupFields.some((field) => {
+                const value = record[field];
+                return value !== null && value !== undefined && value !== ""; // Allow only non-empty values
+            });
+        });
+    
+        setFilteredRecords(filtered);
+        setCount(filtered.length);
     }
+    
 
     const handleConfirmAction = () => {
         if (groupToDownload) {
@@ -219,18 +238,13 @@ export default function Records() {
     function handleFilterReset() {
         setSelected('');
         setSelectedBoolean(undefined);
-        if (records) {
-            setFilteredRecords(records); // Reset to all records
-        }
     }
-    const count = records.length;
-    const allRecord = `${Label.displayRecords.all}`.replace("{count}", String(count))
     
     return (
         <>
             {canViewContent ? 
                 <section className="records-container">
-                    <h3>{allRecord}</h3>
+                    <h3>{count} Records</h3>
                     <Header
                         labels={serverLabel}
                         selectedGroup={selectedGroup}

@@ -2,21 +2,22 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRoleContext } from "../../context/RoleContext";
 import Login from "../Login";
-import RecordListBody from "./RecordListBody"
+import RecordListBody from "./RecordListBody";
 import { RecordType } from "../../types/RecordType";
 import useRecords from "../../hooks/UseRecords";
 import useLabels from "../../hooks/UseLabels";
 import SystemMessage from "../../util/SystemMessage";
+import PaginationControls from "../../util/PaginationControls";
 import Button from "../../util/Button";
 import TableButton from "../../util/TableButton";
-import DeleteToggle from "./DeleteToggle"
+import DeleteToggle from "./DeleteToggle";
 import LoginReminder from "../../UI/LoginReminder";
-import Label from "../../labels/UILabel.json"
+import Label from "../../labels/UILabel.json";
 import "../../styles/RecordList.css";
 import "../../styles/Table.css";
 
 export default function RecordListHeader() {
-    const [ toggleDelete, setToggleDelete] = useState(true);
+    const [toggleDelete, setToggleDelete] = useState(true);
     const { records, setRecords } = useRecords();
     const serverLabel = useLabels();
     const navigate = useNavigate();
@@ -26,10 +27,14 @@ export default function RecordListHeader() {
         direction: "desc",
     });
 
+    // Pagination state and constant
+    const RECORDS_PER_PAGE = 5;
+    const [currentPage, setCurrentPage] = useState(1);
+
     async function deleteRecord(id: string) {
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}`, // Make into hook
+                `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}`,
                 { method: "DELETE" }
             );
 
@@ -45,10 +50,12 @@ export default function RecordListHeader() {
     }
 
     if (!records) {
-        return <SystemMessage
-                    title="Error"
-                    message="Missing Records"
-                />
+        return (
+            <SystemMessage
+                title="Error"
+                message="Missing Records"
+            />
+        );
     }
     
     const sortedRecords = (() => {
@@ -78,12 +85,12 @@ export default function RecordListHeader() {
                 if (aValue !== null && typeof aValue === 'string') {
                     aValue = new Date(aValue).getTime();
                 } else {
-                    aValue = 0; // Default value for invalid or null dates
+                    aValue = 0;
                 }
                 if (bValue !== null && typeof bValue === 'string') {
                     bValue = new Date(bValue).getTime();
                 } else {
-                    bValue = 0; // Default value for invalid or null dates
+                    bValue = 0;
                 }
             }
 
@@ -120,30 +127,37 @@ export default function RecordListHeader() {
                 return sortConfig.direction === "asc" ? aValue - bValue : bValue - aValue;
             }
 
-            // Default return for other types (no sorting applied)
             return 0;
         });
     })();  
+
+    // Calculate pagination values based on sorted records
+    const totalPages = Math.ceil(sortedRecords.length / RECORDS_PER_PAGE);
+    const paginatedRecords = sortedRecords.slice(
+        (currentPage - 1) * RECORDS_PER_PAGE,
+        currentPage * RECORDS_PER_PAGE
+    );
+    console.log(currentPage, totalPages)
+
+
     const requestSort = (key: keyof RecordType) => {
         setSortConfig((prevSortConfig) => ({
             key,
             direction: prevSortConfig.key === key && prevSortConfig.direction === "asc" ? "desc" : "asc",
         }));
+        // Reset to first page whenever sorting changes.
+        setCurrentPage(1);
     };
-    
     
     function handleAllRecords() {
         navigate("/record/all");
     }
 
-    function handleMore () {
-        // toggle the visibility of the tablebuttons visibility based on class more-selection
+    function handleMore() {
         const moreSelection = document.querySelectorAll(".more-selection");
-        
         if (moreSelection) {
             moreSelection.forEach((element) => {
                 element.classList.toggle("hidden-button");
-                
             });
             
             document.querySelectorAll('.record-tr-container .more-selection').forEach((element, index) => {
@@ -153,7 +167,6 @@ export default function RecordListHeader() {
         }
     }
 
-    // Resize observer function
     const resizeObserver = new ResizeObserver(() => {
         if (window.innerWidth > 720) {
             document.querySelectorAll('.record-tr-container .more-selection').forEach((element) => {
@@ -161,26 +174,22 @@ export default function RecordListHeader() {
                 (element as HTMLElement).style.top = ''; 
             });
         } else {
-            handleMore ();
+            handleMore();
         }
     });
 
-    // Start observing the document body (or a specific container if preferred)
     resizeObserver.observe(document.body);
 
     function handleToggleDelete() {
         setToggleDelete(!toggleDelete);
     }
-
-    const count = records.length;
-    const allRecord = `${Label.displayRecords.all}`.replace("{count}", String(count))
     
     return (
         <>
             {canViewContent ? (
                 <>
                     <header className="record-list-header">
-                        <h3>{allRecord}</h3>
+                        <h3>{records.length} Records</h3>
                         <div className="record-list-header-button-container">
                             {canEditRecords && (
                                 <DeleteToggle
@@ -189,7 +198,7 @@ export default function RecordListHeader() {
                                 />
                             )}
                             <Button
-                                label={`View ${allRecord}`}
+                                label={`View ${records.length} Records`}
                                 onClick={handleAllRecords}
                                 className="button"
                                 type="button"
@@ -199,7 +208,7 @@ export default function RecordListHeader() {
                     <section className="record-list-container card">
                         <table>
                             <thead>
-                                <tr className="record-tr-container sticky-header-name">
+                                <tr className="record-tr-container">
                                     {[
                                         "name",
                                         "email",
@@ -247,23 +256,21 @@ export default function RecordListHeader() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {sortedRecords !== null ? (
-                                    (sortedRecords as RecordType[]).map((record) => (
-                                        <RecordListBody
-                                            record={record}
-                                            deleteRecord={() => deleteRecord(record._id)}
-                                            key={record._id}
-                                            confirmation={toggleDelete}
-                                        />
-                                    ))
-                                ) : (
-                                    <SystemMessage
-                                        title="Error"
-                                        message="Missing Records"
+                                {paginatedRecords.map((record) => (
+                                    <RecordListBody
+                                        key={record._id}
+                                        record={record}
+                                        deleteRecord={() => deleteRecord(record._id)}
+                                        confirmation={toggleDelete}
                                     />
-                                )}
+                                ))}
                             </tbody>
                         </table>
+                        <PaginationControls
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            setCurrentPage={setCurrentPage}
+                        />
                     </section>
                 </>
             ) : (

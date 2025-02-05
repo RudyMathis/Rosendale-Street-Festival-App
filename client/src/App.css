@@ -267,6 +267,7 @@ select {
   border: var(--primary-border);
   box-shadow: var(--primary-box-shadow);
   padding: var(--primary-padding);
+  width: 100%;
 }
 
 .label-detail-ul {
@@ -284,10 +285,18 @@ select {
   background-color: var(--secondary-background);
 }
 
-#create, #members {
-  max-width: 700px;
-  margin: auto;
-  margin-bottom: var(--secondary-padding)
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: var(--secondary-padding);
+}
+
+.pagination-button:disabled {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  border: 1px solid var(--muted);
 }
 
 @media only screen and (max-width: 720px) {

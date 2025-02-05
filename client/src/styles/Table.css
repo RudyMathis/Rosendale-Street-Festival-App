@@ -27,10 +27,6 @@ th button:hover {
     transform: none;
 }
 
-.sticky-name {
-    background-color: var(--secondary-background);
-}
-
 tr:hover td, tr:hover input {
     background-color: var(--secondary-background);
 }
@@ -45,8 +41,5 @@ td {
 @media only screen and (max-width: 720px) {
     table {
         border: none
-    }
-    .sticky-name {
-        background-color: var(--secondary-background);
     }
 }

@@ -128,7 +128,7 @@ const RecordListBody = ({ record, deleteRecord, confirmation }: RecordProps) => 
                             message="Are you sure you want to delete this record?"
                             onConfirm={handleConfirmDelete}
                             onCancel={closeModal}
-                            />
+                        />
                     </td>
                 </tr>
             )}
