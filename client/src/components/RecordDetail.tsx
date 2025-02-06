@@ -101,7 +101,7 @@ export default function RecordDetail() {
         <>
             {canViewContent && 
                 <>
-                    <h3>{record.name}</h3>
+                    <h2>{record.name}</h2>
                     <div className="record-detail-container card">
                         <ul className="label-detail-ul">
                             {Object.entries(serverLabel.record)

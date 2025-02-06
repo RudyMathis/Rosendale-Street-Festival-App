@@ -209,7 +209,7 @@ export default function Records() {
 
             return groupFields.some((field) => {
                 const value = record[field];
-                return value !== null && value !== undefined && value !== "";
+                return value !== null && value !== undefined && value !== "" && value !== "N/A";
             });
         });
     
@@ -242,7 +242,7 @@ export default function Records() {
         <>
             {canViewContent ? 
                 <section className="records-container">
-                    <h3>{count} Records</h3>
+                    <h2>{count} Records</h2>
                     <Header
                         labels={serverLabel}
                         selectedGroup={selectedGroup}
@@ -314,51 +314,56 @@ export default function Records() {
                                 />
                             ))}
                         </div>
-                    )}                    
-                    {Array.isArray(filteredRecords) &&
-                        filteredRecords.map((record) => (
-                            <section key={record._id}>
-                                <Link to={`/record/${record._id}`}>
-                                    <h2 className="record-title">{record.name}</h2>
-                                </Link>
-                                <div className="record-detail-button-container card">
-                                    <ul className="label-detail-ul">
-                                        {Array.isArray(selectedFields) &&
-                                            selectedFields
-                                                .filter(
-                                                    (field) =>
-                                                    ![serverLabel.record.nameOfUser[0], serverLabel.record.editedTime[0]].includes(field)
-                                                )
-                                                .map((field) => (
-                                                    <LabelDetail
-                                                        key={field}
-                                                        type={field}
-                                                        label={serverLabel.record[field]?.[1] || field}
-                                                        value={String(record[field as keyof RecordType]) || "N/A"}
-                                                    />
-                                                ))}
-                                            {canViewEditedDetail && selectedGroup === "all" && (
-                                                <>
-                                                    <LabelDetail
-                                                        label={serverLabel.record.nameOfUser[1]}
-                                                        value={record.nameOfUser || "N/A"}
-                                                        type={serverLabel.record.nameOfUser[0]}
-                                                        style={{ color: "hsl(173 58% 39%)" }}
-                                                    />
-                                                    <LabelDetail
-                                                        label={serverLabel.record.editedTime[1]}
-                                                        value={record.editedTime || "N/A"}
-                                                        type={serverLabel.record.editedTime[0]}
-                                                        style={{ color: "hsl(173 58% 39%)" }}
-                                                    />
-                                                </>
+                    )}    
+                    {filteredRecords.length === 0 
+                    ?
+                    <div className="card" style={{marginTop: "2rem"}}>
+                        <h3>No records found</h3>
+                    </div>                                                  
+                    : 
+                    filteredRecords.map((record) => (
+                        <article key={record._id}>
+                            <Link to={`/record/${record._id}`}>
+                                <h3 className="record-title">{record.name}</h3>
+                            </Link>
+                            <div className="record-detail-button-container card">
+                                <ul className="label-detail-ul">
+                                    {Array.isArray(selectedFields) &&
+                                        selectedFields
+                                            .filter(
+                                                (field) =>
+                                                ![serverLabel.record.nameOfUser[0], serverLabel.record.editedTime[0]].includes(field)
                                             )
-                                        }
-                                    </ul>
-                                </div>
-                            </section>
-                            )   
-                        )
+                                            .map((field) => (
+                                                <LabelDetail
+                                                    key={field}
+                                                    type={field}
+                                                    label={serverLabel.record[field]?.[1] || field}
+                                                    value={String(record[field as keyof RecordType]) || "N/A"}
+                                                />
+                                            ))}
+                                        {canViewEditedDetail && selectedGroup === "all" && (
+                                            <>
+                                                <LabelDetail
+                                                    label={serverLabel.record.nameOfUser[1]}
+                                                    value={record.nameOfUser || "N/A"}
+                                                    type={serverLabel.record.nameOfUser[0]}
+                                                    style={{ color: "hsl(173 58% 39%)" }}
+                                                />
+                                                <LabelDetail
+                                                    label={serverLabel.record.editedTime[1]}
+                                                    value={record.editedTime || "N/A"}
+                                                    type={serverLabel.record.editedTime[0]}
+                                                    style={{ color: "hsl(173 58% 39%)" }}
+                                                />
+                                            </>
+                                        )
+                                    }
+                                </ul>
+                            </div>
+                        </article>
+                        )   
+                    )
                     }
                     <div className="confirmation-modal-container">
                         <ConfirmationModal

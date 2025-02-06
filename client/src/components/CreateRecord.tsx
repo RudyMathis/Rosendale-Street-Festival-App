@@ -7,14 +7,16 @@ import ConfirmationModal from "./ConfirmationModal";
 import useRecords from "../hooks/UseRecords";
 import useLabels from "../hooks/UseLabels";
 import FormInput from "../util/FormInput";
+import Button from "../util/Button";
 import LoginReminder from "../UI/LoginReminder";
+import Label from "../labels/UILabel.json"
 import "../styles/CreateRecord.css";
 
 export default function Record() {
   const [isNew, setIsNew] = useState(true);
   const params = useParams();
   const navigate = useNavigate();
-  const { refreshRecords } = useRecords(); // Import from context
+  const { refreshRecords } = useRecords();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [missingFields, setMissingFields] = useState<string[]>([]);
 
@@ -24,7 +26,7 @@ export default function Record() {
       if (!id) return;
 
       setIsNew(false);
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}`); // part of hook
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record/${id}`);
       if (!response.ok) {
         console.error(`An error has occurred: ${response.statusText}`);
         return;
@@ -52,12 +54,13 @@ export default function Record() {
   *******************************************
   *******************************************
   *******************************************/
+
   const serverLabel = useLabels();
 
   const [form, setForm] = useState({
     [serverLabel.record.name[0]]: "", 
     [serverLabel.record.email[0]]: "", 
-    [serverLabel.record.level[0]]: "", 
+    [serverLabel.record.level[0]]: serverLabel.record.low[1], 
     [serverLabel.record.committeeNotes[0]]: "", 
     [serverLabel.record.members[0]]: 1,
     [serverLabel.record.hudsonValley[0]]: false, 
@@ -68,8 +71,8 @@ export default function Record() {
     [serverLabel.record.shirtSizeS[0]]: 0, 
     [serverLabel.record.shirtSizeM[0]]: 0,
     [serverLabel.record.shirtSizeL[0]]: 0,
-    [serverLabel.record.shirtSizeXL[0]]: 0, 
-    [serverLabel.record.shirtSizeXXL[0]]: 0, 
+    [serverLabel.record.shirtSizeXL[0]]: 0,
+    [serverLabel.record.shirtSizeXXL[0]]: 0,
     [serverLabel.record.primaryContact[0]]: "",
     [serverLabel.record.primaryEmail[0]]: "", 
     [serverLabel.record.primaryPhone[0]]: "", 
@@ -84,7 +87,8 @@ export default function Record() {
 
   const formSections = [
     {
-      title: "Performer/Band",
+      title: Label.createForm.band,
+      length: "full",
       fields: [
         { label: serverLabel.record.name[1], name: serverLabel.record.name[0], type: "text", placeholder: "Enter your name" },
         { label: serverLabel.record.email[1], name: serverLabel.record.email[0], type: "email", placeholder: "Enter your email" },
@@ -98,7 +102,8 @@ export default function Record() {
       ],
     },
     {
-      title: "T-Shirt Sizes",
+      title: Label.createForm.shirts,
+      length: "half",
       fields: [
         { label: serverLabel.record.shirtSizeXS[1], name: serverLabel.record.shirtSizeXS[0], type: "number" },
         { label: serverLabel.record.shirtSizeS[1], name: serverLabel.record.shirtSizeS[0], type: "number" },
@@ -109,7 +114,8 @@ export default function Record() {
       ],
     },
     {
-      title: "Contact Information",
+      title: Label.createForm.contact,
+      length: "half",
       fields: [
         { label: serverLabel.record.primaryContact[1], name: serverLabel.record.primaryContact[0], type: "text" },
         { label: serverLabel.record.primaryEmail[1], name: serverLabel.record.primaryEmail[0], type: "email" },
@@ -121,7 +127,8 @@ export default function Record() {
       ],
     },
     {
-      title: "Approval",
+      title: Label.createForm.approval,
+      length: "full",
       fields: [
         { label: serverLabel.record.isAccepted[1], name: serverLabel.record.isAccepted[0], type: "checkbox" },
       ],
@@ -130,6 +137,7 @@ export default function Record() {
 
   const updateForm = (value: Partial<typeof form>) => {
     setForm((prev) => ({ ...prev, ...value }));
+    console.log(typeof form.shirtSizeXXL);
   };
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -150,24 +158,32 @@ export default function Record() {
   };
 
   const submitForm = async () => {
-      try {
-          const response = await fetch(
-              `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record${isNew ? "" : `/${params.id}`}`,
-              {
-                  method: isNew ? "POST" : "PATCH",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(form),
-              }
-          );
+    try {
+        // Convert empty strings to "N/A"
+        const processedForm = Object.fromEntries(
+            Object.entries(form).map(([key, value]) => 
+                value === "" ? [key, Label.undefinedValues.string] : [key, value]
+            )
+        );
 
-          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const response = await fetch(
+            `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/record${isNew ? "" : `/${params.id}`}`,
+            {
+                method: isNew ? "POST" : "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(processedForm),
+            }
+        );
 
-          refreshRecords();
-          navigate("/");
-      } catch (error) {
-          console.error("A problem occurred with your fetch operation: ", error);
-      }
-  };
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        refreshRecords();
+        navigate("/");
+    } catch (error) {
+        console.error("A problem occurred with your fetch operation: ", error);
+    }
+};
+
 
   const handleConfirmAction = () => {
       setIsModalOpen(false);
@@ -182,11 +198,11 @@ export default function Record() {
     <>
       {canViewContent ? 
         <>
-          <h3>{isNew ? "Create" : "Update"} Performer/Band</h3>
+          <h2>{isNew ? "Create" : "Update"} {Label.createForm.band}</h2>
           <section className="create-record-container card">
             <form className="record-form" onSubmit={onSubmit}>
-              {formSections.map(({ title, fields }) => (
-                title === serverLabel.record.isAccepted[0] ? (
+              {formSections.map(({ title, fields, length }) => (
+                title === "Approval" ? (
                   canViewActions && (
                     <fieldset key={title} className="create-record-form-section">
                       <legend className="create-record-form-section-title">{title}</legend>
@@ -204,7 +220,7 @@ export default function Record() {
                     </fieldset>
                   )
                 ) : (
-                  <fieldset key={title} className="create-record-form-section">
+                  <fieldset key={title} className={`create-record-form-section ${length}`}>
                     <legend className="create-record-form-section-title">{title}</legend>
                     {fields.map(({ name, ...props }) => (
                       <FormInput
@@ -220,7 +236,11 @@ export default function Record() {
                   </fieldset>
                 )
               ))}
-              <input type="submit" value="Save Performer/Band Record" />
+              <Button 
+                label={Label.createForm.submit}
+                className=""
+                type="submit"
+              />
             </form>
             <ConfirmationModal
               isOpen={isModalOpen}

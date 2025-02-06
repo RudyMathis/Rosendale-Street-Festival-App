@@ -1,5 +1,5 @@
-import React, { Suspense } from "react";
-import { Outlet } from "react-router-dom";
+import React, { Suspense, useState, useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import { UserContextProvider } from "./context/UserContext";
 import { RoleContextProvider } from "./context/RoleContext";
 import { LabelProvider } from "./context/LabelContext";
@@ -24,6 +24,14 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 };
 
 const App: React.FC = () => {
+  const location = useLocation();
+  const [path, setPath] = useState<string>(location.pathname.split("/")[1]);
+
+  useEffect(() => {
+    setPath(location.pathname.split("/")[1]);
+    document.body.id = path;
+  }, [location.pathname, path]);
+
   return (
       <Suspense fallback={<Loading />}>
         <Providers>

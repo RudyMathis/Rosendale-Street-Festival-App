@@ -41,16 +41,16 @@
 }
 
 .record-header-button-container:has(.records-show-button.selected) {
-    background-color: var(--secondary-background);
+    background-color: var(--tertiary-background);
     box-shadow: none;
 }
 
 .record-header-button-container:hover, .records-show-button:hover, .records-data-button:hover  {
-    background-color: var(--secondary-background);
+    background-color: var(--tertiary-background);
 }
 
 .records-show-button.selected {
-    background-color: var(--secondary-background);
+    background-color: var(--tertiary-background);
     box-shadow: none;
 }
 
@@ -59,7 +59,7 @@
 }
 
 .filter-button.selected {
-    background-color: var(--secondary-background);
+    background-color: var(--tertiary-background);
     box-shadow: none;
 }
 

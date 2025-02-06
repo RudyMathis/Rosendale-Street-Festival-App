@@ -187,7 +187,7 @@ export default function RecordListHeader() {
             {canViewContent ? (
                 <>
                     <header className="record-list-header">
-                        <h3>{records.length} Records</h3>
+                        <h2>Total {records.length} Records</h2>
                         <div className="record-list-header-button-container">
                             {canEditRecords && (
                                 <DeleteToggle

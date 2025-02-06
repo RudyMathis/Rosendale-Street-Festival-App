@@ -95,8 +95,21 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
 
     const handleSubmit = async () => {
         const chunkSize = 10;
-        const processedData = preprocessData();
-
+        const processedData = preprocessData().map(record =>
+            Object.fromEntries(
+                Object.entries(record).map(([key, value]) => {
+                    if (value === "") return [key, Label.undefinedValues.string];
+                    if (typeof value === "string") {
+                        const lowerValue = value.toLowerCase();
+                        if (lowerValue === "yes") return [key, true];
+                        if (lowerValue === "no") return [key, false];
+                        if (!isNaN(Number(value))) return [key, Number(value)]; // Convert numeric strings to numbers
+                    }
+                    return [key, value];
+                })
+            )
+        );
+    
         for (let i = 0; i < processedData.length; i += chunkSize) {
             const chunk = processedData.slice(i, i + chunkSize);
             try {
@@ -132,7 +145,7 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
             {canViewContent ? (
                 <>
                     <section className="csv-header-container card">
-                        <h3>{Label.csv.title}</h3>
+                        <h2>{Label.csv.title}</h2>
                         <input
                             type="file"
                             accept=".csv"

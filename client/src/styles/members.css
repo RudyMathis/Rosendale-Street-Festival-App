@@ -1,18 +1,27 @@
-ul {
+.members-page ul {
     padding: 0;
 }
 
-h2 {
+.members-page h3 {
     text-align: left;
-    margin: 1rem 0;
+    margin: 0 0 0 1rem;
+}
+
+.member-page-container {
+    display: flex;
+}
+
+.add-member-container {
+    width: 40%;
 }
 
 .member-list-container {
+    margin-top: 2rem;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin: 1rem 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4em;
+    padding: var(--secondary-padding)
 }
 
 .member-details {
@@ -31,6 +40,13 @@ h2 {
 .member-container {
     display: flex;
     flex-direction: column;
+    padding: var(--secondary-padding);
+    border: 1px solid var(--primary-border-color);
+    justify-content: center;
+}
+
+.admin-label {
+    margin-top: 1rem;
 }
 
 @media only screen and (max-width: 720px) {
@@ -38,8 +54,16 @@ h2 {
         text-align: center;
     }
 
+    .member-page-container  {
+        flex-direction: column;
+    }
+
     .member-details {
         align-items: center;
+    }
+
+    .member-button-container {
+        justify-content: center;
     }
 }
 
@@ -60,6 +84,11 @@ h2 {
 }
 
 @media only screen and (max-width: 720px) {
+
+    .add-member-container {
+        width: 100%;
+    }
+
     .add-member {
         display: flex;
         flex-direction: column;

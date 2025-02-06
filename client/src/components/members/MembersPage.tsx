@@ -18,7 +18,6 @@ type Member = {
 
 const MembersPage = () => {
   const [members, setMembers] = useState<Member[]>([]);
-  // const [loading, setLoading] = useState<boolean>(true);
   const [ isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [editingMemberId, setEditingMemberId] = useState<string | null>(null);
@@ -118,69 +117,72 @@ const MembersPage = () => {
     } catch (error) {
         console.error('Error deleting member:', error);
     }
-};
+  };
 
-  // if (loading) return <p>Loading members...</p>; // update
   if (error) return <p>Error: {error}</p>; // update
 
   return (
-    <>
+    <section className="members-page">
       {canEditRecords ? 
-        <section>
-          <AddMember onAdd={handleAddMember} />
+        <>
           <h2>{Label.adminPanel.title}</h2>
-          <ul>
-            {members.map((member) => (
-              <li className="member-list-container card" key={member._id}>
-                <div className="member-container">
+          <div className="member-page-container card">
+            <AddMember onAdd={handleAddMember} />
+            <ul className="member-list-container">
+              {members.map((member) => (
+                <li className="member-container" key={member._id}>
                   <div className="member-details">
                     <div className="member-label">
-                        <strong>{Label.adminPanel.role}</strong><span>{member.role}</span>
+                      <strong>{Label.adminPanel.role}</strong>
+                      <span>{member.role}</span>
                     </div>
                     <div className="member-label">
-                        <strong>{Label.adminPanel.name}</strong><span>{member.name}</span>
+                      <strong>{Label.adminPanel.name}</strong>
+                      <span>{member.name}</span>
                     </div>
                     <div className="member-label">
-                        <strong>{Label.adminPanel.password}</strong><span>{member.password}</span>
+                      <strong>{Label.adminPanel.password}</strong>
+                      <span>{member.password}</span>
                     </div>
                   </div>
                   <div className="member-button-container">
-                    <Button 
-                          label={Label.actions.edit} 
-                          onClick={() => setEditingMemberId(member._id)}
-                          className="button edit-button"
-                          type="button"
-                          role={member.role} // remove to edit 
-                      />
-                      <DeleteMember 
-                        memberId={member._id} 
-                        deleteMemeber={handleDeleteMember} 
-                        role={member.role} 
-                      />
+                    <Button
+                      label={Label.actions.edit}
+                      onClick={() => setEditingMemberId(member._id)}
+                      className="button edit-button"
+                      type="button"
+                      role={member.role} // remove to edit 
+                    />
+                    <DeleteMember
+                      memberId={member._id}
+                      deleteMemeber={handleDeleteMember}
+                      role={member.role} 
+                    />
                   </div>
-                      {member.role === `admin` && (
-                        <code className="admin-label" style={{marginTop: "1rem"}}>Update in Code</code>
-                      )}
-                </div>
-                {editingMemberId === member._id && (
-                  <>
-                    <div className="edit-icon">&#10233;</div>
-                    <EditMember
+                  {member.role === `admin` && (
+                    <code className="admin-label">Update in Code</code>
+                  )}
+                  {editingMemberId === member._id && (
+                    <>
+                      <div className="edit-icon">&#10233;</div>
+                      <EditMember
                         member={member}
                         onSave={handleEditMember}
-                        onCancel={() => setEditingMemberId(null)} />
-                  </>
-                )}
-              </li>
-            ))}
-          </ul>
-        </section>
+                        onCancel={() => setEditingMemberId(null)} 
+                      />
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
         : 
         <>
           <LoginReminder />
           <Login />
         </>}
-    </>
+    </section>
   );
 };
 

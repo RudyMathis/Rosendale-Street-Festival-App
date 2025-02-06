@@ -1,4 +1,7 @@
 {
+    "undefinedValues": {
+        "string":"N/A"
+    },
     "download": {
         "all": "Download All",
         "emails": "Download Emails",
@@ -44,6 +47,13 @@
         "title": "Rosendale Street Festival",
         "members": "Members Page",
         "upload": "Upload CSV"
+    },
+    "createForm": {
+        "band": "Performer/Band",
+        "shirts": "T-Shirt Sizes",
+        "contact": "Contact Information",
+        "approval": "Approval",
+        "submit": "Save Performer/Band Record"
     },
     "csv": {
         "title": "Upload and Process CSV File",

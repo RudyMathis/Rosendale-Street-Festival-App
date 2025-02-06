@@ -31,9 +31,9 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
     };
 
     return (
-        <>
-            <h2>{Label.adminPanel.add}</h2>
-            <div className="add-member card">
+        <div className="add-member-container">
+            <h3>{Label.adminPanel.add}</h3>
+            <div className="add-member">
                 <form className="add-member-form" onSubmit={handleSubmit(newMember)}>
                     <label className="member-label">
                         {Label.adminPanel.name} 
@@ -77,7 +77,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onAdd }) => {
                     />
                 </form>
             </div>
-        </>
+        </div>
     );
 };
 
