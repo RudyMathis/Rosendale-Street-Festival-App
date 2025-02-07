@@ -35,21 +35,52 @@
     gap: 1rem;
     margin-top: var(--secondary-padding);
     align-items: center;
+    justify-content: center;
 }
 
 .member-container {
     display: flex;
     flex-direction: column;
-    padding: var(--secondary-padding);
-    border: 1px solid var(--primary-border-color);
     justify-content: center;
+    padding: 10px;
+    border: 1px solid var(--primary-border-color);
+    color: var(--primary-font-color);
+}
+
+.member-container.admin {
+    background-color: var(--quinary-background);
+}
+.member-container.moderator {
+    background-color: var(--tertiary-background);
+}
+.member-container.member {
+    background-color: var(--quaternary-background);
 }
 
 .admin-label {
     margin-top: 1rem;
 }
 
-@media only screen and (max-width: 720px) {
+.member-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.member-label input {
+    width: 10em;
+}
+
+.member-label select {
+    width: 11.25em;
+}
+
+.role-label {
+    color: var(--secondary-font-color)
+}
+
+@media only screen and (max-width: 900px) {
     section h2 {
         text-align: center;
     }
@@ -58,12 +89,19 @@
         flex-direction: column;
     }
 
-    .member-details {
+    .add-member-container {
+        display: flex;
         align-items: center;
+        flex-direction: column;
+        width: 100%;
     }
 
-    .member-button-container {
-        justify-content: center;
+    .member-container {
+        width: -webkit-fill-available;
+    }
+
+    .member-details {
+        align-items: center;
     }
 }
 
@@ -83,16 +121,13 @@
     width: -webkit-fill-available;
 }
 
-@media only screen and (max-width: 720px) {
-
-    .add-member-container {
-        width: 100%;
-    }
+@media only screen and (max-width: 900px) {
 
     .add-member {
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 100%;
     }
 
     .add-member-button {
@@ -133,13 +168,14 @@
     cursor: not-allowed;
 }
 
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 900px) {
     .edit-icon {
         rotate: 90deg;
     }
 
     .member-list-container {
         flex-direction: column;
+        align-items: center;
         margin: 1rem 0;
     }
 
@@ -152,8 +188,7 @@
     }
 
     .add-member-form {
-        margin: 0;
         border: none;
-        width: -webkit-fill-available;
+        width: 100%;
     }
 }

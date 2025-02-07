@@ -4,6 +4,7 @@ import { UserContextProvider } from "./context/UserContext";
 import { RoleContextProvider } from "./context/RoleContext";
 import { LabelProvider } from "./context/LabelContext";
 import { RecordProvider } from "./context/RecordContext";
+import ErrorBoundary from "./util/ErrorBoundary";
 import Loading from "./UI/LoadingMessage";
 import Navbar from "./components/Navbar";
 import "./App.css";
@@ -34,12 +35,14 @@ const App: React.FC = () => {
 
   return (
       <Suspense fallback={<Loading />}>
-        <Providers>
-            <main>
-              <Navbar />
-              <Outlet />
-            </main>
-        </Providers>
+        <ErrorBoundary>
+          <Providers>
+              <main>
+                <Navbar />
+                <Outlet />
+              </main>
+          </Providers>
+        </ErrorBoundary>
       </Suspense>
   );
 };

@@ -22,9 +22,8 @@ const TableData = ({
     countNameRepetitions,
 }: TableDataProps) => {
     return (
-        <td className={`record-td-container${type === "level" ? ` level-${value}` : ""}`}>
+        <td className={`record-td-container ${type.toLowerCase()}${type === "level" ? ` level-${value}` : ""}`}>
             <div className="hidden-desktop">{label}</div>
-
             {type === "name" && recordId ? (
                 <div>
                     <Link to={`/record/${recordId}`}>{value as string}</Link>

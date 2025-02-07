@@ -5,12 +5,12 @@ type LoadingMessageProps = {
 
 const LoadingMessage: React.FC<LoadingMessageProps> = ({ message= "Loading" }) => {
     return (
-        <div style={styles.container} className="card">
-            <p style={styles.message}>{message}</p>
-            <div style={styles.dotsContainer}>
-                <span style={styles.dot} className="dot1"></span>
-                <span style={styles.dot} className="dot2"></span>
-                <span style={styles.dot} className="dot3"></span>
+        <div className="card internal loading-message-container">
+            <h2>{message}</h2>
+            <div>
+                <span className="dot1 dot"></span>
+                <span className="dot2 dot"></span>
+                <span className="dot3 dot"></span>
             </div>
             <style>
                 {`
@@ -26,33 +26,6 @@ const LoadingMessage: React.FC<LoadingMessageProps> = ({ message= "Loading" }) =
             </style>
         </div>
     );
-};
-
-const styles = {
-    container: {
-        display: "flex",
-        flexDirection: "column" as const,
-        alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center" as const,
-        padding: "var(--primary-padding)",
-    },
-    message: {
-        fontSize: "1.2rem",
-        color: "#333",
-        marginBottom: "10px",
-    },
-    dotsContainer: {
-        display: "flex",
-        gap: "5px",
-    },
-    dot: {
-        width: "10px",
-        height: "10px",
-        backgroundColor: "#333",
-        borderRadius: "50%",
-        display: "inline-block",
-    },
 };
 
 export default LoadingMessage;

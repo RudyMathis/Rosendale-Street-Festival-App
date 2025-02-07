@@ -24,7 +24,7 @@ export default function RecordListHeader() {
     const { canViewContent, canViewActions, canEditRecords, canViewEditedDetail } = useRoleContext();
     const [sortConfig, setSortConfig] = useState<{ key: keyof RecordType; direction: "asc" | "desc" }>({
         key: "name",
-        direction: "desc",
+        direction: "asc",
     });
 
     // Pagination state and constant

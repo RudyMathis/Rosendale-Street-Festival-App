@@ -130,18 +130,18 @@ const MembersPage = () => {
             <AddMember onAdd={handleAddMember} />
             <ul className="member-list-container">
               {members.map((member) => (
-                <li className="member-container" key={member._id}>
+                <li className={`member-container ${member.role}`} key={member._id}>
                   <div className="member-details">
                     <div className="member-label">
-                      <strong>{Label.adminPanel.role}</strong>
+                      <span className="role-label">{Label.adminPanel.role}</span>
                       <span>{member.role}</span>
                     </div>
                     <div className="member-label">
-                      <strong>{Label.adminPanel.name}</strong>
+                      <span className="role-label">{Label.adminPanel.name}</span>
                       <span>{member.name}</span>
                     </div>
                     <div className="member-label">
-                      <strong>{Label.adminPanel.password}</strong>
+                      <span className="role-label">{Label.adminPanel.password}</span>
                       <span>{member.password}</span>
                     </div>
                   </div>

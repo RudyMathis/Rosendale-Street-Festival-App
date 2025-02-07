@@ -40,6 +40,13 @@ caption {
     margin: 0 .3rem;
 }
 
+.record-td-container.name {
+    position: sticky;
+    left: 0;
+    background-color: var(--quaternary-background);
+    z-index: 3;
+}
+
 .record-td-container.level-Low {
     background-color: var(--chart-2);
     color: var(--accent);
@@ -94,11 +101,7 @@ caption {
     }
 
     th {
-        width: 49%;
-    }
-
-    .table-header-button {
-        width: 100%;
+        width: -webkit-fill-available;
     }
     
     table td {

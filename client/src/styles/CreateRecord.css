@@ -59,10 +59,14 @@
     width: 46%;
 }
 
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 900px) {
     .form-input-container {
         font-size: 1.1rem;
         margin: 8px 0;
+    }
+
+    .create-record-form-section-title {
+        text-align: center;
     }
 
     .form-input-container input[type="text"],

@@ -5,7 +5,7 @@ import { LabelContext } from "../context/LabelContext";
 export default function useLabels(): LabelsType {
     const serverLabel = useContext(LabelContext);
     if (!serverLabel) {
-        throw new Error('Labels context is null');
+        throw new Error('Missing Labels');
     }
     return serverLabel;
 }

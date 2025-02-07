@@ -27,8 +27,8 @@ th button:hover {
     transform: none;
 }
 
-tr:hover td, tr:hover input {
-    background-color: var(--secondary-background);
+tr:nth-child(even) td{
+    background-color: var(--quinary-background);
 }
 
 td {

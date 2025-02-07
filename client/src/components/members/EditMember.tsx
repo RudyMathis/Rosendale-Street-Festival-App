@@ -31,7 +31,7 @@ const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => 
     return (
             <form className="edit-member-form" onSubmit={handleSubmit(updatedMember)}>
                 <label className="member-label">
-                    {Label.adminPanel.role}
+                    <span className="role-label">{Label.adminPanel.role}</span>
                     <select
                         name="role"
                         value={updatedMember.role}
@@ -44,7 +44,7 @@ const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => 
                     </select>
                 </label>
                 <label className="member-label">
-                    {Label.adminPanel.name}
+                    <span className="role-label">{Label.adminPanel.name}</span>
                     <input
                         type="text"
                         name="name"
@@ -54,7 +54,7 @@ const EditMember: React.FC<EditMemberProps> = ({ member, onSave, onCancel }) => 
                     />
                 </label>
                 <label className="member-label">
-                    {Label.adminPanel.password}
+                    <span className="role-label">{Label.adminPanel.password}</span>
                     <input
                         type="password"
                         name="password"
