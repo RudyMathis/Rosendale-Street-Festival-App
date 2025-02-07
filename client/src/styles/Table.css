@@ -3,14 +3,14 @@ table {
     width: 100%;
     display: block;
     overflow: auto;
-    scrollbar-color: var(--primary-background) var(--primary-border-color);
+    scrollbar-color: var(--primary-background)  var(--accent-foreground);
     scrollbar-width: thin;
-    border: 1px solid var(--primary-border-color);
+    border: var(--primary-border);
 }
 
 th {
     text-align: center;
-    border: 1px solid var(--primary-border-color);
+    border: var(--primary-border);
 }
 
 th button {
@@ -34,7 +34,7 @@ tr:nth-child(even) td{
 td {
     text-align: center;
     padding: var(--secondary-padding);
-    border: 1px solid var(--primary-border-color);
+    border: var(--primary-border);
     background-color: var(--primary-background)
 }
 

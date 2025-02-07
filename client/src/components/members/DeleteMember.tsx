@@ -27,7 +27,7 @@ const DeleteMember: React.FC<DeleteMemberProps> = ({ memberId, role, deleteMemeb
                     className="action-delete"
                     type="button"
                     onClick={openModal}
-                    disabled={role === `${serverLabel.role.level4[0]}`} // Disable button for admin members
+                    disabled={role === `${serverLabel.role.level4[0]}`} // Disabled button for admin members
                 >
                     {Label.adminPanel.delete}
                 </button>

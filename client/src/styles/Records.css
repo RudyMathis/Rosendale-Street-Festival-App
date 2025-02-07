@@ -11,16 +11,6 @@
     text-align: left;
 }
 
-.all-record-container {
-    margin-bottom: 1em;
-}
-
-.all-record-container h4 {
-    margin-top: 0;
-    font-size: 1rem;
-    color: var(--chart-2)
-}
-
 .record-header-button-container {
     display: flex;
     width: 25%;

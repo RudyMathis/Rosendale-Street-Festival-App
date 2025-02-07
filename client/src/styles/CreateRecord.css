@@ -14,7 +14,7 @@
 
 .create-record-form-section {
     padding: var(--secondary-padding);
-    border: 1px solid var(--primary-border-color);
+    border: var(--primary-border);
     width: 100%;
 }
 

@@ -9,7 +9,7 @@ import "../styles/Navbar.css";
 import "../styles/Login.css";
 
 const Navbar: React.FC = () => {
-    const { currentUser } = useUserContext(); // Access context state and setter
+    const { currentUser } = useUserContext();
     const { differentDisplay } = useRoleContext();
     const serverLabel = useLabels();
     const { handleLogOut } = useLogOut();

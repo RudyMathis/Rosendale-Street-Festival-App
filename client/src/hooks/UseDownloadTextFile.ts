@@ -1,11 +1,28 @@
 import { useCallback } from "react";
-
+/**
+ * This hook provides a function to download a text file containing
+ * records grouped by a given field.
+ *
+ * The function takes two parameters:
+ *   - group: the name of the field to group the records by
+ *   - selectedFields: an array of field names to include in the download
+ *   - filteredRecords: an array of records filtered by the selected fields
+ *   - Labels: an object containing labels for the fields
+ *
+ * The function returns a new function that can be called to download the text file.
+ * The returned function takes a single parameter, the name of the field to group the records by.
+ * The function will create a text file with the records grouped by the given field.
+ * The records will contain the values of the selected fields.
+ * The file will be named after the field used to group the records.
+ * The file will have a ".txt" extension.
+ *
+ * The function is memoized using useCallback to prevent it from being recreated on every render.
+ */
 type Labels = {
     [key: string]: Record<string, string>;
 }
 
 const useDownloadTextFile = (
-    // Now also receive the selectedFields
     FieldGroups: Record<string, string[]>,
     selectedFields: string[],
     filteredRecords: Record<string, unknown>[],
@@ -14,7 +31,6 @@ const useDownloadTextFile = (
     const downloadTextFile = useCallback(
         (group: string) => {
             const subject = `Records - ${group}`;
-            // Use selectedFields instead of FieldGroups[group]
             const fieldsToDownload = selectedFields.length > 0 ? selectedFields : (FieldGroups[group] || []);
 
             const downloadBody = filteredRecords
@@ -49,3 +65,4 @@ const useDownloadTextFile = (
 };
 
 export default useDownloadTextFile;
+

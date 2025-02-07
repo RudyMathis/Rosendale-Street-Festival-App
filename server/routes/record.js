@@ -5,11 +5,10 @@ import { connectToMongoDB, getDatabase } from "../database/connection.js";
 const router = express.Router();
 
 // Utility to map request body to the form fields
-
 const getFormBodyData = (body) => ({
   name: body.name,
   email: body.email,
-  level: body.level,
+  level: body.level || "Low",
   committeeNotes: body.committeeNotes,
   members: body.members,
   hudsonValley: body.hudsonValley,
@@ -35,9 +34,9 @@ const getFormBodyData = (body) => ({
   isNewToStreeFest: body.isNewToStreeFest,
   isWillingToFundraise: body.isWillingToFundraise,
   anythingElse: body.anythingElse,
-  isAccepted: body.isAccepted,
+  isAccepted: body.isAccepted || false,
   nameOfUser: body.nameOfUser,
-  editedTime: body.editedTime,
+  editedTime: body.editedTime || new Date().toISOString(),
 });
 
 // Get all records

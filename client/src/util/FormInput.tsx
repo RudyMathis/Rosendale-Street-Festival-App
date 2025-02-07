@@ -1,5 +1,15 @@
 import { ChangeEvent } from "react";
 
+/**
+ * FormInput is a reusable component that renders a form input of a given type.
+ * The type can be one of the following: text, number, email, tel, textarea, radio, checkbox.
+ * The component also accepts an options array when the type is "radio".
+ * The component renders a label and an input element of the specified type.
+ * The component also handles the onChange event of the input element.
+ * The component validates the input value if the type is "number" and ensures the value is above or equal to 0.
+ * The component also renders an error message if the error prop is provided.
+ */
+
 type FormInputProps = {
     label: string;
     name: string;
@@ -103,3 +113,4 @@ const FormInput = ({
 };
 
 export default FormInput;
+

@@ -40,7 +40,7 @@ function Header({
                                 label={groupLabels[group]}
                                 onClick={() => {
                                     onFieldGroupChange(group);
-                                    showDownloadButton(group); // Use the function returned by the hook
+                                    showDownloadButton(group);
                                     onFilterReset();
                                 }}
                                 className={`records-show-button ${

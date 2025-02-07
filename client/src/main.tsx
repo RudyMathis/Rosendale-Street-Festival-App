@@ -1,11 +1,10 @@
-
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import LoadingMessage from "./UI/LoadingMessage";
 
-// Lazy Load Components
+// Lazy load components to improve performance
 const CreateRecord = React.lazy(() => import("./components/CreateRecord"));
 const UploadRecords = React.lazy(() => import("./components/csv/UploadRecords"));
 const RecordDetail = React.lazy(() => import("./components/RecordDetail"));
@@ -14,11 +13,14 @@ const RecordListHeader = React.lazy(() => import("./components/record list/Recor
 const Login = React.lazy(() => import("./components/Login"));
 const MembersPage = React.lazy(() => import("./components/members/MembersPage"));
 
-// Define routes with Suspense fallback
+/**
+ * Define application routes with React Router
+ * Each route uses React.Suspense to lazily load components with a fallback LoadingMessage
+ */
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />, // Main wrapper (context + navbar)
+    element: <App />, 
     children: [
       { 
         path: "/", 
@@ -88,8 +90,10 @@ const router = createBrowserRouter([
   },
 ]);
 
+// Render the React application with the defined router
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <RouterProvider router={router} />
   </React.StrictMode>
 );
+

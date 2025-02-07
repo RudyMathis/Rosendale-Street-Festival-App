@@ -15,7 +15,7 @@ import "../../styles/Table.css";
 const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displayLabels: string[] }) => {
     const [csvData, setCsvData] = useState<Record<string, unknown>[]>([]);
     const [headers, setHeaders] = useState<string[]>([]);
-    const [isParsing, setIsParsing] = useState<boolean>(false); // For file parsing/loading message
+    const [isParsing, setIsParsing] = useState<boolean>(false);
     const [isHidden, setIsHidden] = useState(false);
     const [mappedFields, setMappedFields] = useState<Record<string, string>>({});
     const [, setError] = useState("");
@@ -46,7 +46,6 @@ const CsvUpload = ({ formFields, displayLabels }: { formFields: string[], displa
                     setError("Error parsing CSV file.");
                     console.error(result.errors);
                 } else {
-                    // Set the headers and CSV data
                     setHeaders(Object.keys(result.data[0] as object));
                     setCsvData(result.data as Record<string, unknown>[]);
                     setError("");

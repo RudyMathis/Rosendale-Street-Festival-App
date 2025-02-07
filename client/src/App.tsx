@@ -4,12 +4,16 @@ import { UserContextProvider } from "./context/UserContext";
 import { RoleContextProvider } from "./context/RoleContext";
 import { LabelProvider } from "./context/LabelContext";
 import { RecordProvider } from "./context/RecordContext";
-import ErrorBoundary from "./util/ErrorBoundary";
 import Loading from "./UI/LoadingMessage";
 import Navbar from "./components/Navbar";
 import "./App.css";
 
-// Providers component
+/**
+ * A higher-order component that wraps the application with the necessary context providers.
+ * 
+ * @param {React.ReactNode} children The children components to be wrapped with the context providers.
+ * @returns {React.ReactElement} The wrapped children components.
+ */
 const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <LabelProvider>
@@ -24,6 +28,11 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
+/**
+ * The main App component that renders the application.
+ * 
+ * @returns {React.ReactElement} The application component.
+ */
 const App: React.FC = () => {
   const location = useLocation();
   const [path, setPath] = useState<string>(location.pathname.split("/")[1]);
@@ -35,14 +44,12 @@ const App: React.FC = () => {
 
   return (
       <Suspense fallback={<Loading />}>
-        <ErrorBoundary>
-          <Providers>
-              <main>
-                <Navbar />
-                <Outlet />
-              </main>
-          </Providers>
-        </ErrorBoundary>
+        <Providers>
+            <main>
+              <Navbar />
+              <Outlet />
+            </main>
+        </Providers>
       </Suspense>
   );
 };

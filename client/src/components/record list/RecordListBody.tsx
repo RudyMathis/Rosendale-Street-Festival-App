@@ -18,7 +18,6 @@ type RecordProps = {
 };
 
 const RecordListBody = ({ record, deleteRecord, confirmation }: RecordProps) => {
-    
     const { canViewActions, canAccept, canViewEditedDetail } = useRoleContext();
     const [modalOpen, setModalOpen] = useState(false);
     const [ , setRecords] = useState<RecordType[]>([]);
@@ -69,7 +68,7 @@ const RecordListBody = ({ record, deleteRecord, confirmation }: RecordProps) => 
         if (!currentRecords.records) {
             return 0;
         }
-            // Count occurrences of the name in the records
+
         return currentRecords.records.reduce(
             (count, record) => (record.name === name ? count + 1 : count),
             0
@@ -108,9 +107,9 @@ const RecordListBody = ({ record, deleteRecord, confirmation }: RecordProps) => 
                                 type="button"
                                 onClick={() => {
                                     if (confirmation) {
-                                        openModal(); // Show confirmation modal
+                                        openModal();
                                     } else {
-                                        deleteRecord(record._id); // Delete the record directly
+                                        deleteRecord(record._id);
                                     }
                                 }}
                                 >

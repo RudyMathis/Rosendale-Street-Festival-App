@@ -18,7 +18,7 @@ export const UserContextProvider: React.FC<{ children: ReactNode }> = ({ childre
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [, setIsUserLoaded] = useState(false);
 
-    const serverLabel = useContext(LabelContext); // Access the labels context
+    const serverLabel = useContext(LabelContext);
 
     useEffect(() => {
 
@@ -30,7 +30,7 @@ export const UserContextProvider: React.FC<{ children: ReactNode }> = ({ childre
                 const parsedUser = JSON.parse(storedUser);
                 setCurrentUser({ name: parsedUser.name, role: parsedUser.role, password: "" });
             } else {
-                setCurrentUser(null); // Clear current user
+                setCurrentUser(null);
             }
             setIsUserLoaded(true);
         }
@@ -50,4 +50,3 @@ export const useUserContext = () => {
     }
     return context;
 };
-// error when loading from this page might not be big deal

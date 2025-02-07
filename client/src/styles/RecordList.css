@@ -48,17 +48,17 @@ caption {
 }
 
 .record-td-container.level-Low {
-    background-color: var(--chart-2);
+    background-color: var(--member);
     color: var(--accent);
 }
 
 .record-td-container.level-Medium {
-    background-color: var(--chart-4);
+    background-color: var(--moderator);
     color: var(--accent);
 }
 
 .record-td-container.level-High {
-    background-color: var(--chart-1);
+    background-color: var(--admin);
     color: var(--accent);
 } 
 
@@ -89,7 +89,7 @@ caption {
     }
 
     tr {
-        border: 1px solid var(--primary-border-color);
+        border: var(--primary-border);
     }
 
     .record-tr-container {
@@ -118,17 +118,6 @@ caption {
 
     .record-tr-container > .hidden-button {
         display: none;
-    }
-
-    .record-tr-container > .more-selection.hidden {
-        display: none;
-    }
-
-    .record-tr-container > .more-selection {
-        background-color: var(--secondary);
-        left: 0;
-        width: 8em;
-        height: 100%;
     }
 
     .action-header-container {

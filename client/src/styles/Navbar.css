@@ -13,10 +13,6 @@
     margin-left: 1rem;
 }
 
-.nav-login-container a {
-    color: var(--secondary-foreground);
-}
-
 .nav-links {
     display: flex;
     flex-direction: column;

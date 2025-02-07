@@ -17,22 +17,22 @@ export default function RecordDetail() {
     const { fetchRecordById } = useRecords();
     const serverLabel = useLabels();
     const [record, setRecord] = useState<RecordType | null>(null);
-    const [isLoading, setIsLoading] = useState(true); // Add loading state
-    const [error, setError] = useState(false); // Add error state
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             if (!id) return;
             try {
-                setIsLoading(true); // Start loading
-                setError(false); // Reset error state
+                setIsLoading(true);
+                setError(false);
                 const data = await fetchRecordById(id);
                 setRecord(data);
             } catch (err) {
                 console.error("Error fetching record:", err);
                 setError(true);
             } finally {
-                setIsLoading(false); // Stop loading
+                setIsLoading(false);
             }
         };
 
@@ -40,7 +40,7 @@ export default function RecordDetail() {
     }, [id, fetchRecordById]);
 
     if (isLoading) {
-        return <LoadingMessage message="Loading record details..." />; // fix this
+        return <LoadingMessage message="Loading record details..." />;
     }
 
     if (!record) {
@@ -86,14 +86,14 @@ export default function RecordDetail() {
     };
     
     const handleDownload = () => {
-        const subject = "Record Details"; // Subject for file name
-        const downloadContent = createDownloadContent(); // Create the content for download
+        const subject = "Record Details";
+        const downloadContent = createDownloadContent(); 
     
         // Create a Blob object and trigger the download
         const blob = new Blob([downloadContent], { type: "text/plain" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = `${subject} - ${record.name}.txt`; // File name with record name
+        link.download = `${subject} - ${record.name}.txt`;
         link.click();
     };
     

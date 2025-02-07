@@ -18,8 +18,8 @@ type Member = {
 
 const MembersPage = () => {
   const [members, setMembers] = useState<Member[]>([]);
-  const [ isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [, setError] = useState<string | null>(null);
   const [editingMemberId, setEditingMemberId] = useState<string | null>(null);
   const { canEditRecords } = useRoleContext();
 
@@ -28,7 +28,7 @@ const MembersPage = () => {
       try {
         setIsLoading(true);
         const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/members` // Make into hook
+          `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5050"}/members`
         );
 
         if (!response.ok) {
@@ -118,8 +118,6 @@ const MembersPage = () => {
         console.error('Error deleting member:', error);
     }
   };
-
-  if (error) return <p>Error: {error}</p>; // update
 
   return (
     <section className="members-page">

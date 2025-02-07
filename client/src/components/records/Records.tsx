@@ -242,7 +242,7 @@ export default function Records() {
         <>
             {canViewContent ? 
                 <section className="records-container">
-                    <h2>{count} Records</h2>
+                    <h2>{count} {count === 1 ? "Record" : "Records"}</h2>
                     <Header
                         labels={serverLabel}
                         selectedGroup={selectedGroup}

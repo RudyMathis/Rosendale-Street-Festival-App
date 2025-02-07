@@ -28,7 +28,7 @@ export default function RecordListHeader() {
     });
 
     // Pagination state and constant
-    const RECORDS_PER_PAGE = 5;
+    const RECORDS_PER_PAGE = Label.pagination.count;
     const [currentPage, setCurrentPage] = useState(1);
 
     async function deleteRecord(id: string) {
@@ -151,33 +151,6 @@ export default function RecordListHeader() {
         navigate("/record/all");
     }
 
-    function handleMore() {
-        const moreSelection = document.querySelectorAll(".more-selection");
-        if (moreSelection) {
-            moreSelection.forEach((element) => {
-                element.classList.toggle("hidden-button");
-            });
-            
-            document.querySelectorAll('.record-tr-container .more-selection').forEach((element, index) => {
-                (element as HTMLElement).style.position = 'absolute';
-                (element as HTMLElement).style.top = `${100 * (index + 1)}%`; 
-            });
-        }
-    }
-
-    const resizeObserver = new ResizeObserver(() => {
-        if (window.innerWidth > 720) {
-            document.querySelectorAll('.record-tr-container .more-selection').forEach((element) => {
-                (element as HTMLElement).style.position = 'relative'; 
-                (element as HTMLElement).style.top = ''; 
-            });
-        } else {
-            handleMore();
-        }
-    });
-
-    resizeObserver.observe(document.body);
-
     function handleToggleDelete() {
         setToggleDelete(!toggleDelete);
     }
@@ -187,7 +160,7 @@ export default function RecordListHeader() {
             {canViewContent ? (
                 <>
                     <header className="record-list-header">
-                        <h2>Total {records.length} Records</h2>
+                        <h2>Total {records.length} {records.length === 1 ? "Record" : "Records"}</h2>
                         <div className="record-list-header-button-container">
                             {canEditRecords && (
                                 <DeleteToggle
@@ -196,7 +169,7 @@ export default function RecordListHeader() {
                                 />
                             )}
                             <Button
-                                label={`View ${records.length} Records`}
+                                label={`View ${records.length} ${records.length === 1 ? "Record" : "Records"}`}
                                 onClick={handleAllRecords}
                                 className="button"
                                 type="button"

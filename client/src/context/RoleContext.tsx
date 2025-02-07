@@ -2,7 +2,6 @@ import { createContext, useContext, ReactNode } from "react";
 import { useUserContext } from "./UserContext";
 import useLabels from "../hooks/UseLabels";
 
-// Define all possible permissions
 type RoleContextType = {
   differentDisplay: string;
   canViewContent: boolean;
@@ -53,7 +52,6 @@ export const RoleContextProvider: React.FC<{ children: ReactNode }> = ({ childre
     },
   };
 
-  // Resolve permissions based on currentUser's role, default to "guest" if no user
   const permissions = roleHierarchy[currentUser?.role ?? serverLabel.role.level1[0]];
 
   return (

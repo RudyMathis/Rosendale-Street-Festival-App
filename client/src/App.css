@@ -2,26 +2,18 @@
 
 @layer base {
   :root {
-    --foreground: hsl(240 10% 3.9%);
     --card: hsl(0 0% 100%);
-    --secondary: hsl(240 4.8% 95.9%);
-    --secondary-foreground: hsl(240 5.9% 10%);
     --muted: hsl(240 4.8% 95.9%);
     --muted-foreground: hsl(240 3.8% 46.1%);
     --accent: hsl(240 4.8% 95.9%);
     --accent-foreground: hsl(240 5.9% 10%);
-    --border: hsl(240 5.9% 90%);
-    --radius: 0.5rem;
-    --chart-1: hsl(12 76% 61%);
-    --chart-2: hsl(173 58% 39%);
-    --chart-4: hsl(43 74% 66%);
     --member: hsl(101, 59%, 51%);
-    --moderator: hsl(302, 59%, 51%);
+    --moderator: hsl(58, 59%, 51%);
     --admin: hsl(0, 59%, 51%);
 
     --primary-font-color: hsl(203, 100%, 5%);
     --secondary-font-color: hsl(203, 98%, 21%);
-    --primary-border-color: hsl(203, 100%, 5%);
+
     --primary-border: 2px solid hsl(203, 100%, 5%);
     --primary-box-shadow: 5px 5px 0px hsl(203, 100%, 5%);
     --primary-padding: 2em;
@@ -55,7 +47,6 @@
 #root {
   margin: 0 auto;
   text-align: center;
-  color: var(--foreground);
 }
 
 body {
@@ -84,13 +75,6 @@ main {
   padding: var(--primary-padding);
   max-width: 1440px;
   margin: auto;
-}
-
-.container-shadow {
-  padding: 1em;
-  border-radius: var(--radius);
-  background-color: var(--card);
-  border: 1px solid var(--border);
 }
 
 a {
@@ -136,7 +120,7 @@ input, textarea {
   margin: .25rem;
   cursor: pointer;
   line-height: 1.5rem;
-  border: 1px solid var(--primary-border-color);
+  border: var(--primary-border);
   background-color: transparent;
   padding: .25rem;
   text-overflow: ellipsis;
@@ -144,7 +128,7 @@ input, textarea {
 
 input[type="submit"] {
   color: var(--accent-foreground);
-  border: 1px solid var(--primary-border-color);
+  border: var(--primary-border);
   cursor: pointer;
 }
 
@@ -177,7 +161,7 @@ input::file-selector-button {
   color: var(--primary-font-color);
   background-color: var(--primary-background);
   padding: 0.5em;
-  border: thin solid var(--primary-border-color);
+  border: var(--primary-border);
   cursor: pointer;
   box-shadow: var(--button-box-shadow);
   margin: .25rem 1rem .25rem .25rem;
@@ -194,7 +178,7 @@ button {
 }
 
 button:hover, input::file-selector-button:hover {
-  background-color: var(--tertiary-background);
+  background-color: var(--primary-background);
   transition: all 0.2s ease-in-out;
   box-shadow: var(--button-hover-box-shadow);
   transform: translate(-2px, 2px);
@@ -211,6 +195,15 @@ button a {
   width: 100%;
 }
 
+.action-delete {
+  color: var(--accent);
+  background-color: var(--admin);
+}
+
+.action-delete:hover {
+  background-color: var(--admin);
+}
+
 .action-delete:disabled {
   background-color: var(--muted);
   color: var(--muted-foreground);
@@ -220,12 +213,6 @@ button a {
 .action-delete:disabled:hover {
   color: var(--muted-foreground);
   cursor: not-allowed;
-}
-
-.action-delete:hover {
-  transform: none;
-  box-shadow: var(--button-box-shadow);
-  transition: none;
 }
 
 .action-edit:hover {

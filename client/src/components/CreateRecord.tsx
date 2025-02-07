@@ -154,7 +154,7 @@ export default function Record() {
         return;
     }
 
-    await submitForm(); // Directly submit if no missing fields
+    await submitForm();
   };
 
   const submitForm = async () => {

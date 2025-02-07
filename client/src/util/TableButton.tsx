@@ -9,6 +9,12 @@ type TableButtonProps = {
     className?: string;
 };
 
+/**
+ * A button in a table header that can be used to sort the table by a column.
+ * The button renders a label and a sort direction icon, and calls the `onClick`
+ * function when clicked.
+ */
+
 const TableButton = ({
     label,
     onClick,
