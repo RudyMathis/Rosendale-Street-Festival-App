@@ -1,17 +1,20 @@
 {
     "record": {
+        "timestamp": ["timestamp", "Timestamp"],
         "name": ["name", "Name"],
         "email": ["email", "Email"],
+        "volunteerStatus": ["volunteerStatus", "Volunteer Status"],
         "level": ["level", "Level"],
         "low": ["low", "Low"],
         "medium": ["medium", "Medium"],
         "high": ["high", "High"],
         "committeeNotes": ["committeeNotes", "Committee Notes"],
-        "members": ["members", "Members"],
+        "members": ["members", "Number of Members"],
         "hudsonValley": ["hudsonValley", "Hudson Valley"],
         "summary": ["summary", "Summary"],
         "genre": ["genre", "Genre"],
         "link": ["link", "Link"],
+        "website": ["website", "Website"],
         "dates": ["dates", "Dates Available"],
         "anotherGig": ["anotherGig", "Any Other Gig?"],
         "gigIfYes": ["gigIfYes", "Gig If Yes"],
@@ -33,7 +36,8 @@
         "anythingElse": ["anythingElse", "Anything Else?"],
         "isAccepted": ["isAccepted", "Is Accepted"],
         "nameOfUser": ["nameOfUser", "Name Of User"],
-        "editedTime": ["editedTime", "Edited Time"]
+        "editedTime": ["editedTime", "Edited Time"],
+        "isDemoData": ["isDemoData", "Is Demo Data"]
     },
     "role": {
         "level1": ["guest", "Guest"],

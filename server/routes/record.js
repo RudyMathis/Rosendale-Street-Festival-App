@@ -6,8 +6,10 @@ const router = express.Router();
 
 // Utility to map request body to the form fields
 const getFormBodyData = (body) => ({
+  timestamp: body.timestamp,
   name: body.name,
   email: body.email,
+  volunteerStatus: body.volunteerStatus,
   level: body.level || "Low",
   committeeNotes: body.committeeNotes,
   members: body.members,
@@ -15,6 +17,7 @@ const getFormBodyData = (body) => ({
   summary: body.summary,
   genre: body.genre,
   link: body.link,
+  website: body.website,
   dates: body.dates,
   anotherGig: body.anotherGig,
   gigIfYes: body.gigIfYes,
@@ -36,7 +39,8 @@ const getFormBodyData = (body) => ({
   anythingElse: body.anythingElse,
   isAccepted: body.isAccepted || false,
   nameOfUser: body.nameOfUser,
-  editedTime: body.editedTime || new Date().toISOString(),
+  editedTime: body.editedTime || new Date().toLocaleDateString('en-US'),
+  isDemoData: body.isDemoData,
 });
 
 // Get all records

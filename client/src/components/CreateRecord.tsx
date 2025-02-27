@@ -60,13 +60,18 @@ export default function Record() {
   const [form, setForm] = useState({
     [serverLabel.record.name[0]]: "", 
     [serverLabel.record.email[0]]: "", 
+    [serverLabel.record.volunteerStatus[0]]: false,
     [serverLabel.record.level[0]]: serverLabel.record.low[1], 
     [serverLabel.record.committeeNotes[0]]: "", 
     [serverLabel.record.members[0]]: 1,
     [serverLabel.record.hudsonValley[0]]: false, 
+    [serverLabel.record.summary[0]]: "",
     [serverLabel.record.genre[0]]: "",
     [serverLabel.record.link[0]]: "",
+    [serverLabel.record.website[0]]: "",
+    [serverLabel.record.dates[0]]: "",
     [serverLabel.record.anotherGig[0]]: false,
+    [serverLabel.record.gigIfYes[0]]: "",
     [serverLabel.record.shirtSizeXS[0]]: 0, 
     [serverLabel.record.shirtSizeS[0]]: 0, 
     [serverLabel.record.shirtSizeM[0]]: 0,
@@ -80,9 +85,13 @@ export default function Record() {
     [serverLabel.record.secondaryContact[0]]: "", 
     [serverLabel.record.secondaryEmail[0]]: "", 
     [serverLabel.record.secondaryPhone[0]]: "", 
+    [serverLabel.record.isNewToStreeFest[0]]: false,
     [serverLabel.record.isAccepted[0]]: false,
+    [serverLabel.record.isWillingToFundraise[0]]: false,
+    [serverLabel.record.anythingElse[0]]: "",
     [serverLabel.record.nameOfUser[0]]: currentUser?.name,
     [serverLabel.record.editedTime[0]]: new Date().toLocaleDateString(),
+    [serverLabel.record.isDemoData[0]]: false
   });
 
   const formSections = [
@@ -92,13 +101,19 @@ export default function Record() {
       fields: [
         { label: serverLabel.record.name[1], name: serverLabel.record.name[0], type: "text", placeholder: "Enter your name" },
         { label: serverLabel.record.email[1], name: serverLabel.record.email[0], type: "email", placeholder: "Enter your email" },
+        { label: serverLabel.record.volunteerStatus[1], name: serverLabel.record.volunteerStatus[0], type: "checkbox" },
         { label: serverLabel.record.level[1], name: serverLabel.record.level[0], type: "radio", options: [serverLabel.record.low[1], serverLabel.record.medium[1], serverLabel.record.high[1]] },
         { label: serverLabel.record.committeeNotes[1], name: serverLabel.record.committeeNotes[0], type: "textarea", placeholder: "Committee Notes" },
         { label: serverLabel.record.members[1], name: serverLabel.record.members[0], type: "number", placeholder: "Number of members" },
         { label: serverLabel.record.hudsonValley[1], name: serverLabel.record.hudsonValley[0], type: "checkbox" },
+        { label: serverLabel.record.summary[1], name: serverLabel.record.summary[0], type: "textarea", placeholder: "Summary" },
         { label: serverLabel.record.genre[1], name: serverLabel.record.genre[0], type: "text", placeholder: "Genre of music" },
         { label: serverLabel.record.link[1], name: serverLabel.record.link[0], type: "url", placeholder: "Link to your band" },
+        { label: serverLabel.record.website[1], name: serverLabel.record.website[0], type: "url", placeholder: "Link to your website" },
+        { label: serverLabel.record.dates[1], name: serverLabel.record.dates[0], type: "text", placeholder: "Dates" },
         { label: serverLabel.record.anotherGig[1], name: serverLabel.record.anotherGig[0], type: "checkbox" },
+        { label: serverLabel.record.gigIfYes[1], name: serverLabel.record.gigIfYes[0], type: "text", placeholder: "Gig" },
+
       ],
     },
     {
@@ -127,17 +142,26 @@ export default function Record() {
       ],
     },
     {
+      title: Label.createForm.additional,
+      length: "full",
+      fields: [
+        { label: serverLabel.record.isNewToStreeFest[1], name: serverLabel.record.isNewToStreeFest[0], type: "checkbox" },
+        { label: serverLabel.record.isWillingToFundraise[1], name: serverLabel.record.isWillingToFundraise[0], type: "checkbox" },
+        { label: serverLabel.record.anythingElse[1], name: serverLabel.record.anythingElse[0], type: "textarea", placeholder: "Anything else?" },
+      ],
+    },
+    {
       title: Label.createForm.approval,
       length: "full",
       fields: [
         { label: serverLabel.record.isAccepted[1], name: serverLabel.record.isAccepted[0], type: "checkbox" },
+        { label: serverLabel.record.isDemoData[1], name: serverLabel.record.isDemoData[0], type: "checkbox" },
       ],
     },
   ];
 
   const updateForm = (value: Partial<typeof form>) => {
     setForm((prev) => ({ ...prev, ...value }));
-    console.log(typeof form.shirtSizeXXL);
   };
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -255,7 +279,7 @@ export default function Record() {
               secondOptionalMessage="Are you sure you want to proceed?"
               onConfirm={handleConfirmAction}
               onCancel={handleCancelDownload}
-              />
+            />
           </section>
         </>
       : 

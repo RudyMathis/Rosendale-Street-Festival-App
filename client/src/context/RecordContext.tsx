@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
+import { useUserContext } from "../context/UserContext";
 import { RecordType } from "../types/RecordType";
 import LoadingMessage from "../UI/LoadingMessage";
 
@@ -24,7 +25,7 @@ export const RecordProvider = ({ children }: { children: ReactNode }) => {
     const [records, setRecords] = useState<RecordType[] | null>(null);
     const [refreshKey, setRefreshKey] = useState(0); // This will force re-fetching when incremented
     const [loading, setLoading] = useState(true);
-
+    const { currentUser } = useUserContext();
     useEffect(() => {
         const fetchRecords = async () => {
             try {
@@ -35,7 +36,12 @@ export const RecordProvider = ({ children }: { children: ReactNode }) => {
                     throw new Error("Failed to fetch records");
                 }
                 const data: RecordType[] = await response.json();
-                setRecords(data);
+
+                if(currentUser?.name === "Demo Account"){
+                    setRecords(data.filter((record) => record.isDemoData === true));
+                } else {
+                    setRecords((data.filter((record) => record.isDemoData === false || record.isDemoData === undefined || record.isDemoData === null)));
+                }
             } catch (error) {
                 console.error("Error fetching records:", error);
             }finally {
@@ -44,7 +50,7 @@ export const RecordProvider = ({ children }: { children: ReactNode }) => {
         };
 
         fetchRecords();
-    }, [refreshKey]);
+    }, [currentUser?.name, refreshKey]);
     const refreshRecords = () => setRefreshKey((key) => key + 1);
     const fetchRecordById = async (id: string): Promise<RecordType | null> => {
         try {

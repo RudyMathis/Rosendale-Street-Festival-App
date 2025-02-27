@@ -9,8 +9,10 @@
 export type RecordType = {
     [key: string]: unknown;
     _id: string;
+    timestamp: string;
     name: string;
     email: string;
+    volunteerStatus: boolean;
     level: string;
     committeeNotes: string;
     members: number;
@@ -18,6 +20,7 @@ export type RecordType = {
     summary: string;
     genre: string;
     link: string;
+    website: string;
     dates: string;
     anotherGig: boolean;
     gigIfYes: string;
@@ -40,4 +43,5 @@ export type RecordType = {
     isAccepted: boolean;
     nameOfUser: string;
     editedTime: string;
+    isDemoData: boolean;
 };
