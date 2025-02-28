@@ -31,7 +31,7 @@
         "secondaryContact": ["secondaryContact", "Secondary Contact"],
         "secondaryEmail": ["secondaryEmail", "Secondary Email"],
         "secondaryPhone": ["secondaryPhone", "Secondary Phone"],
-        "isNewToStreeFest": ["isNewToStreeFest", "Are You New To Stree Fest?"],
+        "isNewToStreeFest": ["isNewToStreeFest", "Are You New To Street Fest?"],
         "isWillingToFundraise": ["isWillingToFundraise", "Willing To Fundraise?"],
         "anythingElse": ["anythingElse", "Anything Else?"],
         "isAccepted": ["isAccepted", "Is Accepted"],

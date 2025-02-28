@@ -99,8 +99,8 @@ export default function Record() {
       title: Label.createForm.band,
       length: "full",
       fields: [
-        { label: serverLabel.record.name[1], name: serverLabel.record.name[0], type: "text", placeholder: "Enter your name" },
-        { label: serverLabel.record.email[1], name: serverLabel.record.email[0], type: "email", placeholder: "Enter your email" },
+        { label: serverLabel.record.name[1], name: serverLabel.record.name[0], type: "text", placeholder: "Enter band name" },
+        { label: serverLabel.record.email[1], name: serverLabel.record.email[0], type: "email", placeholder: "Enter band email" },
         { label: serverLabel.record.volunteerStatus[1], name: serverLabel.record.volunteerStatus[0], type: "checkbox" },
         { label: serverLabel.record.level[1], name: serverLabel.record.level[0], type: "radio", options: [serverLabel.record.low[1], serverLabel.record.medium[1], serverLabel.record.high[1]] },
         { label: serverLabel.record.committeeNotes[1], name: serverLabel.record.committeeNotes[0], type: "textarea", placeholder: "Committee Notes" },
