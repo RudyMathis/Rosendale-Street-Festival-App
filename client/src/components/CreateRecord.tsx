@@ -91,7 +91,7 @@ export default function Record() {
     [serverLabel.record.anythingElse[0]]: "",
     [serverLabel.record.nameOfUser[0]]: currentUser?.name,
     [serverLabel.record.editedTime[0]]: new Date().toLocaleDateString(),
-    [serverLabel.record.isDemoData[0]]: false
+    [serverLabel.record.isDemoData[0]]: currentUser?.name === "Demo Account" // False by default unless the user is the demo account
   });
 
   const formSections = [
