@@ -109,7 +109,8 @@ caption {
     }
 
     .sort-icon {
-        margin-left: .5rem;
+        position: absolute;
+        margin-left: 10px
     }
 
     .record-list-container {

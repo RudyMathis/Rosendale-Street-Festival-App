@@ -69,6 +69,12 @@
 
 
 @media only screen and (max-width: 720px) {
+    .records-container {
+        flex-wrap: wrap;
+        gap: 5px;
+        padding: .5em;
+    }
+
     .records-container .records-header {
         flex-wrap: wrap;
         gap: 5px;
@@ -83,9 +89,11 @@
         font-size: .75rem;
     } 
 
+    .record-detail-button-container.card {
+        margin: 0;
+    }
+
     .hidden-button {
         display: none;
     }
-
 }
-

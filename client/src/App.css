@@ -265,6 +265,7 @@ select {
   border: var(--primary-border);
   box-shadow: var(--primary-box-shadow);
   padding: var(--primary-padding);
+  margin-bottom: 1em;
 }
 
 .internal {
@@ -331,11 +332,16 @@ select {
   }
 
   .card {
-    box-shadow: none;
     padding: var(--secondary-padding);
+    margin: .75em;
   }
 
   .link {
     overflow-wrap: anywhere;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin: 1rem 0;
   }
 }

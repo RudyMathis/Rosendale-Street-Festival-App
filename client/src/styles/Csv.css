@@ -37,7 +37,8 @@ input[type="file"] {
 }
 
 .submit-button {
-    margin-top: var(--primary-padding)
+    margin-top: var(--primary-padding);
+    color: var(--primary-font-color);
 }
 
 .csv-header-mobile {
