@@ -322,6 +322,10 @@ select {
   margin: 0 .25rem;
 }
 
+.submit-button {
+  color: var(--primary-font-color);
+}
+
 @media only screen and (max-width: 720px) {
   #root {
     width: 100%;
