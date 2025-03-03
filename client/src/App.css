@@ -82,7 +82,7 @@ a {
   text-decoration: inherit;
 }
 
-a:hover {
+a:hover, .link:hover {
   color: var(--primary-link-hover);
 }
 

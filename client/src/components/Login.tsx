@@ -45,7 +45,7 @@ const Login: React.FC = () => {
                             placeholder="Enter your password"
                         />
                     </label>
-                    {error && <p style={{ color: "red" }}>{error}</p>}
+                    {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
                 </div>
                 <Button
                     label={Label.actions.submit}

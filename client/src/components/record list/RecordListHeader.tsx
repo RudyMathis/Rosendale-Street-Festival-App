@@ -11,7 +11,6 @@ import PaginationControls from "../../util/PaginationControls";
 import Button from "../../util/Button";
 import TableButton from "../../util/TableButton";
 import DeleteToggle from "./DeleteToggle";
-import LoginReminder from "../../UI/LoginReminder";
 import Label from "../../labels/UILabel.json";
 import "../../styles/RecordList.css";
 import "../../styles/Table.css";
@@ -246,7 +245,6 @@ export default function RecordListHeader() {
                 </>
             ) : (
                 <>
-                    <LoginReminder />
                     <Login />
                 </>
             )}
