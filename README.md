@@ -17,3 +17,5 @@ Important Info:
 -- This app uses a few Context components that rely on eachother so be careful when calling them
 -- Front end specific labels help centeralize data if it's not a record label or role label and you want to update its text
 its probably there
+
+⚠️ Note: An old commit contained a MongoDB URI that is now revoked and no longer valid.
